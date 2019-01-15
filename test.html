@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>VizLab</title>
+<link rel="stylesheet" type="text/css" href="{% static 'vizzes/style.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+<div class="wrapper">
+     <header class="header">
+          <p class="title">VizLab | Test template</p> <a class="headerlink" href="{% url 'vizzes:index' %}">back home</a>
+     </header>
+     <section id="scroll">
+          <h4>here's the description</h4>
+          <div class="scroll__graphic"><svg class="mainviz sticky"></svg></div>
+          <div class="scroll__text">
+               <!-- steps = ".step" -->
+               <div class='step' data-step='a'></div>
+               <div class='step' data-step='b'></div>
+               <div class='step' data-step='c'></div>
+          </div>
+          <p>Added to DB? Not yet.
+               | <a href="{{ selected_dataviz.viz_source }}"target="_blank">data source</a>
+          </p>
+          <script src="{% static 'vizzes/js/resize.js' %}"></script>
+          <script src="{% static 'vizzes/js/intersection-observer.0-5.js' %}"></script>
+          <script src="https://unpkg.com/scrollama"></script>
+          <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+          <script type="text/javascript" src="test.js"></script>   
+     </section>
+     <div class="footer"><p></p></div>
+</div>
