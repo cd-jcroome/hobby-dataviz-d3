@@ -23,7 +23,7 @@ body {
   opacity: .90;
   position: fixed;
   display: grid;
-    grid-template-columns: 40vw 20vw 40vw;  
+    grid-template-columns: 15vw 70vw 15vw;  
     place-items: center;
   box-shadow: 0 3px 2px rgba(57, 63, 72, 0.3);
 }
@@ -41,8 +41,9 @@ body {
 .header p.vizName {
   grid-column: 2/3;
 }
-.linksbar {
+.headerlink {
   grid-column: 3/4;
+  height: 4vh;
   text-decoration: none;
 }
 
@@ -56,46 +57,8 @@ div.detail_main, div.index-main {
   grid-column: 1/4;
   grid-row: 2/3;
 }
-/* Index */
-#indexintro {
-  grid-column: 1/4;
-  grid-row: 2/3;
-  display: grid;
-    grid-template-columns: 50vw 50vw;
-    grid-template-rows: 
-}
-#indexintro h1 {
-  grid-column: 1/2;
-  font-size: 4vw;
-  justify-self: right;
-  align-self: center;
-}
-#indexintro p {
-  grid-column: 2/3;
-  font-size: 16px;
-  justify-self: left;
-  align-self: center;
-}
-/* About */
-#aboutbody {
-  grid-column: 1/4;
-  grid-row: 2/3;
-  display: grid;
-    grid-template-columns: 5vw 45vw 45vw 5vw;
-    grid-template-rows: 47vh 47vh;
-}
-#aboutsite {
-  grid-column: 2/4;
-  grid-row: 1/2;
-}
-#aboutjasper {
-  grid-column: 2/4;
-  grid-row: 2/3;
-}
-/* VizList */
-div.vizlist-main {
-  grid-column: 1/4;
-  grid-row: 2/3;
+/* Index Page */
+div.index-main {
   margin: 5px;
   display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -160,14 +123,6 @@ display: grid;
   height: 60vh;
   background: whitesmoke;
 }
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 4vh;
-}
-.scrolltext {
-  position: relative;
-}
 
 /* 0001 - women in congress */
 .axis {
@@ -194,4 +149,11 @@ circle {
 }
 .rep {
   fill: darkred;
+}
+
+/* FOTP */
+path.countryline {
+  fill: none;
+  stroke: #EF5285;
+  stroke-width: 2px;
 }

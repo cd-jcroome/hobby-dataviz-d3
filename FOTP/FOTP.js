@@ -15,28 +15,33 @@ var svg = d3.select(".mainviz").append("svg")
 var chartGroup = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/caa81ddddcf1c39a682af435817498ca5c719a0b/FOTP.csv').then(function(data){
+d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv').then(function(data){
+
+var sortData = data.sort(function(d){
+    return d3.ascending(d.Edition);
+});
+
+var parseYear = d3.timeParse("%Y");
+var formatYear = d3.timeFormat("%Y");
+
+data.forEach(function(d){
+    d.sortEdition = formatYear(
+        parseYear(d.Edition)
+    );
+})
 
 var nested_data = d3.nest()
 .key(function(d){return d.Country;})
-.key(function(d){return d.Edition;}).sortKeys(d3.ascending)
-
-.rollup(function(leaves){return {
-    Total_Score: d3.sum(leaves, function(d){return d['Total Score'] ;}),
-    Status: d3.max(leaves, function(d){return d.Status ;})
-}})
-.entries(data)
+.entries(sortData)
 console.log(nested_data)
-	// .map(function(d){return {Country:d.key, Entry: d.value.key, totalScore:d.value.Total_Score, Status:d.value.Status};})
-// console.log(data)
-// console.log(nested_data)
+
 
 var y = d3.scaleLinear()
 .domain([0,100])
 .range([mainheight, 0]);
 
 var x = d3.scaleBand()
-.domain(data.map(function(d){ return d.Edition;}))
+.domain(sortData.map(function(d){ return d.sortEdition;}))
 .range([0, mainwidth])
 .paddingInner(.05)
 
@@ -46,20 +51,25 @@ var xAxis = d3.axisBottom(x);
 
 var line = d3.line()
     .x(function(nested_data) { return x(nested_data.Edition); })
-    .y(function(d) { return y(+d.Total_Score) })
+    .y(function(d) { return y(+d['Total Score']); })
     .curve(d3.curveNatural);
 
-var countries = chartGroup.selectAll(".countries")
+// var countries = chartGroup.selectAll(".countries")
+//     .data(nested_data)
+//     .enter()
+//     .append("g")
+
+chartGroup.selectAll(".line")
     .data(nested_data)
     .enter()
-    .append("g")
-
-var paths = countries.selectAll(".line")
-    .data(function(d){
-        return d.values.Total_Score
-    } )
-    .enter()
-    .append("path");
+    .append("path")
+        .attr("class","countryLine")
+        .attr("d", function(d){
+            return line(d.values);
+        })
+		.attr("fill","none")
+		.attr("stroke","black")
+		.attr("stroke-width", ".05vw")
 
 chartGroup.append("g")
 .attr("class","axis y")
@@ -70,13 +80,6 @@ chartGroup.append("g")
 .attr("transform","translate(0,"+mainheight+")")
 .call(xAxis)
 
-chartGroup.selectAll(".line")
-    .data(nested_data)
-    .enter()
-    .append("path")
-        .attr("class","line")
-        .attr("d", function(d){
-            return line(d.values)
-        })
 
-;})
+
+    ;})
