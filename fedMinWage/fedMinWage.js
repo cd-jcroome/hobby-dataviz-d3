@@ -1,4 +1,19 @@
-
+function join(lookupTable, mainTable, lookupKey, mainKey, select) {
+    var l = lookupTable.length,
+        m = mainTable.length,
+        lookupIndex = [],
+        output = [];
+    for (var i = 0; i < l; i++) { // loop through l items
+        var row = lookupTable[i];
+        lookupIndex[row[lookupKey]] = row; // create an index for lookup table
+    }
+    for (var j = 0; j < m; j++) { // loop through m items
+        var y = mainTable[j];
+        var x = lookupIndex[y[mainKey]]; // get corresponding row from lookupTable
+        output.push(select(y, x)); // select only the columns you need
+    }
+    return output;
+};
 
 var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
@@ -19,43 +34,34 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
   if (error) throw error;
 
   d3.tsv('https://gist.githubusercontent.com/Jasparr77/80574e8c8409ca34a9fd29f33cfc6be5/raw/a1e1e6de6d13c2082c8711f069fa2c25c1031df0/minWage.tsv', function(data){
-    
+    console.log(data)
     var nested_data = d3.nest()
     .key(function(d){return d.State;})
+    .key(function(d){return d['State ID']})
 	.rollup(function(leaves){return {
-        ID: d3.mean(leaves, function(d){return d.ID}),
+        // ID: leaves['State ID'],
 		avgAt: d3.mean(leaves, function(d){return d['At Minimum Wage'] ;}),
 		avgBelow: d3.mean(leaves, function(d){return d['Below Minimum Wage'] ;})
 	}})
 	.entries(data)
-	.map(function(d){return {State:d.key, ID:d.value.ID, At:d.value.avgAt, Below:d.value.avgBelow};})
+    // .map(function(d){return {State:d.key, ID:d.key, 
+    //     At:d.values[0].value.avgAt, Below:d.values[0].values.avgBelow
+    // };})
   
   
   console.log(nested_data)
 
-    // console.log(us)
-
+var joined_data = join(nested_data, us, nested_data.ID, us.objects.states.geometries.id, function(nest, us) {
+    return {
+        // ID : nest.id,
+        name : nest.State,
+        At : nest.At,
+        Below : nest.Below,
+        draw : us.objects.states.geometries,
+    };
+});
+console.log(joined_data)
 // Loop through each state data value in the .csv file
-for (var i = 0; i < data.length; i++) {
-
-	// Grab State Name
-	var dataState = data[i]['State ID'];
-
-	// Grab data value 
-	var dataValue = data[i].Total;
-	// Find the corresponding state inside the GeoJSON
-	for (var j = 0; j < us.objects.states.geometries.length; j++)  {
-		var jsonState = us.objects.states.geometries.id;
-
-		if (dataState == jsonState) {
-
-		// Copy the data value into the JSON
-		us.objects.states.geometries[j].Total = dataValue; 
-		// Stop looking through the JSON
-		break;
-		}
-	}
-}
 
 console.log(us)
 

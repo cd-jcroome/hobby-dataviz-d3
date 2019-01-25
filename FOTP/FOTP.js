@@ -14,6 +14,10 @@ var svg = d3.select(".mainviz").append("svg")
 
 var chartGroup = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var div = d3.select("chartGroup").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
     
 d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv').then(function(data){
 
@@ -37,7 +41,7 @@ console.log(nested_data)
 
 
 var y = d3.scaleLinear()
-.domain([0,100])
+.domain([0,105])
 .range([mainheight, 0]);
 
 var x = d3.scaleBand()
@@ -45,19 +49,42 @@ var x = d3.scaleBand()
 .range([0, mainwidth])
 .paddingInner(.05)
 
+var color = d3.scaleSequential(d3.interpolateMagma)
+.domain([0,5])
+
 var yAxis = d3.axisLeft(y);
 
 var xAxis = d3.axisBottom(x);
 
 var line = d3.line()
     .x(function(nested_data) { return x(nested_data.Edition); })
-    .y(function(d) { return y(+d['Total Score']); })
+    .y(function(d) { return y(100-d['Total Score']); })
     .curve(d3.curveNatural);
 
-// var countries = chartGroup.selectAll(".countries")
-//     .data(nested_data)
-//     .enter()
-//     .append("g")
+var linearGradient = svg.append("defs")
+    .append("linearGradient")
+    .attr("id", "linear-gradient")
+    .attr("gradientTransform", "rotate(90)");
+
+linearGradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", color(1));
+
+linearGradient.append("stop")
+    .attr("offset", "25%")
+    .attr("stop-color", color(2));
+
+linearGradient.append("stop")
+    .attr("offset", "50%")
+    .attr("stop-color", color(3));
+
+linearGradient.append("stop")
+    .attr("offset", "75%")
+    .attr("stop-color", color(4));
+
+linearGradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", color(5));
 
 chartGroup.selectAll(".line")
     .data(nested_data)
@@ -68,8 +95,21 @@ chartGroup.selectAll(".line")
             return line(d.values);
         })
 		.attr("fill","none")
-		.attr("stroke","black")
-		.attr("stroke-width", ".05vw")
+        .attr("stroke","url(#linear-gradient")
+        .attr("stroke-width", ".1vw")
+        .attr("opacity",".5")
+        .on("mouseover", function() {
+            d3.select(this)
+            .attr("id","selectedPath")
+            .attr("stroke-width","1vw")
+            .attr("opacity","100%")
+          })
+        .on("mouseout", function() {
+          d3.select(this)
+          .attr("id","selectedPath")
+          .attr("stroke-width",".1vw")
+          .attr("opacity",".5")
+          });
 
 chartGroup.append("g")
 .attr("class","axis y")
