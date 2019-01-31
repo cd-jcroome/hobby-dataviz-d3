@@ -159,7 +159,7 @@ div.tooltip {
   height: 28px;
   padding: 2px;
   font: 12px sans-serif;
-  background: lightsteelblue;
+  background: white;
   border: 0px;
   border-radius: 8px;
   pointer-events: none;
@@ -169,16 +169,4 @@ div.tooltip {
 	position:absolute;
 	left:800px;
 	top:350px;
-}
-div.tooltip {   
-  position: absolute;           
- text-align: center;           
- width: 60px;                  
- height: 28px;                 
- padding: 2px;             
- font: 12px sans-serif;        
- background: white;   
- border: 0px;      
- border-radius: 8px;           
- pointer-events: none;         
 }
