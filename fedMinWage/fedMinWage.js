@@ -17,23 +17,37 @@ var div = d3.select(".scroll__graphic").append("div")
     .attr("class","tooltip")
     .style("opacity","0")
 
+var dropDown = d3.select(".scroll__graphic").append("select")
+    .attr("id","dropdown")
+
 var path = d3.geoPath();
 
 d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
   if (error) throw error;
 
-  d3.tsv('https://gist.githubusercontent.com/Jasparr77/80574e8c8409ca34a9fd29f33cfc6be5/raw/a1e1e6de6d13c2082c8711f069fa2c25c1031df0/minWage.tsv', function(data){
+  d3.tsv('https://gist.githubusercontent.com/Jasparr77/80574e8c8409ca34a9fd29f33cfc6be5/raw/a1e1e6de6d13c2082c8711f069fa2c25c1031df0/minWage.tsv', function(data_raw){
+
+    var svg = d3.select("#dropdown")
+    .selectAll("option")
+    .data(data_raw)
+    .enter()
+    .append("option")
+    .attr("value", function(d) { return d['Year']; })
+    .text(function(d) { return d['Year']; });
+
+    var selected_year = "2017";
+
+  var data = data_raw.filter(function(d){return d['Year'] === selected_year;})     
     console.log(data)
     var nested_data = d3.nest()
-    .key(function(d){return d['State ID'];})
-    // .key(function(d){return d['State'];})
+    .key(function(d){return d['State ID'].concat(d['State']);})
 	.rollup(function(leaves){return {
         avgAt: d3.mean(leaves, function(d){return d['At Minimum Wage'] ;}),
 		avgTotal: d3.mean(leaves, function(d){return d['Total'] ;}),
 		avgBelow: d3.mean(leaves, function(d){return d['Below Minimum Wage'] ;})
 	}})
 	.entries(data)
-    .map(function(d){return {ID:d.key, Name: d.values.key,Total:d.values.value.avgTotal, At: d.values.value.avgAt, Below: d.values.value.avgBelow
+    .map(function(d){return {id:d.key.substring(0,2),name:d.key.substring(2),Total:d.value.avgTotal, At: d.value.avgAt, Below: d.value.avgBelow
     };})
 
 console.log(nested_data)
@@ -41,12 +55,12 @@ console.log(nested_data)
 // join d3 & state data
 us.objects.states.geometries.forEach(function(us) {
     var result = nested_data.filter(function(nest) {
-        return nest.key === us.id;
+        return nest.id === us.id;
     });
-    us.name = (result[0] !== undefined) ? result[0].State : null  
-    us.Total = (result[0] !== undefined) ? result[0].values.Total : null 
-    us.At = (result[0] !== undefined) ? result[0].values.Total : null
-    us.Below = (result[0] !== undefined) ? result[0].values.Below : null
+    us.name = (result[0] !== undefined) ? result[0].name : null  
+    us.Total = (result[0] !== undefined) ? result[0].Total : null 
+    us.At = (result[0] !== undefined) ? result[0].At : null
+    us.Below = (result[0] !== undefined) ? result[0].Below : null
     ;
 });
 
@@ -60,6 +74,9 @@ var lowColor = 'white'
 var highColor = '#cc5500'
 
 var ramp = d3.scaleLinear().domain([minVal,maxVal]).range([lowColor,highColor]);
+
+var norm_fill = d3.scaleLinear().range([0,1]);
+
 
 var key = d3.select(".container")
 .append("svg")
@@ -105,7 +122,7 @@ key.append("g")
 // End Legend Work
 
 // State Bodies
-d3.select(".container")
+var plot = d3.select(".container")
 .append("g")
 .attr("class", "states-bodies")
 .selectAll("path")
@@ -121,7 +138,6 @@ d3.select(".container")
 	if (value) {//If value exists…
 	return ramp(value);
 	} else {//If value is undefined…
-    // console.log(d)
     return "#ffffff";
     }
 })
@@ -130,8 +146,7 @@ d3.select(".container")
          .duration(200)      
        .style("opacity", .9);      
        div.html(
-           d.id + "<br/>" 
-        //    + "Avg % at or below Minimum Wage | "
+           d.name + "<br/>" 
            + d.Total.toLocaleString("en", {style: "percent"})
         )
        .style("left", (d3.event.pageX) + "px")     
@@ -142,7 +157,8 @@ d3.select(".container")
     div.transition()        
        .duration(500)      
        .style("opacity", 0);   
-});
+})
+.call(updateFill, selected_year);
 
 // State Borders
 svg.append("path")
@@ -154,6 +170,40 @@ svg.append("path")
 .attr("stroke","whitesmoke")
 .attr("stroke-width",".05vw")
 .attr("fill","none");
+
+// dropdown dataset selection
+var dropDown = d3.select("#dropdown");
+
+dropDown.on("change", function() {
+
+    selected_year = d3.event.target.value;
+
+    plot.call(updateFill, selected_year)
+    console.log(selected_year)
+
+});
+
+// update fill based on dropdown choice
+function updateFill(selection, selected_year) {
+
+    var d_extent = d3.extent(selection.data(), function(d) {
+        return parseFloat(d[selected_year]);
+    });
+
+    rescaleFill(selection, d_extent);
+}
+
+    function rescaleFill(selection, d_extent) {
+
+        norm_fill.domain(d_extent)
+
+        selection.transition()
+                .duration(700)
+                .attr("fill", function(d) {
+                    var datum = parseFloat(d[selected_year]);
+                    return ramp(norm_fill(datum));
+                });
+    }
 
 })
 })
