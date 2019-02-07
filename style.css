@@ -23,8 +23,8 @@ body {
   opacity: .90;
   position: fixed;
   display: grid;
-    grid-template-columns: 15vw 70vw 15vw;  
-    place-items: center;
+    grid-template-columns:  70vw 30vw;  
+    /* place-items: center; */
   box-shadow: 0 3px 2px rgba(57, 63, 72, 0.3);
 }
 
@@ -34,17 +34,21 @@ body {
 }
 
 .header p.title {
-  grid-column: 2/3;
-  font-size: 24px;
+  text-align: left;
+  grid-column: 1/2;
+  font-size: 3vw;
 }
 
 .header p.vizName {
   grid-column: 2/3;
 }
-.headerlink {
-  grid-column: 3/4;
+.header a {
+  grid-column: 2/3;
   height: 4vh;
   text-decoration: none;
+  font-size: 2vw;
+  text-align: center;
+  text-anchor: end;
 }
 
 #scroll {
@@ -120,7 +124,7 @@ display: grid;
 /* viz detail page */
 .mainviz{
   width: 98vw;
-  height: 60vh;
+  height: 80vh;
   background: whitesmoke;
 }
 
@@ -155,9 +159,7 @@ circle {
 div.tooltip {
   position: absolute;
   text-align: center;
-  width: 60px;
-  height: 28px;
-  padding: 2px;
+  padding: 4px;
   font: 12px sans-serif;
   background: white;
   border: 0px;

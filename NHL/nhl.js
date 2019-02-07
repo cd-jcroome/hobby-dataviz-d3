@@ -8,10 +8,14 @@ var svg = d3.select(".mainviz").append("svg")
 .attr("width", mainwidth + margin.left + margin.right)
 .attr("height", mainheight + margin.top + margin.bottom);
 
+var div = d3.select(".scroll__graphic").append("div")	
+.attr("class", "tooltip")				
+.style("opacity", 0);
+
 var chartGroup = svg.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.tsv('https://gist.githubusercontent.com/Jasparr77/27f28d6f8c3ade63793b08902d2a67c9/raw/e0a7a09d1d0fb90383042000e9576c7f54f0135c/NHL_Attendance').then(function(data){
+d3.tsv('https://gist.githubusercontent.com/Jasparr77/27f28d6f8c3ade63793b08902d2a67c9/raw/e0a7a09d1d0fb90383042000e9576c7f54f0135c/NHL_Attendance', function(data){
 	
 	var nested_data = d3.nest()
 	.key(function(d){return d.SEASON;})
@@ -37,10 +41,6 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/27f28d6f8c3ade63793b08902d2
 
 	var colorScale = d3.scaleSequential(d3.interpolateViridis)
 		.domain(d3.extent(nested_data,function(d){return d.homeWinPct;}))
-
-	var div = d3.select("g").append("div")	
-		.attr("class", "tooltip")				
-		.style("opacity", 0);
 
 	var line = d3.line()
 	.x(function(d){ return x(d.Season) ;})
@@ -87,4 +87,4 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/27f28d6f8c3ade63793b08902d2
 		.attr("class","axis x")
 		.attr("transform","translate(0,"+mainheight*.85+")")
 		.call(xAxis)
-})
+});

@@ -19,7 +19,7 @@ var div = d3.select("chartGroup").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
     
-d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv').then(function(data){
+d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv', function(data){
 
 var sortData = data.sort(function(d){
     return d3.ascending(d.Edition);
