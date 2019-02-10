@@ -15,7 +15,7 @@ var svg = d3.select(".mainviz").append("svg").attr("class", "container").attr("w
 
 var chartGroup = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", "0").style("width", "40").style("position","absolute").style("text-align","center").style("background","lightsteelblue")
+var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", "0").style("width", "40").style("position","absolute").style("text-align","center").style("background","lightsteelblue").style("padding","8px").style("border-radius","none").style("pointer-events","none")
 
 var path = d3.geoPath();
 
