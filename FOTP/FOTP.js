@@ -15,9 +15,7 @@ var svg = d3.select(".mainviz").append("svg")
 var chartGroup = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select("chartGroup").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", 0).style("position","absolute").style("text-align","center").style("background","whitesmoke").style("padding","8px").style("border-radius","none").style("pointer-events","none");
     
 d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv', function(data){
 
@@ -98,17 +96,21 @@ chartGroup.selectAll(".line")
         .attr("stroke","url(#linear-gradient")
         .attr("stroke-width", ".1vw")
         .attr("opacity",".5")
-        .on("mouseover", function() {
+        .on("mouseover", function(d) {
             d3.select(this)
             .attr("id","selectedPath")
             .attr("stroke-width","1vw")
-            .attr("opacity","100%")
+            .attr("opacity","100%");
+            div.transition().duration(200).style("opacity", .9);
+            div.html(d.key)
+            .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
           })
         .on("mouseout", function() {
           d3.select(this)
           .attr("id","selectedPath")
           .attr("stroke-width",".1vw")
-          .attr("opacity",".5")
+          .attr("opacity",".5"),
+          div.transition().duration(500).style("opacity", 0);
           });
 
 chartGroup.append("g")
