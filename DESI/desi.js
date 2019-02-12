@@ -26,24 +26,81 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("pointer-events","none");
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021a46df/raw/9525eccf53d6a5c1248c9ff0cf925eb29040d5c1/desi.tsv',function(data){
+
+    var grouped_data = d3.group(data, d => d.Country, d=> d.Year)
+    console.log(grouped_data)
     
-    var parseYear = d3.timeParse("%Y");
-    var formatYear = d3.timeFormat("%Y");
+    // d3.nest()
+    // .key(function(d){return d.Country;})
+    // .key(function(d){return d.Year;}).sortKeys(d3.ascending)
+    // .rollup(function(leaves){return {
+    //     // Year: leaves.Year,
+    //     totalDesi: d3.sum(leaves, function(d){return d['Weighted Score'];})
+	// }})
+    // .entries(data)
+    // .map(function(d){return {
+    //     Country:d.key,
+    //     Year:d.values.key, 
+    //     totalDesi:d.values.totalDesi};})
 
-    data.forEach(function(d){
-        d.Year = formatYear(
-            parseYear(d.Year)
-        );
-    })
+    // console.log(data)
+    // console.log(nested_data)
+    
+    var y = d3.scaleLinear()
+    .domain([0,105])
+    .range([mainheight, 0]);
 
-    var nested_data = d3.nest()
-    .key(function(d){return d.Country;})
-    .key(function(d){return d.Year;})
-    .rollup(function(leaves){return {
-        total_desi: d3.sum(leaves, function(d){return d['Weighted Score'];})
-	}})
-    .entries(data)
-    console.log(data)
-    console.log(nested_data)
+    var x = d3.scaleBand()
+    .domain(nested_data.map(function(d){ return d.values;}))
+    .range([0, mainwidth])
+    .paddingInner(.05)
 
+    // var color = 
+
+    var yAxis = d3.axisLeft(y);
+
+    var xAxis = d3.axisBottom(x);
+
+    var line = d3.line()
+    .x(function(nested_data) { return x(nested_data.Year); })
+    .y(function(d) { return y(d.totalDesi); })
+    .curve(d3.curveNatural);
+
+    chartGroup.selectAll(".line")
+    .data(nested_data)
+    .enter()
+    .append("path")
+        .attr("class","countryLine")
+        .attr("d", function(d){
+            return line(d.values);
+        })
+		.attr("fill","none")
+        .attr("stroke","black")
+        .attr("stroke-width", ".1vw")
+        .attr("opacity",".5")
+        // .on("mouseover", function(d) {
+        //     d3.select(this)
+        //     .attr("id","selectedPath")
+        //     .attr("stroke-width","1vw")
+        //     .attr("opacity","100%");
+        //     div.transition().duration(200).style("opacity", .9);
+        //     div.html(d.key)
+        //     .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+        //   })
+        // .on("mouseout", function() {
+        //   d3.select(this)
+        //   .attr("id","selectedPath")
+        //   .attr("stroke-width",".1vw")
+        //   .attr("opacity",".5"),
+        //   div.transition().duration(500).style("opacity", 0);
+        //   });
+
+    chartGroup.append("g")
+    .attr("class","axis y")
+    .call(yAxis)
+
+    chartGroup.append("g")
+    .attr("class","axis x")
+    .attr("transform","translate(0,"+mainheight+")")
+    .call(xAxis)
 ;})
