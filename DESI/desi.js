@@ -26,32 +26,20 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("pointer-events","none");
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021a46df/raw/9525eccf53d6a5c1248c9ff0cf925eb29040d5c1/desi.tsv',function(data){
-
-    var grouped_data = d3.group(data, d => d.Country, d=> d.Year)
-    console.log(grouped_data)
     
-    // d3.nest()
-    // .key(function(d){return d.Country;})
-    // .key(function(d){return d.Year;}).sortKeys(d3.ascending)
-    // .rollup(function(leaves){return {
-    //     // Year: leaves.Year,
-    //     totalDesi: d3.sum(leaves, function(d){return d['Weighted Score'];})
-	// }})
-    // .entries(data)
-    // .map(function(d){return {
-    //     Country:d.key,
-    //     Year:d.values.key, 
-    //     totalDesi:d.values.totalDesi};})
+    var nested_data = d3.nest()
+    .key(function(d){return d.Country;}).sortKeys(d3.ascending)
+    .entries(data)
 
-    // console.log(data)
-    // console.log(nested_data)
+    console.log(data)
+    console.log(nested_data)
     
     var y = d3.scaleLinear()
-    .domain([0,105])
-    .range([mainheight, 0]);
+    .domain([0, d3.max(data, function(d) { return d['Weighted Score']; })])
+    .range([mainheight, 0])
 
     var x = d3.scaleBand()
-    .domain(nested_data.map(function(d){ return d.values;}))
+    .domain(data.map(function(d){ return d.Year;}))
     .range([0, mainwidth])
     .paddingInner(.05)
 
@@ -62,8 +50,8 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
     var xAxis = d3.axisBottom(x);
 
     var line = d3.line()
-    .x(function(nested_data) { return x(nested_data.Year); })
-    .y(function(d) { return y(d.totalDesi); })
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d['Weighted Score']); })
     .curve(d3.curveNatural);
 
     chartGroup.selectAll(".line")
@@ -76,7 +64,7 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         })
 		.attr("fill","none")
         .attr("stroke","black")
-        .attr("stroke-width", ".1vw")
+        .attr("stroke-width", "1vw")
         .attr("opacity",".5")
         // .on("mouseover", function(d) {
         //     d3.select(this)
