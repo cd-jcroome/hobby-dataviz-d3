@@ -28,30 +28,40 @@ var div = d3.select(".scroll__graphic").append("div")
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021a46df/raw/9525eccf53d6a5c1248c9ff0cf925eb29040d5c1/desi.tsv',function(data){
     
     var nested_data = d3.nest()
-    .key(function(d){return d.Country;}).sortKeys(d3.ascending)
-    .entries(data)
+    .key(function(d){return d.Year.concat(d.Country);}).sortKeys(d3.ascending)
+    .rollup(function(leaves) {
+        return {
+            totalScore: d3.sum(leaves, function(d){return d['Weighted Score'];})
+        }
+    })
+    .entries(data).map(function(d) {
+        return {
+            year: d.key.substring(0, 4),
+            country: d.key.substring(4),
+            totalScore: d.value.totalScore
+        };
+    })
 
     console.log(data)
     console.log(nested_data)
     
     var y = d3.scaleLinear()
-    .domain([0, d3.max(data, function(d) { return d['Weighted Score']; })])
     .range([mainheight, 0])
 
     var x = d3.scaleBand()
-    .domain(data.map(function(d){ return d.Year;}))
+    .domain(nested_data.map(function(d){ return d.year;}))
     .range([0, mainwidth])
     .paddingInner(.05)
 
-    // var color = 
+    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
     var yAxis = d3.axisLeft(y);
 
     var xAxis = d3.axisBottom(x);
 
     var line = d3.line()
-    .x(function(d) { return x(d.Year); })
-    .y(function(d) { return y(d['Weighted Score']); })
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.totalScore); })
     .curve(d3.curveNatural);
 
     chartGroup.selectAll(".line")
@@ -60,7 +70,7 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
     .append("path")
         .attr("class","countryLine")
         .attr("d", function(d){
-            return line(d.values);
+            return line(d.totalScore);
         })
 		.attr("fill","none")
         .attr("stroke","black")
@@ -82,6 +92,16 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         //   .attr("opacity",".5"),
         //   div.transition().duration(500).style("opacity", 0);
         //   });
+
+        chartGroup.selectAll("circle")
+		.data(nested_data)
+		.enter().append("circle")
+		.attr("cx", function(d){ return x(d.year) ;})
+		.attr("cy", function(d){ return y(d.totalScore) ;})
+		.attr("fill",function(d,i){return color(i);})
+		.attr("r", "1.5vw")
+		.attr("stroke","white")
+		.attr("stroke-width", ".1vw")
 
     chartGroup.append("g")
     .attr("class","axis y")

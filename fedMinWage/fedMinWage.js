@@ -20,7 +20,7 @@ var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").s
 var path = d3.geoPath();
 
     console.log('this is working')
-    d3.tsv("https://gist.githubusercontent.com/Jasparr77/80574e8c8409ca34a9fd29f33cfc6be5/raw/a1e1e6de6d13c2082c8711f069fa2c25c1031df0/minWage.tsv", function(error, data) {
+    d3.tsv("https://gist.githubusercontent.com/Jasparr77/80574e8c8409ca34a9fd29f33cfc6be5/raw/a1e1e6de6d13c2082c8711f069fa2c25c1031df0/minWage.tsv", function(data) {
         
     d3.json("https://cloud-cube.s3.amazonaws.com/ourp4ike3lex/public/us-10m.v1.json", function(us){
         console.log(data)
