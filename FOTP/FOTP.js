@@ -15,7 +15,7 @@ var svg = d3.select(".mainviz").append("svg")
 var chartGroup = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", 0).style("position","absolute").style("text-align","center").style("background","whitesmoke").style("padding","8px").style("border-radius","none").style("pointer-events","none");
+var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", 0).style("position","absolute").style("text-align","center").style("background","whitesmoke").style("padding","8px").style("border-radius","8px").style("pointer-events","none");
     
 d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv', function(data){
 
