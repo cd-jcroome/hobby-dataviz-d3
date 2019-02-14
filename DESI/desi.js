@@ -98,7 +98,6 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
 		.enter().append("circle")
 		.attr("cx", function(d){ return x(d.year) ;})
 		.attr("cy", function(d){ return y(d.totalScore) ;})
-		.attr("fill",function(d,i){return color(i);})
 		.attr("r", "1.5vw")
 		.attr("stroke","white")
 		.attr("stroke-width", ".1vw")
