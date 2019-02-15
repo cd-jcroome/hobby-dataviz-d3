@@ -27,6 +27,14 @@ var div = d3.select(".scroll__graphic").append("div")
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021a46df/raw/9525eccf53d6a5c1248c9ff0cf925eb29040d5c1/desi.tsv',function(data){
     
+    var line_data = d3.nest()
+        .key(function(d){return d.Country})
+        .key(function(d){return d.Year}).sortKeys(d3.ascending)
+        .rollup(function(leaves){
+            return {totalScore: d3.sum(leaves, function(d){return d['Weighted Score'];})}
+        })
+        .entries(data)
+
     var nested_data = d3.nest()
     .key(function(d){return d.Year.concat(d.Country);}).sortKeys(d3.ascending)
     .rollup(function(leaves) {
@@ -43,17 +51,7 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         };
     })
 
-    var line_data = d3.nest()
-    .key(function(d){return d.Country;})
-    .key(function(d){return d.Year}).sortKeys(d3.ascending)
-    .rollup(function(leaves) {
-        return {
-            totalScore: d3.sum(leaves, function(d){return d['Weighted Score'];})
-        }
-    })
-    .entries(data)
-
-    console.log(data)
+    console.log(line_data)
     console.log(nested_data)
     console.log(line_data)
     
@@ -72,17 +70,28 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
 
     var xAxis = d3.axisBottom(x);
 
-	var line = d3.line()
-	.x(function(line_data){ return x(line_data.key) ;})
-	.y(function(d){ return y(d.totalScore) ;})
-	.curve(d3.curveNatural);
+    var yearline = d3.line()
+        .x(function(d) {return x(d.key);})
+        .y(function(d) {return y(d.value.totalScore);});
+
+    chartGroup.selectAll(".line")
+    .data(line_data)
+    .enter()
+    .append("path")
+        .attr("class",function(d){return d.key;})
+        .attr("d",function(d){ return yearline(d.values);})
+        .attr("fill","none")
+        .attr("stroke-width",".01vw")
+        .attr("stroke","grey")
+        .attr("transform","translate("+mainwidth*.1+",0)")
 
     chartGroup.selectAll("circle")
     .data(nested_data)
     .enter().append("circle")
     .attr("cx", function(d){ return x(d.year) ;})
     .attr("cy", function(d){ return y(d.totalScore) ;})
-    .attr("fill",function(d,i){return greys(d.number);})
+    .attr("fill",function(d,i){return color(d.number);})
+    .attr("class",function(d){return d.country;})
     .style("opacity",.5)
     .attr("r", ".5vw")
     .attr("stroke","white")
@@ -93,6 +102,9 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         .attr("r","2vw")
         .attr("fill",function(d,i){return color(d.number);})
         .style("opacity",1);
+        chartGroup.selectAll("line").filter(function(d){return d.country;})
+        .attr("stroke","black")
+        .attr("stoke-width",".1vw");
         div.transition().duration(200).style("opacity", .95);
         div.html(d.country + " | "+ d.year +"<br/>"
         +"Weighted DESI: "+ d.totalScore.toLocaleString("en", {style: "decimal",minimumFractionDigits: 2})+"<br/>"
