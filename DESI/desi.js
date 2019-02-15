@@ -43,8 +43,19 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         };
     })
 
+    var line_data = d3.nest()
+    .key(function(d){return d.Country;})
+    .key(function(d){return d.Year}).sortKeys(d3.ascending)
+    .rollup(function(leaves) {
+        return {
+            totalScore: d3.sum(leaves, function(d){return d['Weighted Score'];})
+        }
+    })
+    .entries(data)
+
     console.log(data)
     console.log(nested_data)
+    console.log(line_data)
     
     var y = d3.scaleLinear()
     .domain([d3.min(nested_data, function(d){return d.totalScore;})*.8, d3.max(nested_data, function(d){return d.totalScore;})])
@@ -55,25 +66,32 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
     .range([0, mainwidth])
 
     var color = d3.scaleOrdinal(d3.schemeCategory20)
+    var greys = d3.scaleOrdinal().range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"])
 
     var yAxis = d3.axisLeft(y);
 
     var xAxis = d3.axisBottom(x);
+
+	var line = d3.line()
+	.x(function(line_data){ return x(line_data.key) ;})
+	.y(function(d){ return y(d.totalScore) ;})
+	.curve(d3.curveNatural);
 
     chartGroup.selectAll("circle")
     .data(nested_data)
     .enter().append("circle")
     .attr("cx", function(d){ return x(d.year) ;})
     .attr("cy", function(d){ return y(d.totalScore) ;})
-    .attr("fill",function(d,i){return color(d.number);})
+    .attr("fill",function(d,i){return greys(d.number);})
     .style("opacity",.5)
-    .attr("r", "1vw")
+    .attr("r", ".5vw")
     .attr("stroke","white")
     .attr("stroke-width", ".1vw")
     .attr("transform","translate("+mainwidth*.1+",0)")
     .on("mouseover", function(d) {
         d3.select(this)
         .attr("r","2vw")
+        .attr("fill",function(d,i){return color(d.number);})
         .style("opacity",1);
         div.transition().duration(200).style("opacity", .95);
         div.html(d.country + " | "+ d.year +"<br/>"
@@ -83,10 +101,40 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
     })// fade out tooltip on mouse out               
     .on("mouseout", function() {
         d3.select(this)
-        .attr("r","1vw")
+        .attr("r",".5vw")
+        .attr("fill",function(d,i){return greys(d.number);})
         .style("opacity",.5);
         div.transition().duration(500).style("opacity", 0);
     });
+
+    chartGroup.selectAll(".line")
+    .data(line_data)
+    .enter()
+    .append("path")
+        // .attr("class",function(d){return d.key+"Line"})
+        .attr("d", function(d){
+            return line(d.values);
+        })
+		.attr("fill","none")
+        .attr("stroke","black")
+        .attr("stroke-width", ".1vw")
+        .attr("opacity",".5")
+        .on("mouseover", function(d) {
+            d3.select(this)
+            .attr("id","selectedPath")
+            .attr("stroke-width","1vw")
+            .attr("opacity","100%");
+            div.transition().duration(200).style("opacity", .9);
+            div.html(d.key)
+            .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+          })
+        .on("mouseout", function() {
+          d3.select(this)
+          .attr("id","selectedPath")
+          .attr("stroke-width",".1vw")
+          .attr("opacity",".5"),
+          div.transition().duration(500).style("opacity", 0);
+          });
 
     chartGroup.append("g")
     .attr("class","axis y")
