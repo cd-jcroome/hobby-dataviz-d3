@@ -25,6 +25,7 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("border-radius","8px")
     .style("pointer-events","none");
 
+    
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021a46df/raw/9525eccf53d6a5c1248c9ff0cf925eb29040d5c1/desi.tsv',function(data){
     
     var line_data = d3.nest()

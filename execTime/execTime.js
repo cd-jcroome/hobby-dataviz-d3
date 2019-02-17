@@ -38,5 +38,7 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("border-radius","8px")
     .style("pointer-events","none");
 
-d3.tsv('',(function(data){
+d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/031aef537309e6ebb6f770f15c92c9e38a73f870/execTime.tsv',function(data){
 console.log(data);})
+
+// stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? height == duration, x axis == date. ADD LEGEND, TOOLTIP
