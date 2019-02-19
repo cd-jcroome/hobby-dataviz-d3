@@ -39,6 +39,35 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("pointer-events","none");
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/031aef537309e6ebb6f770f15c92c9e38a73f870/execTime.tsv',function(data){
-console.log(data);})
+    
+    var parseTime= d3.timeParse("%H:%M:%S");
 
+    data.forEach(function(d){
+        d.duration = (
+            (parseTime(d.time_end) - parseTime(d.time_start))
+            /3600000
+            ) ;
+    })
+
+    var nested_data = d3.nest()
+    .key(function(d){return d.date})
+    .key(function(d){return d.top_category})
+    .rollup(function(leaves){
+        return {
+            duration: d3.sum(leaves, function(d){
+                return d.duration;
+            })}
+    })
+    .entries(data)
+
+    var stackeData = d3.stack()
+    .keys(['executive_time','meeting','lunch','travel','event'])
+
+    stacked_data = stackeData(nested_data)
+
+    console.log(data)
+    console.log(nested_data)
+    console.log(stacked_data)
 // stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? height == duration, x axis == date. ADD LEGEND, TOOLTIP
+
+;})

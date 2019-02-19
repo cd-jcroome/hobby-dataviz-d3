@@ -51,10 +51,6 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
             totalScore: d.value.totalScore
         };
     })
-
-    console.log(line_data)
-    console.log(nested_data)
-    console.log(line_data)
     
     var y = d3.scaleLinear()
     .domain([d3.min(nested_data, function(d){return d.totalScore;})*.8, d3.max(nested_data, function(d){return d.totalScore;})])
