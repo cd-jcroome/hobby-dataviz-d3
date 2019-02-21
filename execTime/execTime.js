@@ -40,7 +40,17 @@ var div = d3.select(".scroll__graphic").append("div")
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/f9bc083b0d6711b0877621abecfca5b1c01ecc81/execTime.tsv',function(data){
     
-    console.log("raw data",data)
+    var zKeys = [];
+
+    data.forEach(function(d)
+    {
+        if(zKeys.indexOf(d.detail_category) === -1) {
+            zKeys.push(d.detail_category);
+            // console.log(zKeys)
+        }
+    });
+
+    console.log(zKeys)
     
     var parseTime= d3.timeParse("%H:%M:%S");
 
@@ -53,14 +63,14 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
 
     var nested_data = d3.nest()
     .key(function(d){return d.date})
-    .key(function(d){return d.top_category})
+    .key(function(d){return d.detail_category})
     .rollup(function(leaves){
         return d3.sum(leaves, function(d){return d.duration; })
     })
     .entries(data)
-    console.log("after initial nesting",nested_data)
+    // console.log("after initial nesting",nested_data)
 
-    var zKeys = ['executive_time','travel','event','meeting','lunch','no_data']
+    // var zKeys = ['orange':'executive_time','grey':'travel','lightblue':'event','darkblue':'meeting','teal':'lunch','whitesmoke':'no_data']
     // var zKeys = Array.from(data.date)
 
 //BEGIN data cleanup for d3.stack
@@ -74,7 +84,7 @@ nested_data = nested_data.map(function(keyObj) {
         })
     };
 });
-console.log("after cleanup 1",nested_data)
+// console.log("after cleanup 1",nested_data)
 //Loop through the nested array and create a new array element that converts each individual nested element into a key/value pair in a single object.
 var flat_data = [];
 nested_data.forEach(function(d) {
@@ -84,13 +94,8 @@ var obj = { date: d.key }
     });
 flat_data.push(obj);
 });
-console.log("now it's flat",flat_data)
+// console.log("now it's flat",flat_data)
 //END data cleanup for d3.stack
-
-    var stacked_data = d3.stack()
-    .keys(zKeys)(flat_data);
-
-    console.log("final stack",stacked_data)
 
     var y = d3.scaleLinear()
     .domain([0,24])
@@ -105,6 +110,19 @@ console.log("now it's flat",flat_data)
     var xAxis = d3.axisBottom(x);
 
     chartGroup.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(zKeys)(flat_data))
+    .enter().append("g")
+      .attr("fill", "black")
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.date); })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("width", x.bandwidth());
+
+    chartGroup.append("g")
     .attr("class","axis y")
     .call(yAxis)
 
@@ -112,6 +130,12 @@ console.log("now it's flat",flat_data)
     .attr("class","axis x")
     .attr("transform","translate(0,"+mainheight+")")
     .call(xAxis)
+
+    var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
 
 // stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? height == duration, x axis == date. ADD LEGEND, TOOLTIP
 
