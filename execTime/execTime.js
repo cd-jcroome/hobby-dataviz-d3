@@ -40,7 +40,7 @@ var div = d3.select(".scroll__graphic").append("div")
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/f9bc083b0d6711b0877621abecfca5b1c01ecc81/execTime.tsv',function(data){
     
-    console.log(data)
+    console.log("raw data",data)
     
     var parseTime= d3.timeParse("%H:%M:%S");
 
@@ -52,17 +52,15 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
     })
 
     var nested_data = d3.nest()
-    .key(function(d){return d.top_category})
     .key(function(d){return d.date})
+    .key(function(d){return d.top_category})
     .rollup(function(leaves){
-        return {
-            duration: d3.sum(leaves, function(d){return d.duration; })
-        }
+        return d3.sum(leaves, function(d){return d.duration; })
     })
     .entries(data)
-    console.log(nested_data)
+    console.log("after initial nesting",nested_data)
 
-    var zKeys = ['2018-11-07','2018-11-08','2018-11-09','2018-11-10','2018-11-11','2018-11-12']
+    var zKeys = ['executive_time','travel','event','meeting','lunch','no_data']
     // var zKeys = Array.from(data.date)
 
 //BEGIN data cleanup for d3.stack
@@ -71,30 +69,28 @@ nested_data = nested_data.map(function(keyObj) {
     return {
         key: keyObj.key,
         values: zKeys.map(function(k) { 
-                value = keyObj.values.filter(function(v) { return v.key == k; })[0];
-                return value || ({key: k, value: 0});
-            })
+                duration = keyObj.values.filter(function(v) { return v.key == k; })[0];
+                return duration || ({key: k, duration: 0});
+        })
     };
 });
-
+console.log("after cleanup 1",nested_data)
 //Loop through the nested array and create a new array element that converts each individual nested element into a key/value pair in a single object.
 var flat_data = [];
 nested_data.forEach(function(d) {
-var obj = { Category: d.key }
+var obj = { date: d.key }
     d.values.forEach(function(f) {
-        obj[f.key] = f.value;
+        obj[f.key] = f.value || 0;
     });
 flat_data.push(obj);
 });
-console.log(flat_data)
+console.log("now it's flat",flat_data)
 //END data cleanup for d3.stack
 
     var stacked_data = d3.stack()
     .keys(zKeys)(flat_data);
 
-    stackData = stacked_data(flat_data)
-
-    console.log(stackData)
+    console.log("final stack",stacked_data)
 
     var y = d3.scaleLinear()
     .domain([0,24])
