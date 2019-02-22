@@ -1,24 +1,9 @@
-function join(lookupTable, mainTable, lookupKey, mainKey, select) {
-    var l = lookupTable.length,
-        m = mainTable.length,
-        lookupIndex = [],
-        output = [];
-    for (var i = 0; i < l; i++) { // loop through l items
-        var row = lookupTable[i];
-        lookupIndex[row[lookupKey]] = row; // create an index for lookup table
-    }
-    for (var j = 0; j < m; j++) { // loop through m items
-        var y = mainTable[j];
-        var x = lookupIndex[y[mainKey]]; // get corresponding row from lookupTable
-        output.push(select(y, x)); // select only the columns you need
-    }
-    return output;
-};
-
-var margin = { top: 20, right: 20, bottom: 60, left: 50 };
+var margin = { top: 20, right: 20, bottom: 60, left: 30 };
 
 var mainwidth = (window.innerWidth - margin.left - margin.right),
 	mainheight = (window.innerHeight*.6) - margin.top - margin.bottom;
+
+var color = d3.scaleOrdinal().range(['orange','steelblue','grey','lightgrey','lightblue','whitesmoke'])
 
 var svg = d3.select(".mainviz").append("svg")
 .attr("class","container")
@@ -44,13 +29,13 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
 
     data.forEach(function(d)
     {
-        if(zKeys.indexOf(d.detail_category) === -1) {
-            zKeys.push(d.detail_category);
-            // console.log(zKeys)
+        if(zKeys.indexOf(d.top_category) === -1) {
+            zKeys.push(d.top_category);
         }
     });
 
     console.log(zKeys)
+    color.domain(zKeys)
     
     var parseTime= d3.timeParse("%H:%M:%S");
 
@@ -63,15 +48,12 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
 
     var nested_data = d3.nest()
     .key(function(d){return d.date})
-    .key(function(d){return d.detail_category})
+    .key(function(d){return d.top_category})
     .rollup(function(leaves){
         return d3.sum(leaves, function(d){return d.duration; })
     })
     .entries(data)
     // console.log("after initial nesting",nested_data)
-
-    // var zKeys = ['orange':'executive_time','grey':'travel','lightblue':'event','darkblue':'meeting','teal':'lunch','whitesmoke':'no_data']
-    // var zKeys = Array.from(data.date)
 
 //BEGIN data cleanup for d3.stack
 //Add default values for missing data points to make each array formatted the same
@@ -94,11 +76,11 @@ var obj = { date: d.key }
     });
 flat_data.push(obj);
 });
-// console.log("now it's flat",flat_data)
+console.log("now it's flat",flat_data)
 //END data cleanup for d3.stack
 
     var y = d3.scaleLinear()
-    .domain([0,24])
+    .domain([0,18])
     .range([mainheight, 0])
 
     var x = d3.scaleBand()
@@ -113,14 +95,36 @@ flat_data.push(obj);
     .selectAll("g")
     .data(d3.stack().keys(zKeys)(flat_data))
     .enter().append("g")
-      .attr("fill", "black")
+    .attr("fill", function(d){return color(d.key);})
+    .attr("opacity",.8)
+    .attr("class",function(d){return d.key;})
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
       .attr("x", function(d) { return x(d.data.date); })
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-      .attr("width", x.bandwidth());
+      .attr("width", x.bandwidth())
+    //   hoveraction
+      .on("mouseover", function(d) {
+        d3.select(this)
+        .style("opacity",1)
+        .attr("stroke","black")
+        .attr("stoke-width",".2vw");
+        div.html(d.data.date + " | "+ g.class).transition()
+            .duration(600)
+            .style("opacity",.8)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+    })// fade out tooltip on mouse out               
+    .on("mouseout", function() {
+        d3.select(this)
+        .style("opacity",.8)
+        .attr("stroke","none");
+        div.transition()
+            .duration(500)
+            .style("opacity", 0);
+    });
 
     chartGroup.append("g")
     .attr("class","axis y")
@@ -133,9 +137,6 @@ flat_data.push(obj);
 
     var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-
 
 // stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? height == duration, x axis == date. ADD LEGEND, TOOLTIP
 

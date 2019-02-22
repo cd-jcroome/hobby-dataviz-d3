@@ -15,6 +15,8 @@ function join(lookupTable, mainTable, lookupKey, mainKey, select) {
     return output;
 };
 
+var parseTime = d3.timeParse("%d/%m/%Y");
+
 var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
 var mainwidth = (window.innerWidth - margin.left - margin.right),
