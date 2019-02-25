@@ -25,75 +25,40 @@ var div = d3.select(".scroll__graphic").append("div")
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/f9bc083b0d6711b0877621abecfca5b1c01ecc81/execTime.tsv',function(data){
     
+    var parseDate = d3.timeParse("%Y-%m-%d")
+
+    data.forEach(function(d){
+        d.date = parseDate(d.date)
+    })
+
+    console.log(data)
+
     var zKeys = [];
 
-    data.forEach(function(d)
-    {
-        if(zKeys.indexOf(d.top_category) === -1) {
-            zKeys.push(d.top_category);
+    data.forEach(function(d){
+        if(zKeys.indexOf(d.detail_category) === -1) {
+            zKeys.push(d.detail_category);
         }
     });
 
     console.log(zKeys)
     color.domain(zKeys)
-    
-    var parseTime= d3.timeParse("%H:%M:%S");
 
-    data.forEach(function(d){
-        d.duration = (
-            (parseTime(d.time_end) - parseTime(d.time_start))
-            /3600000
-            ) ;
-    })
+    var y = d3.scaleBand()
+    .domain(data.map(function(d){ return d.date;}).sort(d3.descending))
+    .range([mainheight, 0]);
 
-    var nested_data = d3.nest()
-    .key(function(d){return d.date})
-    .key(function(d){return d.top_category})
-    .rollup(function(leaves){
-        return d3.sum(leaves, function(d){return d.duration; })
-    })
-    .entries(data)
-    // console.log("after initial nesting",nested_data)
-
-//BEGIN data cleanup for d3.stack
-//Add default values for missing data points to make each array formatted the same
-nested_data = nested_data.map(function(keyObj) {
-    return {
-        key: keyObj.key,
-        values: zKeys.map(function(k) { 
-                duration = keyObj.values.filter(function(v) { return v.key == k; })[0];
-                return duration || ({key: k, duration: 0});
-        })
-    };
-});
-// console.log("after cleanup 1",nested_data)
-//Loop through the nested array and create a new array element that converts each individual nested element into a key/value pair in a single object.
-var flat_data = [];
-nested_data.forEach(function(d) {
-var obj = { date: d.key }
-    d.values.forEach(function(f) {
-        obj[f.key] = f.value || 0;
-    });
-flat_data.push(obj);
-});
-console.log("now it's flat",flat_data)
-//END data cleanup for d3.stack
-
-    var y = d3.scaleLinear()
-    .domain([0,18])
-    .range([mainheight, 0])
-
-    var x = d3.scaleBand()
-    .domain(data.map(function(d){ return d.date;}))
+    var x = d3.scaleTime()
+    .domain([-30000000,30000000])
     .range([0, mainwidth])
 
-    var yAxis = d3.axisLeft(y);
+    var yAxis = d3.axisLeft(y).tickFormat(d3.timeFormat("%m-%d"));
 
-    var xAxis = d3.axisBottom(x);
+    var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"))
 
     chartGroup.append("g")
     .selectAll("g")
-    .data(d3.stack().keys(zKeys)(flat_data))
+    .data(data)
     .enter().append("g")
     .attr("fill", function(d){return color(d.key);})
     .attr("opacity",.8)
@@ -101,10 +66,10 @@ console.log("now it's flat",flat_data)
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
-      .attr("x", function(d) { return x(d.data.date); })
-      .attr("y", function(d) { return y(d[1]); })
-      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-      .attr("width", x.bandwidth())
+      .attr("x", function(d) { return x(d.time_start); })
+      .attr("y", function(d) { return y(d.date)})
+      .attr("height", y.bandwidth())
+      .attr("width", function(d){ return x(d.time_end-d.time_start);})
     //   hoveraction
       .on("mouseover", function(d) {
         d3.select(this)
@@ -128,16 +93,17 @@ console.log("now it's flat",flat_data)
 
     chartGroup.append("g")
     .attr("class","axis y")
+    .attr("transform","translate("+(margin.left*1.05)+",0)")
     .call(yAxis)
 
     chartGroup.append("g")
     .attr("class","axis x")
-    .attr("transform","translate(0,"+mainheight+")")
+    .attr("transform","translate(" + (margin.left*1.05) + "," + mainheight + ")")
     .call(xAxis)
 
     var g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + (margin.left*1.05) + "," + margin.top + ")");
 
-// stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? height == duration, x axis == date. ADD LEGEND, TOOLTIP
+// stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? x axis == duration, y axis == date. ADD LEGEND, TOOLTIP
 
 ;})
