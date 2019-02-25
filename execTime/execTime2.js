@@ -23,12 +23,26 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("border-radius","8px")
     .style("pointer-events","none");
 
+var legend = d3.select(".scroll__graphic").append("div")
+    .attr("class","legend")
+    .style("opacity",.7)
+    .style("position","inline")
+    .style("left",margin.left+"px")
+    // .style("top",mainheight+"px")
+
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/f9bc083b0d6711b0877621abecfca5b1c01ecc81/execTime.tsv',function(data){
     
     var parseDate = d3.timeParse("%Y-%m-%d")
 
+    var parseTime = d3.timeParse("%H:%M:%S")
+    var formatTime = d3.timeFormat("%H Hrs, %M Mins")
+
     data.forEach(function(d){
         d.date = parseDate(d.date)
+        d.time_start = parseTime(d.time_start)
+        d.time_end = parseTime(d.time_end)
+        d.duration2 = parseTime(d.duration)
+        d.duration = formatTime(d.duration2)
     })
 
     console.log(data)
@@ -36,56 +50,97 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
     var zKeys = [];
 
     data.forEach(function(d){
-        if(zKeys.indexOf(d.detail_category) === -1) {
-            zKeys.push(d.detail_category);
+        if(zKeys.indexOf(d.top_category) === -1) {
+            zKeys.push(d.top_category);
         }
     });
 
     console.log(zKeys)
     color.domain(zKeys)
 
+// Legend work
+    var horiLeg = d3.select(".legend").append("svg")
+    .attr("width", mainwidth)
+    .attr("height","30px")
+
+    var dataL = 0;
+    var offset = 120;
+
+    var legend4 = horiLeg.selectAll('.legend')
+            .data(zKeys)
+            .enter().append('g')
+            .attr("class", "zKeys")
+            .attr("transform", function (d, i) {
+             if (i === 0) {
+                dataL = d.length + offset 
+                return "translate(0,0)"
+            } else { 
+             var newdataL = dataL
+             dataL +=  d.length + offset
+             return "translate(" + (newdataL) + ",0)"
+            }
+        })
+        legend4.append('rect')
+            .attr("x", 5)
+            .attr("y", 5)
+            .attr("width", 10)
+            .attr("height", 10)
+            .style("stroke","black")
+            .attr("stroke-width",".1vw")
+            .style("fill", function (d, i) {
+            return color(i)
+        })
+        
+        legend4.append('text')
+            .attr("x", 20)
+            .attr("y", 15)
+        .text(function (d, i) {
+            return d
+        })
+            .attr("class", "textselected")
+            .style("text-anchor", "start")
+            // .style("font-size", 15)
+// End legend
     var y = d3.scaleBand()
     .domain(data.map(function(d){ return d.date;}).sort(d3.descending))
     .range([mainheight, 0]);
 
     var x = d3.scaleTime()
-    .domain([-30000000,30000000])
-    .range([0, mainwidth])
+    .domain([new Date(1900, 0, 1), new Date(1900, 0, 2)])
+    .range([0, mainwidth - margin.left - margin.right])
 
     var yAxis = d3.axisLeft(y).tickFormat(d3.timeFormat("%m-%d"));
 
     var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"))
 
-    chartGroup.append("g")
-    .selectAll("g")
+    chartGroup.selectAll("rect")
+    // .enter().append("g")
+    // .attr("fill", function(d){return color(d.detail_category);})
     .data(data)
-    .enter().append("g")
-    .attr("fill", function(d){return color(d.key);})
-    .attr("opacity",.8)
-    .attr("class",function(d){return d.key;})
-    .selectAll("rect")
-    .data(function(d) { return d; })
     .enter().append("rect")
-      .attr("x", function(d) { return x(d.time_start); })
-      .attr("y", function(d) { return y(d.date)})
-      .attr("height", y.bandwidth())
-      .attr("width", function(d){ return x(d.time_end-d.time_start);})
+        .attr("class",function(d){return d.detail_category;})
+        .attr("fill",function(d){return color(d.top_category)})
+        .attr("x", function(d) { return x(d.time_start)})
+        .attr("y", function(d) { return y(d.date)})
+        .attr("height", y.bandwidth())
+        .attr("width", function(d){ return x(d.duration2);})
+        .style("opacity",.8)
     //   hoveraction
       .on("mouseover", function(d) {
         d3.select(this)
         .style("opacity",1)
         .attr("stroke","black")
         .attr("stoke-width",".2vw");
-        div.html(d.data.date + " | "+ g.class).transition()
-            .duration(600)
+        div.html( (d.listed_title||d.top_category) + " | "+ d.duration)
+            .transition().duration(600)
             .style("opacity",1)
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
     })// fade out tooltip on mouse out               
     .on("mouseout", function() {
         d3.select(this)
-        .style("opacity",1)
-        .attr("stroke","none");
+        .style("opacity",.8)
+        .attr("stroke","none")
         div.transition()
             .duration(500)
             .style("opacity", 0);
@@ -100,9 +155,6 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
     .attr("class","axis x")
     .attr("transform","translate(" + (margin.left*1.05) + "," + mainheight + ")")
     .call(xAxis)
-
-    var g = svg.append("g")
-    .attr("transform", "translate(" + (margin.left*1.05) + "," + margin.top + ")");
 
 // stack data, area chart by day for schedule. Exec Time in Orange, others in shades of blue? x axis == duration, y axis == date. ADD LEGEND, TOOLTIP
 
