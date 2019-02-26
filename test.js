@@ -17,6 +17,10 @@ function join(lookupTable, mainTable, lookupKey, mainKey, select) {
 
 var parseTime = d3.timeParse("%d/%m/%Y");
 
+data.sort(function(d,f){
+    return d3.ascending(d.__,f.__)
+})
+
 var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
 var mainwidth = (window.innerWidth - margin.left - margin.right),
@@ -40,5 +44,5 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("border-radius","8px")
     .style("pointer-events","none");
 
-d3.tsv('',(function(data){
+d3.tsv('',function(data){
 console.log(data);})
