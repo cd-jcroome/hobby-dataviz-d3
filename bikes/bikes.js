@@ -24,6 +24,8 @@ var div = d3.select(".scroll__graphic").append("div")
 
     var parseDate = d3.timeParse("%d/%m/%Y");
 
+    var formatDate = d3.timeFormat("%b '%y")
+
 d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data){
     data.forEach (function(d) {
         d.Date = parseDate(d.Date),
@@ -37,20 +39,61 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
     console.log(data)
     
     nestData = d3.nest()
-    .key(function(d){return d.Date;})
+    .key(function(d){return formatDate(d.Date);})
     .rollup(function(leaves){return{
         gva : d3.sum(leaves, function(d){return d.grossValueAdded}),
-        manualVA : d3.sum(leaves, function(d){return (d.manualBikes/(d.manualBikes+d.eBikes))*d.grossValueAdded ;}),
-        ebikeVA : d3.sum(leaves, function(d){return (d.eBikes/(d.manualBikes+d.eBikes))*d.grossValueAdded ;})
+        manualVA : d3.sum(leaves, function(d){return (d.manualBikes/(d.manualBikes+d.eBikes)) * d.grossValueAdded ;}),
+        ebikeVA : d3.sum(leaves, function(d){return (d.eBikes/(d.manualBikes+d.eBikes)) * d.grossValueAdded ;})
     }
     })
     .entries(data)
     .map(function(d){return{
         Date : d.key,
+        // grossValueAdded : d.value.gva.toLocaleString("en", {style: "currency",currency: "USD",minimumFractionDigits:0}),
         grossValueAdded : d.value.gva,
-        manPct : d.value.manualPct,
-        ePct : d.value.ebikePct
+        manVA : d.value.manualVA,
+        // manVA : d.value.manualVA.toLocaleString("en", {style: "currency",currency: "USD",minimumFractionDigits:0}),
+        eVA : d.value.ebikeVA,
+        // manVA : d.value.ebikeVA.toLocaleString("en", {style: "currency",currency: "USD",minimumFractionDigits:0})
     }})
-    console.log(nestData)
+    console.log('Nested:',nestData)
+
+    var y = d3.scaleLinear()
+    .domain([d3.min(nestData, function(d){return d.grossValueAdded}),d3.max(nestData, function(d){return d.grossValueAdded})])
+    .range([mainheight, 0]);
+
+    var yAxis = d3.axisLeft(y).tickFormat(d3.format("$.2s"));
+
+    var x = d3.scaleBand()
+    .domain(data.map(function(d){return d.Date;}))
+    .range([0, mainwidth - margin.left - margin.right])
+
+    var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%b '%y"));
+
+
+    chartGroup.append("g")
+    .attr("class","axis y")
+    .attr("transform","translate("+(margin.left*1.05)+",0)")
+    .call(yAxis)
+
+    chartGroup.append("g")
+    .attr("class","axis x")
+    .attr("transform","translate(" + (margin.left*1.05) + "," + mainheight + ")")
+    .call(xAxis)
+
+    chartGroup.append("g")
+    .attr("class","tharrBeData")
+    .selectAll("g")
+    .data(d3.stack().keys(['manVA','eVA'])(nestData))
+    .enter().append("g")
+    .attr("fill", "pink")
+    .attr("opacity",.8)
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.Date); })
+      .attr("y", function(d) { return y(d[0]); })
+      .attr("height", function(d) { return y(d[1]-d[0]); })
+      .attr("width", x.bandwidth())
 
 ;})
