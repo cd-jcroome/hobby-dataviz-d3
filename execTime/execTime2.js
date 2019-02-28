@@ -114,8 +114,6 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
     var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"))
 
     chartGroup.selectAll("rect")
-    // .enter().append("g")
-    // .attr("fill", function(d){return color(d.detail_category);})
     .data(data)
     .enter().append("rect")
         .attr("class",function(d){return d.detail_category;})

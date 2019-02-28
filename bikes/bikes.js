@@ -39,7 +39,7 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
     console.log(data)
     
     nestData = d3.nest()
-    .key(function(d){return formatDate(d.Date);})
+    .key(function(d){return d.Date;})
     .rollup(function(leaves){return{
         gva : d3.sum(leaves, function(d){return d.grossValueAdded}),
         manualVA : d3.sum(leaves, function(d){return (d.manualBikes/(d.manualBikes+d.eBikes)) * d.grossValueAdded ;}),
@@ -70,7 +70,6 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
 
     var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%b '%y"));
 
-
     chartGroup.append("g")
     .attr("class","axis y")
     .attr("transform","translate("+(margin.left*1.05)+",0)")
@@ -81,19 +80,5 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
     .attr("transform","translate(" + (margin.left*1.05) + "," + mainheight + ")")
     .call(xAxis)
 
-    chartGroup.append("g")
-    .attr("class","tharrBeData")
-    .selectAll("g")
-    .data(d3.stack().keys(['manVA','eVA'])(nestData))
-    .enter().append("g")
-    .attr("fill", "pink")
-    .attr("opacity",.8)
-    .selectAll("rect")
-    .data(function(d) { return d; })
-    .enter().append("rect")
-      .attr("x", function(d) { return x(d.data.Date); })
-      .attr("y", function(d) { return y(d[0]); })
-      .attr("height", function(d) { return y(d[1]-d[0]); })
-      .attr("width", x.bandwidth())
 
 ;})
