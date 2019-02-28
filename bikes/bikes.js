@@ -23,15 +23,23 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("pointer-events","none");
 
     var parseDate = d3.timeParse("%d/%m/%Y");
-
-    var formatDate = d3.timeFormat("%b '%y")
+    var formatYear = d3.timeFormat("'%y");
+    var formatMonth = d3.timeFormat("%m")
+    var formatDate = d3.timeFormat("%b '%y");
 
 d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data){
     data.forEach (function(d) {
-        d.Date = parseDate(d.Date),
-        d.manualBikes = parseInt(d['Manual Bikes'])||0,
-        d.eBikes = parseInt(d['e-Bikes'])||0,
-        d.grossValueAdded = parseInt(d['Gross Value Added'])||0
+        switch ( formatMonth(parseDate(d['Date']))){
+            case '01': d.quarter = 'Q1'; break;
+            case '04': d.quarter = 'Q2'; break;
+            case '07': d.quarter = 'Q3'; break;
+            case '10': d.quarter = 'Q4'; break;
+        }
+        d.year = formatYear(parseDate(d['Date'])),
+        d['Date'] = parseDate(d['Date']),
+        d['Manual Bikes'] = parseInt(d['Manual Bikes'])||0,
+        d['e-Bikes'] = parseInt(d['e-Bikes'])||0,
+        d['Gross Value Added'] = parseInt(d['Gross Value Added'])||0
     })
     data.sort(function(d,f){
         return d3.ascending(d.Date,f.Date)
@@ -39,36 +47,57 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
     console.log(data)
     
     nestData = d3.nest()
-    .key(function(d){return d.Date;})
+    .key(function(d){return d.quarter;})
+    .key(function(d){return d.year})
     .rollup(function(leaves){return{
-        gva : d3.sum(leaves, function(d){return d.grossValueAdded}),
-        manualVA : d3.sum(leaves, function(d){return (d.manualBikes/(d.manualBikes+d.eBikes)) * d.grossValueAdded ;}),
-        ebikeVA : d3.sum(leaves, function(d){return (d.eBikes/(d.manualBikes+d.eBikes)) * d.grossValueAdded ;})
-    }
+        manual : d3.sum(leaves, function(d){return d['Manual Bikes'];}),
+        ebike : d3.sum(leaves, function(d){return d['e-Bikes'];})
+        }
     })
     .entries(data)
-    .map(function(d){return{
-        Date : d.key,
-        // grossValueAdded : d.value.gva.toLocaleString("en", {style: "currency",currency: "USD",minimumFractionDigits:0}),
-        grossValueAdded : d.value.gva,
-        manVA : d.value.manualVA,
-        // manVA : d.value.manualVA.toLocaleString("en", {style: "currency",currency: "USD",minimumFractionDigits:0}),
-        eVA : d.value.ebikeVA,
-        // manVA : d.value.ebikeVA.toLocaleString("en", {style: "currency",currency: "USD",minimumFractionDigits:0})
-    }})
     console.log('Nested:',nestData)
 
     var y = d3.scaleLinear()
-    .domain([d3.min(nestData, function(d){return d.grossValueAdded}),d3.max(nestData, function(d){return d.grossValueAdded})])
+    .domain([d3.min(data, function(d){return d['Gross Value Added']}),d3.max(data, function(d){return d['Gross Value Added']})])
     .range([mainheight, 0]);
 
     var yAxis = d3.axisLeft(y).tickFormat(d3.format("$.2s"));
 
     var x = d3.scaleBand()
-    .domain(data.map(function(d){return d.Date;}))
+    .domain(data.map(function(d){return d['year'];}))
     .range([0, mainwidth - margin.left - margin.right])
 
-    var xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%b '%y"));
+    var xAxis = d3.axisBottom(x);
+
+    var manLine = d3.line()
+        .x(function(d) {return x(d.key);})
+        .y(function(d) {return y(d.value.manual);});
+
+    var eLine = d3.line()
+        .x(function(d) {return x(d.key);})
+        .y(function(d) {return y(d.value.ebike);});
+
+    chartGroup.selectAll(".line")
+    .data(nestData)
+    .enter()
+    .append("path")
+        .attr("class",function(d){return d.key+" manual";})
+        .attr("d",function(d){ return manLine(d.values);})
+        .attr("fill","none")
+        .attr("stroke-width",".01vw")
+        .attr("stroke","grey")
+        .attr("transform","translate("+mainwidth*.1+",0)")
+
+    chartGroup.selectAll(".line")
+    .data(nestData)
+    .enter()
+    .append("path")
+        .attr("class",function(d){return d.key+" eBike";})
+        .attr("d",function(d){ return eLine(d.values);})
+        .attr("fill","none")
+        .attr("stroke-width",".01vw")
+        .attr("stroke","green")
+        .attr("transform","translate("+mainwidth*.1+",0)")
 
     chartGroup.append("g")
     .attr("class","axis y")
