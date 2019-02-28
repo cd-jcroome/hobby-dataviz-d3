@@ -58,10 +58,10 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
     console.log('Nested:',nestData)
 
     var y = d3.scaleLinear()
-    .domain([d3.min(data, function(d){return d['Gross Value Added']}),d3.max(data, function(d){return d['Gross Value Added']})])
+    .domain([0,d3.max(data, function(d){return d['e-Bikes']+d['Manual Bikes']})])
     .range([mainheight, 0]);
 
-    var yAxis = d3.axisLeft(y).tickFormat(d3.format("$.2s"));
+    var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
 
     var x = d3.scaleBand()
     .domain(data.map(function(d){return d['year'];}))
@@ -84,7 +84,7 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
         .attr("class",function(d){return d.key+" manual";})
         .attr("d",function(d){ return manLine(d.values);})
         .attr("fill","none")
-        .attr("stroke-width",".01vw")
+        .attr("stroke-width",".1vw")
         .attr("stroke","grey")
         .attr("transform","translate("+mainwidth*.1+",0)")
 
@@ -95,7 +95,7 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
         .attr("class",function(d){return d.key+" eBike";})
         .attr("d",function(d){ return eLine(d.values);})
         .attr("fill","none")
-        .attr("stroke-width",".01vw")
+        .attr("stroke-width",".1vw")
         .attr("stroke","green")
         .attr("transform","translate("+mainwidth*.1+",0)")
 
