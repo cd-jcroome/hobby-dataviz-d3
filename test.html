@@ -3,26 +3,21 @@
 <title>VizLab</title>
 <link rel="stylesheet" type="text/css" href="../dataviz-project/static/vizzes/style.css">
 <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
-<div class="wrapper">
+<!-- <div class="wrapper"> -->
      <header class="header">
           <p class="title">VizLab | Test template</p> <a href="test.html">back home</a>
      </header>
      <section id="scroll">
-          <h4>here's the description</h4>
-          <div class="scroll__graphic"><svg class="mainviz sticky"></svg></div>
-          <div class="scroll__text">
-               <!-- steps = ".step" -->
-               <div class='step' data-step='a'></div>
-               <div class='step' data-step='b'></div>
-               <div class='step' data-step='c'></div>
-          </div>
+          <div class="scroll__graphic sticky"><svg class="mainviz"></svg></div>
+          <div class="scroll__text"></div>
           <p>Added to DB? Not yet.
                | <a>data source</a>
           </p>
           <script src="https://unpkg.com/scrollama"></script>
+          <script src="https://russellgoldenberg.github.io/scrollama/stickyfill.min.js"></script>
           <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
           <script type="text/javascript" src="https://d3js.org/topojson.v2.min.js"></script>
-          <script type="text/javascript" src="./bikes/bikes.js"></script>   
+          <script type="text/javascript" src="./bikes/bikeScroll.js   "></script>   
      </section>
      <div class="footer"><p></p></div>
-</div>
+<!-- </div> -->

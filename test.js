@@ -1,3 +1,4 @@
+const scroller = scrollama();
 function join(lookupTable, mainTable, lookupKey, mainKey, select) {
     var l = lookupTable.length,
         m = mainTable.length,
@@ -34,7 +35,7 @@ var svg = d3.select(".mainviz").append("svg")
 var chartGroup = svg.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div")
+graphic.append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
     .style("position","absolute")
@@ -44,5 +45,29 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("border-radius","8px")
     .style("pointer-events","none");
 
+var tooltip = d3.select(".tooltip")
+
 d3.tsv('',function(data){
-console.log(data);})
+console.log(data);
+
+var div = d3.select(".scroll__text")
+    .append("div")
+        .attr("class", "step")
+        .attr("y",mainheight)
+        .attr("data-step", "a")
+        .html("<h2>check check</h2>")
+
+var div = d3.select(".scroll__text")
+    .append("div")
+        .attr("class", "step")
+        .attr("y",mainheight*2)
+        .attr("data-step", "b")
+        .html("<h2>One-two</h2>")
+
+var div = d3.select(".scroll__text")
+    .append("div")
+        .attr("class", "step")
+        .attr("y",mainheight*3)
+        .attr("data-step", "c")
+        .html("<h2>this thing on?</h2>")
+})

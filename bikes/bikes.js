@@ -1,3 +1,4 @@
+const scroller = scrollama();
 
 var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
@@ -68,6 +69,16 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
     .range([0, mainwidth - margin.left - margin.right])
 
     var xAxis = d3.axisBottom(x);
+    
+    chartGroup.append("g")
+    .attr("class","axis y")
+    .attr("transform","translate("+(margin.left*1.05)+",0)")
+    .call(yAxis)
+
+    chartGroup.append("g")
+    .attr("class","axis x")
+    .attr("transform","translate(" + (margin.left*1.05) + "," + mainheight + ")")
+    .call(xAxis)
 
     var manLine = d3.line()
         .x(function(d) {return x(d.key);})
@@ -86,13 +97,11 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
         .attr("d",function(d){ return manLine(d.values);})
         .attr("fill","none")
         .attr("stroke-width",".2vw")
-        .attr("stroke","grey")
         .attr("opacity",.6)
         .attr("transform","translate("+mainwidth*.1+",0)")
     .on("mouseover",function(d){
         d3.select(this)
         .attr("r","2vw")
-        // .attr("stroke","black")
         .attr("opacity",1)
         .attr("stoke-width","1vw");
         div.transition().duration(600).style("opacity", .95);
@@ -113,13 +122,11 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
         .attr("d",function(d){ return eLine(d.values);})
         .attr("fill","none")
         .attr("stroke-width",".2vw")
-        .attr("stroke","green")
         .attr("opacity",.6)
         .attr("transform","translate("+mainwidth*.1+",0)")
     .on("mouseover",function(d){
         d3.select(this)
         .attr("r","2vw")
-        // .attr("stroke","black")
         .attr("opacity",1)
         .attr("stoke-width","1vw");
         div.transition().duration(600).style("opacity", .95);
@@ -201,17 +208,33 @@ d3.csv('https://query.data.world/s/gll3zvqrc2rutcsme5skjtwvl4mxqr',function(data
         .attr("stroke","blue")
     chartGroup.selectAll(".Q4")
         .attr("stroke","navy")
+
+    d3.select(".scroll__text")
+        .append("div")
+            .attr("class", "step")
+            .style("top",mainheight)
+            .attr("data-step", "a")
+            .html("<h4>Bicycle imports in the UK were down from 2010 - 2016.</h4>");
     
-
-    chartGroup.append("g")
-    .attr("class","axis y")
-    .attr("transform","translate("+(margin.left*1.05)+",0)")
-    .call(yAxis)
-
-    chartGroup.append("g")
-    .attr("class","axis x")
-    .attr("transform","translate(" + (margin.left*1.05) + "," + mainheight + ")")
-    .call(xAxis)
-
+    d3.select(".scroll__text")
+        .append("div")
+            .attr("class", "step")
+            .style("top",mainheight*2)
+            .attr("data-step", "b")
+            .html("<h4>Looking at Manual Bikes specifically, all four quarters were trending down over that same seven year time-span.</h4>")
+    
+    d3.select(".scroll__text")
+        .append("div")
+            .attr("class", "step")
+            .style("top",mainheight*3)
+            .attr("data-step", "c")
+            .html("<h4>e-Bikes, however seem to be on the up & up.</h4>")
+    
+    d3.select(".scroll__text")
+        .append("div")
+            .attr("class", "step")
+            .style("top",mainheight*4)
+            .attr("data-step", "d")
+            .html("<h4>Since this data stops in 2016, we can only use anecdotal evidence to guess where these are today.</h4>")
 
 ;})
