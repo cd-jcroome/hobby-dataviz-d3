@@ -135,9 +135,9 @@ function handleStepEnter(response) {
     // response = { element, direction, index }
     switch (response.index){
         case 1: // gross value added
-            chartGroup.selectAll(".manual").remove()
-            chartGroup.selectAll(".gva").remove()
-            chartGroup.selectAll(".ebike").remove()
+            chartGroup.selectAll(".line").remove()
+            chartGroup.selectAll(".circle").remove()
+            chartGroup.selectAll(".axis").remove()
 
             data = dict.data
 
@@ -154,27 +154,27 @@ function handleStepEnter(response) {
             var xAxis = d3.axisBottom(x);
             
             chartGroup.append("g")
-            .attr("class","axis y gva")
+            .attr("class","axis y")
             .attr("transform","translate("+(margin.left)+",0)")
             .call(yAxis)
         
             chartGroup.append("g")
-            .attr("class","axis x gva")
+            .attr("class","axis x")
             .attr("transform","translate(" + (margin.left) + "," + Math.floor(window.innerHeight / 2) + ")")
             .call(xAxis)
 
             var gvaLine = d3.line()
                 .x(function(d) {return x(d.key);})
                 .y(function(d) {return y(d.value.gva);})
-                // .curve(d3.curveNatural);
+                .curve(d3.curveNatural);
 
-            chartGroup.selectAll(".gva .line")
+            chartGroup.selectAll(".line")
             .data(nestData)
             .enter().append("path")
-                .attr("class",function(d){return d.key+" gva line";})
+                .attr("class",function(d){return d.key+" line"+" gva";})
                 .attr("d",function(d){ return gvaLine(d.values);})
                 .attr("fill","none")
-                .attr("stroke-width",".2vw")
+                .attr("stroke-width",".5vw")
                 .attr("opacity",.6)
                 .attr("transform","translate("+(margin.left)+",0)")
             .on("mouseover",function(d){
@@ -187,14 +187,14 @@ function handleStepEnter(response) {
                     .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
             })
             
-            chartGroup.selectAll(".gva .circle")
+            chartGroup.selectAll(".circle")
             .data(data)
             .enter().append("circle")
                 .attr("cx", function(d){ return x(d.year) ;})
                 .attr("cy", function(d){ return y(d['Gross Value Added']) ;})
-                .attr("fill","brown")
-                .attr("class",function(d){return d.quarter+" gva circle";})
-                .attr("r", ".3vw")
+                .attr("fill","purple")
+                .attr("class",function(d){return d.quarter+" circle"+" gva";})
+                .attr("r", ".5vw")
                 .attr("stroke","white")
                 .attr("stroke-width", ".1vw")
                 .attr("opacity",.5)
@@ -222,9 +222,6 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".Q4").attr("stroke","navy")
         ; break;
         case 2: // manual bike imports
-            chartGroup.selectAll(".manual").remove()
-            chartGroup.selectAll(".gva").remove()
-            chartGroup.selectAll(".ebike").remove()
 
                 data = dict.data
                 var y = d3.scaleLinear()
@@ -239,91 +236,33 @@ function handleStepEnter(response) {
             
                 var xAxis = d3.axisBottom(x);
                 
-                chartGroup.append("g")
-                .attr("class","axis y manual")
-                .attr("transform","translate("+(margin.left)+",0)")
-                .call(yAxis)
+                chartGroup.select(".y")
+                    .transition()
+                    .call(yAxis)
             
-                chartGroup.append("g")
-                .attr("class","axis x manual")
-                .attr("transform","translate(" + (margin.left) + "," + Math.floor(window.innerHeight / 2) + ")")
-                .call(xAxis)
+                chartGroup.select(".x")
+                    .transition()
+                    .call(xAxis)
             
                 var manLine = d3.line()
                     .x(function(d) {return x(d.key);})
                     .y(function(d) {return y(d.value.manual);})
                     .curve(d3.curveNatural);
             
-                chartGroup.selectAll(".manual .line")
-                .data(nestData)
-                .enter().append("path")
-                    .attr("class",function(d){return d.key+" manual line";})
+                chartGroup.selectAll(".line")
+                .data(nestData).transition()
                     .attr("d",function(d){ return manLine(d.values);})
-                    .attr("fill","none")
-                    .attr("stroke-width",".2vw")
-                    .attr("opacity",.6)
-                    .attr("transform","translate("+(margin.left)+",0)")
-                .on("mouseover",function(d){
-                    d3.select(this)
-                    .attr("r","2vw")
-                    .attr("opacity",1)
-                    .attr("stoke-width","1vw");
-                    tooltip.transition().duration(600).style("opacity", .95);
-                    tooltip.html(d.key+" Manual imports")
-                        .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-                })
-                .on("mouseout", function() {
-                    d3.select(this)
-                    .attr("r",".6vw")
-                    .attr("opacity",.6);
-                    tooltip.transition().duration(800).style("opacity", 0);
-                });
+                    .attr("class",function(d){ return d['quarter']+" line"+" manual"; })
             
-                chartGroup.selectAll(".manual .circle")
-                .data(data)
-                .enter().append("circle")
-                    .attr("cx", function(d){ return x(d.year) ;})
+                chartGroup.selectAll(".circle").transition()
                     .attr("cy", function(d){ return y(d['Manual Bikes']) ;})
                     .attr("fill","brown")
-                    .attr("class",function(d){return d.quarter+" manual circle";})
-                    .attr("r", ".3vw")
-                    .attr("stroke","white")
-                    .attr("stroke-width", ".1vw")
-                    .attr("opacity",.5)
-                    .attr("transform","translate("+(margin.left)+",0)")
-                .on("mouseover", function(d) {
-                    d3.select(this)
-                    .attr("r","2vw")
-                    .attr("stroke","black")
-                    .attr("stoke-width",".2vw")
-                    .style("opacity",1)
-                    tooltip.transition().duration(600).style("opacity", .95);
-                    tooltip.html(d.quarter + " Manual Imports<br/>"
-                    + d.year +": " + d['Manual Bikes'].toLocaleString("en", {style: "decimal"})
-                    ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-                })// fade out tooltip on mouse out               
-                .on("mouseout", function() {
-                    d3.select(this)
-                    .attr("r",".3vw")
-                    .style("opacity",.5);
-                    tooltip.transition().duration(500).style("opacity", 0);
-                });
-                chartGroup.selectAll(".Q1").attr("stroke","steelblue")
-                chartGroup.selectAll(".Q2").attr("stroke","lightblue")
-                chartGroup.selectAll(".Q3").attr("stroke","blue")
-                chartGroup.selectAll(".Q4").attr("stroke","navy")
+                    .attr("class",function(d){ return d['quarter']+" circle"+" manual"; })
         ; break;
         case 3:  // ebike imports
-            chartGroup.selectAll(".manual")
-                .remove()
-            chartGroup.selectAll(".gva")
-                .remove()
-            chartGroup.selectAll(".ebike")
-                .remove()
-            chartGroup.selectAll(".all")
-                    .remove()
 
             data = dict.data
+
             var y = d3.scaleLinear()
             .domain([0,d3.max(data, function(d){return d['e-Bikes']})])
             .range([Math.floor(window.innerHeight / 2), 0]);
@@ -335,126 +274,76 @@ function handleStepEnter(response) {
             .range([0, window.innerWidth*.8])
         
             var xAxis = d3.axisBottom(x);
-            
-            chartGroup.append("g")
-            .attr("class","axis y ebike")
-            .attr("transform","translate("+(margin.left)+",0)")
-            .call(yAxis)
+                
+            chartGroup.select(".y")
+                .transition()
+                .call(yAxis)
         
-            chartGroup.append("g")
-            .attr("class","axis x ebike")
-            .attr("transform","translate(" + (margin.left) + "," + Math.floor(window.innerHeight / 2) + ")")
-            .call(xAxis)
+            chartGroup.select(".x")
+                .transition()
+                .call(xAxis)
         
             var eLine = d3.line()
                 .x(function(d) {return x(d.key);})
                 .y(function(d) {return y(d.value.ebike);})
                 .curve(d3.curveNatural);
         
-            chartGroup.selectAll(".ebike .line")
-            .data(nestData)
-            .enter().append("path")
-                .attr("class",function(d){return d.key+" ebike line";})
+            chartGroup.selectAll(".line").transition()
                 .attr("d",function(d){ return eLine(d.values);})
-                .attr("fill","none")
-                .attr("stroke-width",".2vw")
-                .attr("opacity",.6)
-                .attr("transform","translate("+(margin.left)+",0)")
-            .on("mouseover",function(d){
-                d3.select(this)
-                .attr("r","2vw")
-                .attr("opacity",1)
-                .attr("stoke-width","1vw");
-                tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.key+" e-Bike imports")
-                    .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-            })
-            .on("mouseout", function() {
-                d3.select(this)
-                .attr("r",".6vw")
-                .attr("opacity",.6);
-                tooltip.transition().duration(800).style("opacity", 0);
-            });
+                .attr("class",function(d){ return d['quarter']+" line"+" ebike"; })
             
-            chartGroup.selectAll(".ebike .circle")
-            .data(data)
-            .enter().append("circle")
-                .attr("cx", function(d){ return x((d.year)) ;})
+            chartGroup.selectAll(".circle").transition()
                 .attr("cy", function(d){ return y(d['e-Bikes']) ;})
                 .attr("fill","salmon")
-                .attr("class",function(d){return d.quarter+" ebike circle";})
-                .attr("r", ".3vw")
-                .attr("stroke","white")
-                .attr("stroke-width", ".1vw")
-                .style("opacity",.5)
-                .attr("transform","translate("+(margin.left)+",0)")
-            .on("mouseover", function(d) {
-                d3.select(this)
-                .attr("r","2vw")
-                .attr("stroke","black")
-                .attr("stoke-width",".2vw")
-                .style("opacity",1);
-                tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.quarter + " e-Bike Imports<br/>"
-                +d.year+": " + d['e-Bikes'].toLocaleString("en", {style: "decimal"})
-                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-            })// fade out tooltip on mouse out               
-            .on("mouseout", function() {
-                d3.select(this)
-                .attr("r",".3vw")
-                .style("opacity",.5);
-                tooltip.transition().duration(500).style("opacity", 0);
-            });
-            chartGroup.selectAll(".Q1").attr("stroke","steelblue")
-            chartGroup.selectAll(".Q2").attr("stroke","lightblue")
-            chartGroup.selectAll(".Q3").attr("stroke","blue")
-            chartGroup.selectAll(".Q4").attr("stroke","navy")
+                .attr("class",function(d){ return d['quarter']+" circle"+" ebike"; })
         ; break;
         case 4: // expand years to 2019, add question marks?
-            chartGroup.selectAll(".manual").remove()
-            chartGroup.selectAll(".gva").remove()
-            chartGroup.selectAll(".ebike").remove()
 
             data = dict.data
-            var y = d3.scaleLinear()
+            var yAll = d3.scaleLinear()
             .domain([0,d3.max(data, function(d){return d['Manual Bikes']})])
             .range([Math.floor(window.innerHeight / 2), 0]);
         
-            var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
+            var yAxis = d3.axisLeft(yAll).tickFormat(d3.format(".2s"));
         
-            var x = d3.scaleBand()
+            var xAll = d3.scaleBand()
             .domain(['2010','2011','2012','2013','2014','2015','2016','2017','2018'])
             .range([0, window.innerWidth*.8])
         
-            var xAxis = d3.axisBottom(x);
-            
-            chartGroup.append("g")
-            .attr("class","axis y all")
-            .attr("transform","translate("+(margin.left)+",0)")
-            .call(yAxis)
+            var xAxis = d3.axisBottom(xAll);
+                
+            chartGroup.select(".y")
+                .transition()
+                .call(yAxis)
         
-            chartGroup.append("g")
-            .attr("class","axis x all")
-            .attr("transform","translate(" + (margin.left) + "," + Math.floor(window.innerHeight / 2) + ")")
-            .call(xAxis)
+            chartGroup.select(".x")
+                .transition()
+                .call(xAxis)
         
             var manLine = d3.line()
-                .x(function(d) {return x(d.key);})
-                .y(function(d) {return y(d.value.manual);})
+                .x(function(d) {return xAll(d.key);})
+                .y(function(d) {return yAll(d.value.manual);})
                 .curve(d3.curveNatural);
             
             var eLine = d3.line()
-                .x(function(d) {return x(d.key);})
-                .y(function(d) {return y(d.value.ebike);})
+                .x(function(d) {return xAll(d.key);})
+                .y(function(d) {return yAll(d.value.ebike);})
                 .curve(d3.curveNatural);
             
+            chartGroup.selectAll(".line").transition()
+                .attr("d",function(d){ return eLine(d.values);})
+            
+            chartGroup.selectAll(".circle").transition()
+                .attr("cx", function(d){ return xAll((d.year)) ;})
+                .attr("cy", function(d){ return yAll(d['e-Bikes']) ;})
+
             chartGroup.selectAll(".manual .line")
             .data(nestData)
             .enter().append("path")
                 .attr("class",function(d){return d.key+" manual line";})
                 .attr("d",function(d){ return manLine(d.values);})
                 .attr("fill","none")
-                .attr("stroke-width",".2vw")
+                .attr("stroke-width",".5vw")
                 .attr("opacity",.6)
                 .attr("transform","translate("+(margin.left)+",0)")
             .on("mouseover",function(d){
@@ -476,11 +365,11 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".manual .circle")
             .data(data)
             .enter().append("circle")
-                .attr("cx", function(d){ return x(d.year) ;})
-                .attr("cy", function(d){ return y(d['Manual Bikes']) ;})
+                .attr("cx", function(d){ return xAll(d.year) ;})
+                .attr("cy", function(d){ return yAll(d['Manual Bikes']) ;})
                 .attr("fill","brown")
                 .attr("class",function(d){return d.quarter+" manual circle";})
-                .attr("r", ".3vw")
+                .attr("r", ".5vw")
                 .attr("stroke","white")
                 .attr("stroke-width", ".1vw")
                 .attr("opacity",.5)
@@ -502,61 +391,7 @@ function handleStepEnter(response) {
                 .style("opacity",.5);
                 tooltip.transition().duration(500).style("opacity", 0);
             });
-
-            chartGroup.selectAll(".ebike .line")
-            .data(nestData)
-            .enter().append("path")
-                .attr("class",function(d){return d.key+" ebike line";})
-                .attr("d",function(d){ return eLine(d.values);})
-                .attr("fill","none")
-                .attr("stroke-width",".2vw")
-                .attr("opacity",.6)
-                .attr("transform","translate("+(margin.left)+",0)")
-            .on("mouseover",function(d){
-                d3.select(this)
-                .attr("r","2vw")
-                .attr("opacity",1)
-                .attr("stoke-width","1vw");
-                tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.key+" e-Bike imports")
-                    .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-            })
-            .on("mouseout", function() {
-                d3.select(this)
-                .attr("r",".6vw")
-                .attr("opacity",.6);
-                tooltip.transition().duration(800).style("opacity", 0);
-            });
-            
-            chartGroup.selectAll(".ebike .circle")
-            .data(data)
-            .enter().append("circle")
-                .attr("cx", function(d){ return x((d.year)) ;})
-                .attr("cy", function(d){ return y(d['e-Bikes']) ;})
-                .attr("fill","salmon")
-                .attr("class",function(d){return d.quarter+" ebike circle";})
-                .attr("r", ".3vw")
-                .attr("stroke","white")
-                .attr("stroke-width", ".1vw")
-                .style("opacity",.5)
-                .attr("transform","translate("+(margin.left)+",0)")
-            .on("mouseover", function(d) {
-                d3.select(this)
-                .attr("r","2vw")
-                .attr("stroke","black")
-                .attr("stoke-width",".2vw")
-                .style("opacity",1);
-                tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.quarter + " e-Bike Imports<br/>"
-                +d.year+": " + d['e-Bikes'].toLocaleString("en", {style: "decimal"})
-                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-            })// fade out tooltip on mouse out               
-            .on("mouseout", function() {
-                d3.select(this)
-                .attr("r",".3vw")
-                .style("opacity",.5);
-                tooltip.transition().duration(500).style("opacity", 0);
-            });
+         
             chartGroup.selectAll(".Q1").attr("stroke","steelblue")
             chartGroup.selectAll(".Q2").attr("stroke","lightblue")
             chartGroup.selectAll(".Q3").attr("stroke","blue")
