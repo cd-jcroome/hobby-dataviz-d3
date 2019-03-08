@@ -6,7 +6,6 @@ var chart = graphic.select('.chart');
 var chart2 = chart.select('.chart2');
 var text = container.select('.scroll__text');
 var step = text.selectAll('.step');
-var tooltip = d3.select(".tooltip")
 
 var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
@@ -67,6 +66,9 @@ text.append("div")
     var formatYear = d3.timeFormat("%Y");
     var formatMonth = d3.timeFormat("%m")
     var formatDate = d3.timeFormat("%b '%y");
+
+
+var tooltip = d3.select(".tooltip");
 
 function handleResize() {
     // 1. update height of step elements (moved to divs)
@@ -204,14 +206,20 @@ function handleStepEnter(response) {
                 .attr("opacity",.6)
                 .attr("transform","translate("+(margin.left)+",0)")
             .on("mouseover",function(d){
-                d3.select(this)
-                .attr("r","2vw")
-                .attr("opacity",1)
-                .attr("stoke-width","1vw");
-                tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.key+" Gross Value Added")
-                    .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-            })
+                    d3.select(this)
+                    .attr("r","2vw")
+                    .attr("opacity",1)
+                    .attr("stoke-width","1vw");
+                    tooltip.transition().duration(600).style("opacity", .95);
+                    tooltip.html(d.key+" Manual imports")
+                        .style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
+                })
+            .on("mouseout", function() {
+                    d3.select(this)
+                    .attr("r",".6vw")
+                    .attr("opacity",.6);
+                    tooltip.transition().duration(800).style("opacity", 0);
+                });
             
             chartGroup.selectAll(".circle")
             .data(data)
@@ -234,11 +242,11 @@ function handleStepEnter(response) {
                 tooltip.transition().duration(600).style("opacity", .95);
                 tooltip.html(d.quarter + " Manual Imports<br/>"
                 + d.year +": " + d['Manual Bikes'].toLocaleString("en", {style: "decimal"})
-                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+                ).style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
             })// fade out tooltip on mouse out               
             .on("mouseout", function() {
                 d3.select(this)
-                .attr("r",".3vw")
+                .attr("r",".5vw")
                 .style("opacity",.5);
                 tooltip.transition().duration(500).style("opacity", 0);
             });
@@ -391,8 +399,8 @@ function handleStepEnter(response) {
                 .attr("opacity",1)
                 .attr("stoke-width","1vw");
                 tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.key+" Manual imports")
-                    .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+                tooltip.html(d.key+" Manual Imports")
+                    .style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
             })
             .on("mouseout", function() {
                 d3.select(this)
@@ -422,11 +430,11 @@ function handleStepEnter(response) {
                 tooltip.transition().duration(600).style("opacity", .95);
                 tooltip.html(d.quarter + " Manual Imports<br/>"
                 + d.year +": " + d['Manual Bikes'].toLocaleString("en", {style: "decimal"})
-                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+                ).style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
             })// fade out tooltip on mouse out               
             .on("mouseout", function() {
                 d3.select(this)
-                .attr("r",".3vw")
+                .attr("r",".5vw")
                 .style("opacity",.5);
                 tooltip.transition().duration(500).style("opacity", 0);
             });
