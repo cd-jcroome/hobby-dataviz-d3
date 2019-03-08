@@ -293,7 +293,7 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".ebike").remove()
 
             graphic.selectAll(".title").transition()
-                .text("e-Bike Imports (units)")
+                .text("E-Bike Imports (units)")
 
             data = dict.data
 
