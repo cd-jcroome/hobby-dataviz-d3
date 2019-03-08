@@ -3,6 +3,7 @@ const scroller = scrollama();
 var container = d3.select('#scroll');
 var graphic = container.select('.scroll__graphic');
 var chart = graphic.select('.chart');
+var chart2 = chart.select('.chart2');
 var text = container.select('.scroll__text');
 var step = text.selectAll('.step');
 var tooltip = d3.select(".tooltip")
@@ -11,7 +12,7 @@ var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 
 var stepHeight = Math.floor(window.innerHeight * 0.75)
 
-var chartGroup = d3.select(".chart").append("g").attr("class","chart")
+var chartGroup = d3.select(".chart").append("g").attr("class","chart2")
 
 var nestData = []
 var dict = []
@@ -87,6 +88,10 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight / 2) + 'px');
 
+    chart2
+        .style('width', chartWidth + 'px')
+        .style('height', Math.floor(window.innerHeight / 2) + 'px');
+
     // 3. tell scrollama to update new element dimensions
     scroller.resize();
 }
@@ -134,6 +139,22 @@ function getTransformData() {
 function handleStepEnter(response) {
     // response = { element, direction, index }
     switch (response.index){
+        case 0: // scroll prompt
+            graphic.selectAll(".title").remove()
+
+            chartGroup.selectAll(".line").remove()
+            chartGroup.selectAll(".circle").remove()
+            chartGroup.selectAll(".axis").remove()
+
+            graphic.append("text")
+                .attr("class","title")
+                .style("position","absolute")
+                .style("top","50%")
+                .style("right","50%")
+                .style("font-size","2vw")
+                .style("font-color","black")
+                .text("Scroll down for charts!")
+        ;break;
         case 1: // gross value added
             chartGroup.selectAll(".line").remove()
             chartGroup.selectAll(".circle").remove()
@@ -143,13 +164,13 @@ function handleStepEnter(response) {
 
             var y = d3.scaleLinear()
             .domain([0,d3.max(dict.data, function(d){return d['Gross Value Added']})])
-            .range([Math.floor(window.innerHeight / 2), 0]);
+            .range([(Math.floor(window.innerHeight / 2))*.95,0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format("$.2s"));
         
             var x = d3.scaleBand()
             .domain(dict.data.map(function(d){return d['year'];}))
-            .range([0, window.innerWidth*.8])
+            .range([0, (graphic.node().offsetWidth -5)*.95])
         
             var xAxis = d3.axisBottom(x);
             
@@ -160,13 +181,18 @@ function handleStepEnter(response) {
         
             chartGroup.append("g")
             .attr("class","axis x")
-            .attr("transform","translate(" + (margin.left) + "," + Math.floor(window.innerHeight / 2) + ")")
+            .attr("transform","translate(0," + (Math.floor(window.innerHeight / 2))*.95 + ")")
             .call(xAxis)
 
             var gvaLine = d3.line()
                 .x(function(d) {return x(d.key);})
                 .y(function(d) {return y(d.value.gva);})
                 .curve(d3.curveNatural);
+
+            graphic.selectAll(".title").transition()
+                .text("Gross Value Added")
+                .style("top","0%")
+                .style("font-size","1.5vw")
 
             chartGroup.selectAll(".line")
             .data(nestData)
@@ -223,55 +249,63 @@ function handleStepEnter(response) {
         ; break;
         case 2: // manual bike imports
 
-                data = dict.data
-                var y = d3.scaleLinear()
-                .domain([0,d3.max(data, function(d){return d['Manual Bikes']})])
-                .range([Math.floor(window.innerHeight / 2), 0]);
-            
-                var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
-            
-                var x = d3.scaleBand()
-                .domain(['2010','2011','2012','2013','2014','2015','2016'])
-                .range([0, window.innerWidth*.8])
-            
-                var xAxis = d3.axisBottom(x);
-                
-                chartGroup.select(".y")
-                    .transition()
-                    .call(yAxis)
-            
-                chartGroup.select(".x")
-                    .transition()
-                    .call(xAxis)
-            
-                var manLine = d3.line()
-                    .x(function(d) {return x(d.key);})
-                    .y(function(d) {return y(d.value.manual);})
-                    .curve(d3.curveNatural);
-            
-                chartGroup.selectAll(".line")
-                .data(nestData).transition()
-                    .attr("d",function(d){ return manLine(d.values);})
-                    .attr("class",function(d){ return d['quarter']+" line"+" manual"; })
-            
-                chartGroup.selectAll(".circle").transition()
-                    .attr("cy", function(d){ return y(d['Manual Bikes']) ;})
-                    .attr("fill","brown")
-                    .attr("class",function(d){ return d['quarter']+" circle"+" manual"; })
-        ; break;
-        case 3:  // ebike imports
+            graphic.selectAll(".title").transition()
+                .text("Manual Bike Imports (units)")
 
             data = dict.data
-
             var y = d3.scaleLinear()
-            .domain([0,d3.max(data, function(d){return d['e-Bikes']})])
-            .range([Math.floor(window.innerHeight / 2), 0]);
+            .domain([0,d3.max(data, function(d){return d['Manual Bikes']})])
+            .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
         
             var x = d3.scaleBand()
             .domain(['2010','2011','2012','2013','2014','2015','2016'])
-            .range([0, window.innerWidth*.8])
+            .range([0, (graphic.node().offsetWidth -5)*.95])
+        
+            var xAxis = d3.axisBottom(x);
+            
+            chartGroup.select(".y")
+                .transition()
+                .call(yAxis)
+        
+            chartGroup.select(".x")
+                .transition()
+                .call(xAxis)
+        
+            var manLine = d3.line()
+                .x(function(d) {return x(d.key);})
+                .y(function(d) {return y(d.value.manual);})
+                .curve(d3.curveNatural);
+        
+            chartGroup.selectAll(".line")
+            .data(nestData).transition()
+                .attr("d",function(d){ return manLine(d.values);})
+                .attr("class",function(d){ return d['quarter']+" line"+" manual"; })
+        
+            chartGroup.selectAll(".circle").transition()
+                .attr("cy", function(d){ return y(d['Manual Bikes']) ;})
+                .attr("fill","brown")
+                .attr("class",function(d){ return d['quarter']+" circle"+" manual"; })
+        ; break;
+        case 3:  // ebike imports
+            
+            chartGroup.selectAll(".ebike").remove()
+
+            graphic.selectAll(".title").transition()
+                .text("e-Bike Imports (units)")
+
+            data = dict.data
+
+            var y = d3.scaleLinear()
+            .domain([0,d3.max(data, function(d){return d['e-Bikes']})])
+            .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
+        
+            var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
+        
+            var x = d3.scaleBand()
+            .domain(['2010','2011','2012','2013','2014','2015','2016'])
+            .range([0, (graphic.node().offsetWidth -5)*.95])
         
             var xAxis = d3.axisBottom(x);
                 
@@ -294,21 +328,25 @@ function handleStepEnter(response) {
             
             chartGroup.selectAll(".circle").transition()
                 .attr("cy", function(d){ return y(d['e-Bikes']) ;})
+                .attr("cx", function(d){ return x(d['year'])})
                 .attr("fill","salmon")
                 .attr("class",function(d){ return d['quarter']+" circle"+" ebike"; })
         ; break;
         case 4: // expand years to 2019, add question marks?
 
+            graphic.selectAll(".title").transition()
+                .text("Manual & E-Bike Imports (units)")
+
             data = dict.data
             var yAll = d3.scaleLinear()
             .domain([0,d3.max(data, function(d){return d['Manual Bikes']})])
-            .range([Math.floor(window.innerHeight / 2), 0]);
+            .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
         
             var yAxis = d3.axisLeft(yAll).tickFormat(d3.format(".2s"));
         
             var xAll = d3.scaleBand()
             .domain(['2010','2011','2012','2013','2014','2015','2016','2017','2018'])
-            .range([0, window.innerWidth*.8])
+            .range([0, (graphic.node().offsetWidth -5)*.95])
         
             var xAxis = d3.axisBottom(xAll);
                 
@@ -336,6 +374,7 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".circle").transition()
                 .attr("cx", function(d){ return xAll((d.year)) ;})
                 .attr("cy", function(d){ return yAll(d['e-Bikes']) ;})
+                .attr("class","ebike")
 
             chartGroup.selectAll(".manual .line")
             .data(nestData)
@@ -402,6 +441,8 @@ function handleStepEnter(response) {
         chartGroup.selectAll(".gva").remove()
         chartGroup.selectAll(".ebike").remove()
         chartGroup.selectAll(".all").remove()
+        chartGroup.selectAll("g").remove()
+        graphic.selectAll(".title").remove()
 
         chartGroup.append("foreignObject")
         .attr("class","video")
