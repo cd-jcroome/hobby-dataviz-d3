@@ -56,11 +56,11 @@ text.append("div")
     .html("<h2>Since this data stops in 2016, we can only guess how imports have performed over the past 3 years.</h2>")
     .style("height",stepHeight +"px");
 
-text.append("div")
-    .attr("class","step")
-    .attr("data-step","f")
-    .html("<h2>If ads like this are any indication, eBike sales are likely continuing their trend.</h2>")
-    .style("height",stepHeight +"px");
+// text.append("div")
+//     .attr("class","step")
+//     .attr("data-step","f")
+//     .html("<h2>If ads like this are any indication, eBike sales are likely continuing their trend.</h2>")
+//     .style("height",stepHeight +"px");
 
     var parseDate = d3.timeParse("%d/%m/%Y");
     var formatYear = d3.timeFormat("%Y");
@@ -444,19 +444,19 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".Q3").attr("stroke","blue")
             chartGroup.selectAll(".Q4").attr("stroke","navy")
         ; break;
-        case 5: //specialized ebike ad
-        chartGroup.selectAll(".manual").remove()
-        chartGroup.selectAll(".gva").remove()
-        chartGroup.selectAll(".ebike").remove()
-        chartGroup.selectAll(".all").remove()
-        chartGroup.selectAll("g").remove()
-        graphic.selectAll(".title").remove()
+        // case 5: //specialized ebike ad
+        // chartGroup.selectAll(".manual").remove()
+        // chartGroup.selectAll(".gva").remove()
+        // chartGroup.selectAll(".ebike").remove()
+        // chartGroup.selectAll(".all").remove()
+        // chartGroup.selectAll("g").remove()
+        // graphic.selectAll(".title").remove()
 
-        chartGroup.append("foreignObject")
-        .attr("class","video")
-        .html("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/sJETokbfnNI\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>")
+        // chartGroup.append("foreignObject")
+        // .attr("class","video")
+        // .html("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/sJETokbfnNI\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>")
         
-        ; break;
+        // ; break;
     }
 }
 
