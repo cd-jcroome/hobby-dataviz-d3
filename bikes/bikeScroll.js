@@ -16,7 +16,7 @@ var chartGroup = d3.select(".chart").append("g").attr("class","chart2")
 var nestData = []
 var dict = []
 
-graphic.append("div")
+container.append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
     .style("position","absolute")
@@ -24,7 +24,8 @@ graphic.append("div")
     .style("background","whitesmoke")
     .style("padding","8px")
     .style("border-radius","8px")
-    .style("pointer-events","none");
+    .style("pointer-events","none")
+    .style("z-index","9999");
         
 text.append("div")
     .attr("class", "step")
@@ -55,12 +56,6 @@ text.append("div")
     .attr("data-step", "e")
     .html("<h2>Since this data stops in 2016, we can only guess how imports have performed over the past 3 years.</h2>")
     .style("height",stepHeight +"px");
-
-// text.append("div")
-//     .attr("class","step")
-//     .attr("data-step","f")
-//     .html("<h2>If ads like this are any indication, eBike sales are likely continuing their trend.</h2>")
-//     .style("height",stepHeight +"px");
 
     var parseDate = d3.timeParse("%d/%m/%Y");
     var formatYear = d3.timeFormat("%Y");
@@ -165,7 +160,7 @@ function handleStepEnter(response) {
             data = dict.data
 
             var y = d3.scaleLinear()
-            .domain([0,d3.max(dict.data, function(d){return d['Gross Value Added']})])
+            .domain([(d3.min(dict.data, function(d){return d['Gross Value Added']})*.9),(d3.max(dict.data, function(d){return d['Gross Value Added']})*1.1)])
             .range([(Math.floor(window.innerHeight / 2))*.95,0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format("$.2s"));
@@ -212,7 +207,7 @@ function handleStepEnter(response) {
                     .attr("stoke-width","1vw");
                     tooltip.transition().duration(600).style("opacity", .95);
                     tooltip.html(d.key+" Manual imports")
-                        .style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
+                        .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
                 })
             .on("mouseout", function() {
                     d3.select(this)
@@ -242,7 +237,7 @@ function handleStepEnter(response) {
                 tooltip.transition().duration(600).style("opacity", .95);
                 tooltip.html(d.quarter + " Manual Imports<br/>"
                 + d.year +": " + d['Manual Bikes'].toLocaleString("en", {style: "decimal"})
-                ).style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
+                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
             })// fade out tooltip on mouse out               
             .on("mouseout", function() {
                 d3.select(this)
@@ -262,7 +257,7 @@ function handleStepEnter(response) {
 
             data = dict.data
             var y = d3.scaleLinear()
-            .domain([0,d3.max(data, function(d){return d['Manual Bikes']})])
+            .domain([(d3.min(data, function(d){return d['Manual Bikes']})*.9),(d3.max(data, function(d){return d['Manual Bikes']})*1.1)])
             .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
@@ -306,7 +301,7 @@ function handleStepEnter(response) {
             data = dict.data
 
             var y = d3.scaleLinear()
-            .domain([0,d3.max(data, function(d){return d['e-Bikes']})])
+            .domain([0,(d3.max(data, function(d){return d['e-Bikes']})*1.1)])
             .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
@@ -347,7 +342,7 @@ function handleStepEnter(response) {
 
             data = dict.data
             var yAll = d3.scaleLinear()
-            .domain([0,d3.max(data, function(d){return d['Manual Bikes']})])
+            .domain([0,(d3.max(data, function(d){return d['Manual Bikes']})*1.1)])
             .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
         
             var yAxis = d3.axisLeft(yAll).tickFormat(d3.format(".2s"));
