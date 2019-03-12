@@ -5,7 +5,7 @@ var mainwidth = (window.innerWidth - margin.left - margin.right),
 
 var color = d3.scaleOrdinal().range(['orange','steelblue','grey','lightgrey','lightblue','whitesmoke'])
 
-var svg = d3.select(".mainviz").append("svg")
+var svg = d3.select(".scroll__graphic").append("svg")
 .attr("class","container")
 .attr("width", mainwidth + margin.left + margin.right)
 .attr("height", mainheight + margin.top + margin.bottom);

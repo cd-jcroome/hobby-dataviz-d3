@@ -11,7 +11,7 @@ var mainwidth = (window.innerWidth - margin.left - margin.right)
 var w = mainwidth * .05
   , h = mainheight * .5;
 
-var svg = d3.select(".mainviz").append("svg").attr("class", "container").attr("width", mainwidth + margin.left + margin.right).attr("height", mainheight + margin.bottom + margin.top);
+var svg = d3.select(".scroll__graphic").append("svg").attr("class", "container").attr("width", mainwidth + margin.left + margin.right).attr("height", mainheight + margin.bottom + margin.top);
 
 var chartGroup = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

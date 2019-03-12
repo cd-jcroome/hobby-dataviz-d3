@@ -5,7 +5,7 @@ var margin = { top: 20, right: 20, bottom: 60, left: 50 };
 var mainwidth = (window.innerWidth - margin.left - margin.right)*(2/3),
 	mainheight = (window.innerHeight*.5) - margin.top - margin.bottom;
 
-var svg = d3.select(".mainviz").append("svg")
+var svg = d3.select(".scroll__graphic").append("svg")
 	.attr("width", mainwidth + margin.left + margin.right)
 	.attr("height", mainheight + margin.top + margin.bottom);
 
