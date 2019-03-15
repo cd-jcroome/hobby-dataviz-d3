@@ -30,31 +30,31 @@ container.append("div")
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "a")
-    .html("<h1>UK Bicycle imports 2010 - 2016</h1>")
+    .html("<h2>UK Bicycle imports 2010 - 2016</h2>")
     .style("height",stepHeight +"px");
         
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "b")
-    .html("<h2>Bicycle imports in the UK were down or flat from 2010 - 2016, regardless of season.</h2>")
+    .html("<p>Bicycle imports in the UK were down or flat from 2010 - 2016, regardless of season.</p>")
     .style("height",stepHeight +"px");
 
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "c")
-    .html("<h2>Looking at Manual Bikes specifically, all four seasons were trending down over that same seven year time-span.</h2>")
+    .html("<p>Looking at Manual Bikes specifically, all four seasons were trending down over that same seven year time-span.</p>")
     .style("height",stepHeight +"px");
 
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "d")
-    .html("<h2>e-Bikes, however seem to be on the up & up.</h2>")
+    .html("<p>e-Bikes, however seem to be on the up & up.</p>")
     .style("height",stepHeight +"px");
 
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "e")
-    .html("<h2>Since this data stops in 2016, we can only guess how imports have performed over the past 3 years.</h2>")
+    .html("<p>Since this data stops in 2016, we can only guess how imports have performed over the past 3 years.</p>")
     .style("height",stepHeight +"px");
 
     var parseDate = d3.timeParse("%d/%m/%Y");
