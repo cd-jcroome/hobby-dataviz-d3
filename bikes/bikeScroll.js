@@ -7,7 +7,7 @@ var chart2 = chart.select('.chart2');
 var text = container.select('.scroll__text');
 var step = text.selectAll('.step');
 
-var margin = { top: 20, right: 20, bottom: 60, left: 50 };
+var margin = { top: 20, right: 0, bottom: 60, left: 40 };
 
 var stepHeight = Math.floor(window.innerHeight * 0.75)
 
@@ -76,18 +76,18 @@ function handleResize() {
 
     graphic
         .style('width', graphicWidth + 'px')
-        .style('height', window.innerHeight*.5 + 'px');
+        .style('height', window.innerHeight*.70 + 'px');
 
     var chartMargin = 5;
     var chartWidth = graphic.node().offsetWidth - chartMargin;
 
     chart
         .style('width', chartWidth + 'px')
-        .style('height', Math.floor(window.innerHeight / 2) + 'px');
+        .style('height', Math.floor(window.innerHeight*.70) + 'px');
 
     chart2
         .style('width', chartWidth + 'px')
-        .style('height', Math.floor(window.innerHeight / 2) + 'px');
+        .style('height', Math.floor(window.innerHeight*.70) + 'px');
 
     // 3. tell scrollama to update new element dimensions
     scroller.resize();
@@ -146,9 +146,9 @@ function handleStepEnter(response) {
             graphic.append("text")
                 .attr("class","title")
                 .style("position","absolute")
-                .style("top","50%")
+                .style("top","0%")
                 .style("right","50%")
-                .style("font-size","2vw")
+                .style("font-size","7vw")
                 .style("font-color","black")
                 .text("Scroll down for charts!")
         ;break;
@@ -161,13 +161,13 @@ function handleStepEnter(response) {
 
             var y = d3.scaleLinear()
             .domain([(d3.min(dict.data, function(d){return d['Gross Value Added']})*.9),(d3.max(dict.data, function(d){return d['Gross Value Added']})*1.1)])
-            .range([(Math.floor(window.innerHeight / 2))*.95,0]);
+            .range([(Math.floor(window.innerHeight*.65)),5]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format("$.2s"));
         
             var x = d3.scaleBand()
             .domain(dict.data.map(function(d){return d['year'];}))
-            .range([0, (graphic.node().offsetWidth -5)*.95])
+            .range([0, (graphic.node().offsetWidth - 5 - margin.left)])
         
             var xAxis = d3.axisBottom(x);
             
@@ -178,7 +178,7 @@ function handleStepEnter(response) {
         
             chartGroup.append("g")
             .attr("class","axis x")
-            .attr("transform","translate(0," + (Math.floor(window.innerHeight / 2))*.95 + ")")
+            .attr("transform","translate("+(margin.left)+"," + (Math.floor(window.innerHeight*.65)) + ")")
             .call(xAxis)
 
             var gvaLine = d3.line()
@@ -258,13 +258,13 @@ function handleStepEnter(response) {
             data = dict.data
             var y = d3.scaleLinear()
             .domain([(d3.min(data, function(d){return d['Manual Bikes']})*.9),(d3.max(data, function(d){return d['Manual Bikes']})*1.1)])
-            .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
+            .range([(Math.floor(window.innerHeight*.65)), 0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
         
             var x = d3.scaleBand()
             .domain(['2010','2011','2012','2013','2014','2015','2016'])
-            .range([0, (graphic.node().offsetWidth -5)*.95])
+            .range([0, (graphic.node().offsetWidth - 5 - margin.left)])
         
             var xAxis = d3.axisBottom(x);
             
@@ -302,13 +302,13 @@ function handleStepEnter(response) {
 
             var y = d3.scaleLinear()
             .domain([0,(d3.max(data, function(d){return d['e-Bikes']})*1.1)])
-            .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
+            .range([(Math.floor(window.innerHeight*.65)), 0]);
         
             var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s"));
         
             var x = d3.scaleBand()
             .domain(['2010','2011','2012','2013','2014','2015','2016'])
-            .range([0, (graphic.node().offsetWidth -5)*.95])
+            .range([0, (graphic.node().offsetWidth - 5 - margin.left)])
         
             var xAxis = d3.axisBottom(x);
                 
@@ -343,13 +343,13 @@ function handleStepEnter(response) {
             data = dict.data
             var yAll = d3.scaleLinear()
             .domain([0,(d3.max(data, function(d){return d['Manual Bikes']})*1.1)])
-            .range([(Math.floor(window.innerHeight / 2))*.95, 0]);
+            .range([(Math.floor(window.innerHeight*.65)), 0]);
         
             var yAxis = d3.axisLeft(yAll).tickFormat(d3.format(".2s"));
         
             var xAll = d3.scaleBand()
             .domain(['2010','2011','2012','2013','2014','2015','2016','2017','2018'])
-            .range([0, (graphic.node().offsetWidth -5)*.95])
+            .range([0, (graphic.node().offsetWidth - 5 - margin.left)])
         
             var xAxis = d3.axisBottom(xAll);
                 
@@ -395,7 +395,7 @@ function handleStepEnter(response) {
                 .attr("stoke-width","1vw");
                 tooltip.transition().duration(600).style("opacity", .95);
                 tooltip.html(d.key+" Manual Imports")
-                    .style("left", (d3.event.pageX - textWidth) + "px").style("top", (d3.event.pageY - 28) + "px");
+                    .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
             })
             .on("mouseout", function() {
                 d3.select(this)
@@ -439,19 +439,6 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".Q3").attr("stroke","blue")
             chartGroup.selectAll(".Q4").attr("stroke","navy")
         ; break;
-        // case 5: //specialized ebike ad
-        // chartGroup.selectAll(".manual").remove()
-        // chartGroup.selectAll(".gva").remove()
-        // chartGroup.selectAll(".ebike").remove()
-        // chartGroup.selectAll(".all").remove()
-        // chartGroup.selectAll("g").remove()
-        // graphic.selectAll(".title").remove()
-
-        // chartGroup.append("foreignObject")
-        // .attr("class","video")
-        // .html("<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/sJETokbfnNI\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>")
-        
-        // ; break;
     }
 }
 
