@@ -7,7 +7,7 @@ var chart2 = chart.select('.chart2');
 var text = container.select('.scroll__text');
 var step = text.selectAll('.step');
 
-var margin = { top: 20, right: 0, bottom: 60, left: 40 };
+var margin = { top: (window.innerWidth*.14), right: 0, bottom: 60, left: 40 };
 
 var stepHeight = Math.floor(window.innerHeight * 0.75)
 
@@ -72,8 +72,11 @@ function handleResize() {
     var bodyWidth = d3.select('body').node().offsetWidth;
     var textWidth = text.node().offsetWidth;
 
-    var graphicWidth = bodyWidth - textWidth;
-
+    switch(window.innerHeight > window.innerWidth) {
+        case false: var graphicWidth = bodyWidth - textWidth; break;
+        case true: var graphicWidth = bodyWidth; break;
+    }
+       
     graphic
         .style('width', graphicWidth + 'px')
         .style('height', window.innerHeight*.70 + 'px');
@@ -189,7 +192,9 @@ function handleStepEnter(response) {
             graphic.selectAll(".title").transition()
                 .text("Gross Value Added")
                 .style("top","0%")
-                .style("font-size","1.5vw")
+                .style("left","33%")
+                .style("width","200px")
+                .style("font-size","12px")
 
             chartGroup.selectAll(".line")
             .data(nestData)
@@ -206,8 +211,8 @@ function handleStepEnter(response) {
                     .attr("opacity",1)
                     .attr("stoke-width","1vw");
                     tooltip.transition().duration(600).style("opacity", .95);
-                    tooltip.html(d.key+" Manual imports")
-                        .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+                    tooltip.html("Gross Value Added in "+d.key)
+                        .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY) - (margin.top) + "px");
                 })
             .on("mouseout", function() {
                     d3.select(this)
@@ -235,9 +240,9 @@ function handleStepEnter(response) {
                 .attr("stoke-width",".2vw")
                 .style("opacity",1)
                 tooltip.transition().duration(600).style("opacity", .95);
-                tooltip.html(d.quarter + " Manual Imports<br/>"
-                + d.year +": " + d['Manual Bikes'].toLocaleString("en", {style: "decimal"})
-                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+                tooltip.html(d.quarter + " Gross Value Added<br/>"
+                + d.year +": " + (d['Gross Value Added']/1000000).toLocaleString("en", {style: "currency",currency: "GBP"})+"M"
+                ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - (margin.top)) + "px");
             })// fade out tooltip on mouse out               
             .on("mouseout", function() {
                 d3.select(this)
