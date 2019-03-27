@@ -30,7 +30,7 @@ container.append("div")
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "a")
-    .html("<h1>Spending Shifts</h1><br><h2>Across the Generations</h2>")
+    .html("<h1>Spending Shifts Across the Generations</h1>")
     .style("height",stepHeight +"px");
         
 text.append("div")
@@ -48,13 +48,13 @@ text.append("div")
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "d")
-    .html("<p>Traditionalists devote the highest percentage of their income to the pharmacy.</p>")
+    .html("<p>Across the four groups studied, traditionalists devote the highest percentage of their income to the pharmacy.</p>")
     .style("height",stepHeight +"px");
 
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "e")
-    .html("<p>Baby Boomers, who are the most likely to own a house, also spend the most on building supplies and furniture.</p>")
+    .html("<p>Baby Boomers, who are the most likely to own a house, also spend the most on building supplies and furniture across all four generations.</p>")
     .style("height",stepHeight +"px");
 
 text.append("div")
@@ -115,9 +115,41 @@ function handleResize() {
 }
 
 function getTransformData() {
-    d3.csv('https://query.data.world/s/rvirs26nc6vuxmsok6g2o4wr4644s6',function(data){
+    d3.tsv('https://gist.githubusercontent.com/Jasparr77/07daab41f9af3682c2de4c5f399664e0/raw/4d8ec48429ab0baa0abf8de52395a71631538321/genSpend.tsv',function(data){
         console.log('Raw Data:',data)
         dict.data = data
+
+        var zKeys = [];
+
+        data.forEach(function(d)
+            {if(zKeys.indexOf(d['Category']) === -1) {zKeys.push(d['Category']);}
+        });
+
+        var nestData = d3.nest()
+        .key(function(d){return d['Generation']})
+        .key(function(d){return d['Category']})
+        .rollup(function(leaves){
+            return d3.sum(leaves, function(d){return d['% of Spending']; })
+        })
+        .entries(data)
+        console.log("Nested",nestData)
+
+        var flatData = [];
+        nestData.forEach(function(d) {
+        var obj = { Generation: d.key }
+            d.values.forEach(function(f) {
+                obj[f.key] = f.value || 0;
+            });
+        flatData.push(obj);
+        });
+        console.log("now it's flat",flatData)
+
+        stackData = d3.stack().keys(zKeys)(flatData)
+        console.log("finally, a stack:",stackData)
+
+        dict.data = flatData
+        dict.zKeys = zKeys
+
     })
 }
 
@@ -126,27 +158,80 @@ function handleStepEnter(response) {
     // response = { element, direction, index }
     switch (response.index){
         case 0: // scroll prompt
+            yRange = (Math.floor(window.innerHeight*.65))
+            xRange = (graphic.node().offsetWidth - 5 - margin.left)
+            
             graphic.selectAll(".title").remove()
-
-            chartGroup.selectAll(".line").remove()
-            chartGroup.selectAll(".circle").remove()
+            chartGroup.selectAll("rect").remove()
             chartGroup.selectAll(".axis").remove()
         ; break;
-        case 1: // manual bike imports
+        case 1: // list out 4 generations - stacked area with no height
+            data = dict.data;
+            zKeys = dict.zKeys;
+
+            var y = d3.scaleLinear()
+                .domain([0,0])
+                .range([yRange,5])
+            var yAxis = d3.axisLeft(y);
+
+            var x = d3.scaleBand()
+                .domain(['Traditionalists','Baby Boomers','Generation X','Millenials'])
+                .range([0,xRange])
+            var xAxis = d3.axisBottom(x);
+
+            chartGroup.append("g")
+            .attr("class","axis y")
+            .attr("transform","translate("+(margin.left)+",0)")
+            .call(yAxis)
+            
+            chartGroup.append("g")
+            .attr("class","axis x")
+            .attr("transform","translate("+(margin.left)+"," + yRange + ")")
+            .call(xAxis)
+
+            chartGroup.append("g")
+                .selectAll("g")
+                .data(d3.stack().keys(zKeys)(data))
+                .enter().append("g")
+                // .attr("fill", function(d){return color(d.key);})
+                .attr("opacity",.8)
+                .attr("class",function(d){return d.key;})
+                .selectAll("rect")
+                .data(function(d) { return d; })
+                .enter().append("rect")
+                .attr("x", function(d) { return x(d.data.Generation); })
+                .attr("y", function(d) { return y(d[1]); })
+                .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+                .attr("width", x.bandwidth())
+
         ; break;
-        case 2:  // ebike imports
+        case 2:  // expand y axis to show all categories
+            var y = d3.scaleLinear()
+                .domain([0,1])
+                .range([yRange,5])
+            var yAxis = d3.axisLeft(y);
+
+            chartGroup.select(".y")
+                .transition()
+                .call(yAxis)
+
+            chartGroup.selectAll("rect")
+                .transition()
+                .attr("y",function(d){return y(d[1]);})
+                .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+
         ; break;
-        case 3: // expand years to 2019, add question marks?
+        case 3: // just Pharmacy
         ; break;
-        case 4: // expand years to 2019, add question marks?
+        case 4: // just home & building
         ; break;
-        case 5: // expand years to 2019, add question marks?
+        case 5: // just boomers, gen x & millenials
         ; break;
-        case 6: // expand years to 2019, add question marks?
+        case 6: // just milennials - group all others (not the big 3)?
         ; break;
-        case 7: // expand years to 2019, add question marks?
+        case 7: // back to stacked area - group categories in experiential, misc & responsible?
         ; break;
-        case 8: // expand years to 2019, add question marks?
+        case 8: // flip x axis
         ; break;
     }
 }
@@ -183,9 +268,9 @@ function init() {
         offset: '.74',
         debug: false,
     })
-        .onStepEnter(handleStepEnter)
-        .onContainerEnter(handleContainerEnter)
-        .onContainerExit(handleContainerExit);
+        .onStepEnter(handleStepEnter);
+        // .onContainerEnter(handleContainerEnter)
+        // .onContainerExit(handleContainerExit);
     // setup resize event
     window.addEventListener('resize', handleResize);
 }
