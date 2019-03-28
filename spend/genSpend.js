@@ -124,6 +124,7 @@ function getTransformData() {
         data.forEach(function(d)
             {if(zKeys.indexOf(d['Category']) === -1) {zKeys.push(d['Category']);}
         });
+        console.log('keys:',zKeys)
 
         var nestData = d3.nest()
         .key(function(d){return d['Generation']})
@@ -188,12 +189,16 @@ function handleStepEnter(response) {
             .attr("class","axis x")
             .attr("transform","translate("+(margin.left)+"," + yRange + ")")
             .call(xAxis)
+            
+            color = d3.scaleOrdinal().range(['grey','darkgrey','lightgrey','whitesmoke','hotpink','limegreen','steelblue']);
+
+            color.domain(zKeys);
 
             chartGroup.append("g")
                 .selectAll("g")
                 .data(d3.stack().keys(zKeys)(data))
                 .enter().append("g")
-                // .attr("fill", function(d){return color(d.key);})
+                .attr("fill", function(d){return color(d.key);})
                 .attr("opacity",.8)
                 .attr("class",function(d){return d.key;})
                 .selectAll("rect")
@@ -203,6 +208,7 @@ function handleStepEnter(response) {
                 .attr("y", function(d) { return y(d[1]); })
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
                 .attr("width", x.bandwidth())
+                .attr("transform","translate("+(margin.left)+",0)");
 
         ; break;
         case 2:  // expand y axis to show all categories
@@ -219,6 +225,43 @@ function handleStepEnter(response) {
                 .transition()
                 .attr("y",function(d){return y(d[1]);})
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+    
+                var horiLeg = d3.select(".legend").append("svg")
+                .attr("width", xRange)
+                .attr("height","30px")
+    
+                var dataL = 0;
+                var offset = 120;
+    
+                var legend = chartGroup.selectAll('.legend')
+                        .data(zKeys)
+                        .enter().append('g')
+                        .attr("class", "zKeys")
+                        .attr("transform", function (d, i) {
+                        if (i === 0) {
+                            dataL = d.length + offset 
+                            return "translate("+margin.left+","+yRange+")"
+                        } else { 
+                        var newdataL = dataL
+                        dataL +=  d.length + offset
+                        return "translate(" + (newdataL) + ","+yRange+")"
+                        }
+                    })
+                    legend.append('rect')
+                        .attr("x", 5)
+                        .attr("y", 5)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("stroke","black")
+                        .attr("stroke-width",".1vw")
+                        .style("fill", function (d, i) { return color(i) })
+                    
+                    legend.append('text')
+                        .attr("x", 20)
+                        .attr("y", 15)
+                    .text(function (d, i) { return d })
+                        .attr("class", "textselected")
+                        .style("text-anchor", "start")
 
         ; break;
         case 3: // just Pharmacy
