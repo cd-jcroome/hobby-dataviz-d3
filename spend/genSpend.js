@@ -228,10 +228,6 @@ function handleStepEnter(response) {
                 .attr("y",function(d){return y(d[1]);})
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     
-                var horiLeg = d3.select(".legend").append("svg")
-                .attr("width", xRange)
-                .attr("height","30px")
-    
                 var dataL = 0;
                 var offset = 150;
     
@@ -289,17 +285,19 @@ function handleStepEnter(response) {
 
         ; break;
         case 5: // just boomers, gen x & millenials
-        var x = d3.scaleBand()
-            .domain(['Baby Boomers','Generation X','Millenials'])
-            .range([0,xRange])
-            var xAxis = d3.axisBottom(x);
-        
-        chartGroup.selectAll(".x")
-            .transition()
-            .call(xAxis)
-        
-        chartGroup.select
-            
+            var x = d3.scaleBand()
+                .domain(['Baby Boomers','Generation X','Millenials'])
+                .range([0,xRange])
+                var xAxis = d3.axisBottom(x);
+                console.log(data)
+
+            chartGroup.selectAll(".x")
+                .transition()
+                .attr("transform","translate("+(0-(xRange/4)+margin.left)+","+yRange+")")
+
+            chartGroup.selectAll("rect")
+                .transition()
+                .attr("transform","translate("+(0-(xRange/4)+margin.left)+")")
         ; break;
         case 6: // just milennials - group all others (not the big 3)?
         ; break;
