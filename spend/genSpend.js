@@ -7,7 +7,7 @@ var chart2 = chart.select('.chart2');
 var text = container.select('.scroll__text');
 var step = text.selectAll('.step');
 
-var margin = { top: (window.innerWidth*.14), right: 0, bottom: 60, left: 40 };
+var margin = { top: (window.innerWidth*.14), right: 80, bottom: 60, left: 80 };
 
 var stepHeight = Math.floor(window.innerHeight * 0.75)
 
@@ -148,7 +148,7 @@ function getTransformData() {
         stackData = d3.stack().keys(zKeys)(flatData)
         console.log("finally, a stack:",stackData)
 
-        dict.data = flatData
+        dict.data = stackData
         dict.zKeys = zKeys
 
     })
@@ -172,7 +172,7 @@ function handleStepEnter(response) {
 
             var y = d3.scaleLinear()
                 .domain([0,0])
-                .range([yRange,5])
+                .range([yRange,yRange])
             var yAxis = d3.axisLeft(y);
 
             var x = d3.scaleBand()
@@ -183,11 +183,13 @@ function handleStepEnter(response) {
             chartGroup.append("g")
             .attr("class","axis y")
             .attr("transform","translate("+(margin.left)+",0)")
+            .style("font-size","2vw")
             .call(yAxis)
             
             chartGroup.append("g")
             .attr("class","axis x")
             .attr("transform","translate("+(margin.left)+"," + yRange + ")")
+            .style("font-size","2vw")
             .call(xAxis)
             
             color = d3.scaleOrdinal().range(['grey','darkgrey','lightgrey','whitesmoke','hotpink','limegreen','steelblue']);
@@ -196,11 +198,11 @@ function handleStepEnter(response) {
 
             chartGroup.append("g")
                 .selectAll("g")
-                .data(d3.stack().keys(zKeys)(data))
+                .data(data)
                 .enter().append("g")
                 .attr("fill", function(d){return color(d.key);})
-                .attr("opacity",.8)
-                .attr("class",function(d){return d.key;})
+                .attr("opacity",.5)
+                .attr("class",function(d){return d.key.substring(0,3);})
                 .selectAll("rect")
                 .data(function(d) { return d; })
                 .enter().append("rect")
@@ -214,7 +216,7 @@ function handleStepEnter(response) {
         case 2:  // expand y axis to show all categories
             var y = d3.scaleLinear()
                 .domain([0,1])
-                .range([yRange,5])
+                .range([yRange,50])
             var yAxis = d3.axisLeft(y);
 
             chartGroup.select(".y")
@@ -231,7 +233,7 @@ function handleStepEnter(response) {
                 .attr("height","30px")
     
                 var dataL = 0;
-                var offset = 120;
+                var offset = 150;
     
                 var legend = chartGroup.selectAll('.legend')
                         .data(zKeys)
@@ -240,11 +242,11 @@ function handleStepEnter(response) {
                         .attr("transform", function (d, i) {
                         if (i === 0) {
                             dataL = d.length + offset 
-                            return "translate("+margin.left+","+yRange+")"
+                            return "translate("+margin.left+",0)"
                         } else { 
                         var newdataL = dataL
                         dataL +=  d.length + offset
-                        return "translate(" + (newdataL) + ","+yRange+")"
+                        return "translate(" + (newdataL) + ",0)"
                         }
                     })
                     legend.append('rect')
@@ -252,8 +254,6 @@ function handleStepEnter(response) {
                         .attr("y", 5)
                         .attr("width", 10)
                         .attr("height", 10)
-                        .style("stroke","black")
-                        .attr("stroke-width",".1vw")
                         .style("fill", function (d, i) { return color(i) })
                     
                     legend.append('text')
@@ -265,10 +265,41 @@ function handleStepEnter(response) {
 
         ; break;
         case 3: // just Pharmacy
+
+        chartGroup.selectAll(".Pha")
+        .transition()
+        .style("stroke","black")
+        .style("stroke-width",".2vw")
+        .attr("opacity",1)
+                
         ; break;
         case 4: // just home & building
+        
+        chartGroup.selectAll(".Pha")
+        .transition()
+        .style("stroke","none")
+        .style("stroke-width","0")
+        .attr("opacity",.5)
+
+        chartGroup.selectAll(".Fur")
+        .transition()
+        .style("stroke","black")
+        .style("stroke-width",".2vw")
+        .attr("opacity",1)
+
         ; break;
         case 5: // just boomers, gen x & millenials
+        var x = d3.scaleBand()
+            .domain(['Baby Boomers','Generation X','Millenials'])
+            .range([0,xRange])
+            var xAxis = d3.axisBottom(x);
+        
+        chartGroup.selectAll(".x")
+            .transition()
+            .call(xAxis)
+        
+        chartGroup.select
+            
         ; break;
         case 6: // just milennials - group all others (not the big 3)?
         ; break;
