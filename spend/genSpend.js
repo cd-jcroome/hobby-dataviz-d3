@@ -301,17 +301,94 @@ function handleStepEnter(response) {
             var x = d3.scaleBand()
                 .domain(['Baby Boomers','Generation X','Millenials'])
                 .range([0,(xRange*.75)])
-                var xAxis = d3.axisBottom(x);
+            var xAxis = d3.axisBottom(x);
 
             chartGroup.selectAll(".x")
                 .transition()
                 .call(xAxis);
         ; break;
         case 6: // just milennials - group all others (not the big 3)?
+            chartGroup.selectAll(".Gas")
+                .transition()
+                .attr("fill","hotpink")
+                .style("opacity",.8)
+
+            chartGroup.selectAll(".Ele")
+                .transition()
+                .style("fill","blue")
+                .style("opacity",.8)
+
+            chartGroup.selectAll(".Res")
+                .transition()
+                .style("fill","hotpink")
+                .style("opacity",.8)
+
+            chartGroup.selectAll(".Generation")
+                .transition()
+                .attr("opacity","0")
+
+            var x = d3.scaleBand()
+                        .domain(['Millenials'])
+                        .range([0,xRange*.25])
+            var xAxis = d3.axisBottom(x);
+
+            chartGroup.selectAll(".x")
+                .transition()
+                .call(xAxis)
+                
+            chartGroup.selectAll(".bar")
+                .transition()
+                .attr("transform","translate("+(0-(xRange*.75))+")")
         ; break;
         case 7: // back to stacked area - group categories in experiential, misc & responsible?
+            chartGroup.selectAll(".bar")
+                .transition()
+                .attr("transform","translate("+0+")")
+                .style("opacity",.8)
+
+            chartGroup.selectAll(".Traditionalists")
+                .transition()
+                .style("opacity",1)
+
+                chartGroup.selectAll(".Generation")
+                    .transition()
+                    .style("opacity",1)
+
+            var x = d3.scaleBand()
+                        .domain(['Traditionalists','Baby Boomers','Generation X','Millenials'])
+                        .range([0,xRange])
+            var xAxis = d3.axisBottom(x);
+
+            chartGroup.selectAll(".x")
+                .transition()
+                .call(xAxis)
         ; break;
         case 8: // flip x axis
+
+            var x = d3.scaleBand()
+                        .domain(['Millenials','Generation X','Baby Boomers','Traditionalists'])
+                        .range([0,xRange])
+            var xAxis = d3.axisBottom(x);
+
+            chartGroup.selectAll(".x")
+                .transition()
+                .call(xAxis)
+
+            chartGroup.selectAll(".Millenials")
+                .transition()
+                .attr("x", x("Millenials"));
+
+            chartGroup.selectAll(".Traditionalists")
+                .transition()
+                .attr("x", x("Traditionalists"));
+
+            chartGroup.selectAll(".Baby")
+                .transition()
+                .attr("x", x("Baby Boomers"));
+
+            chartGroup.selectAll(".Generation")
+                .transition()
+                .attr("x", x("Generation X"));
         ; break;
     }
 }
