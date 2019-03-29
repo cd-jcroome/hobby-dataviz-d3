@@ -202,10 +202,11 @@ function handleStepEnter(response) {
                 .enter().append("g")
                 .attr("fill", function(d){return color(d.key);})
                 .attr("opacity",.5)
-                .attr("class",function(d){return d.key.substring(0,3);})
+                .attr("class",function(d,i){return "bar "+d.key.substring(0,3);})
                 .selectAll("rect")
                 .data(function(d) { return d; })
                 .enter().append("rect")
+                .attr("class",function(d){return d.data.Generation; })
                 .attr("x", function(d) { return x(d.data.Generation); })
                 .attr("y", function(d) { return y(d[1]); })
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
@@ -275,6 +276,7 @@ function handleStepEnter(response) {
         .transition()
         .style("stroke","none")
         .style("stroke-width","0")
+        .style("z-index","-99999")
         .attr("opacity",.5)
 
         chartGroup.selectAll(".Fur")
@@ -285,19 +287,25 @@ function handleStepEnter(response) {
 
         ; break;
         case 5: // just boomers, gen x & millenials
+            chartGroup.selectAll(".bar")
+                .transition()
+                .style("stroke","none")
+                .style("stroke-width","0")
+                .attr("opacity",".5")
+                .attr("transform","translate("+(0-(xRange/4))+")");
+
+            chartGroup.selectAll(".Traditionalists")
+                .transition()
+                .style("opacity","0");
+
             var x = d3.scaleBand()
                 .domain(['Baby Boomers','Generation X','Millenials'])
-                .range([0,xRange])
+                .range([0,(xRange*.75)])
                 var xAxis = d3.axisBottom(x);
-                console.log(data)
 
             chartGroup.selectAll(".x")
                 .transition()
-                .attr("transform","translate("+(0-(xRange/4)+margin.left)+","+yRange+")")
-
-            chartGroup.selectAll("rect")
-                .transition()
-                .attr("transform","translate("+(0-(xRange/4)+margin.left)+")")
+                .call(xAxis);
         ; break;
         case 6: // just milennials - group all others (not the big 3)?
         ; break;
