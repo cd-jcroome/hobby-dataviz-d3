@@ -173,7 +173,7 @@ function handleStepEnter(response) {
             var y = d3.scaleLinear()
                 .domain([0,0])
                 .range([yRange,yRange])
-            var yAxis = d3.axisLeft(y);
+            var yAxis = d3.axisLeft(y).tickValues([]);
 
             var x = d3.scaleBand()
                 .domain(['Traditionalists','Baby Boomers','Generation X','Millenials'])
@@ -215,10 +215,14 @@ function handleStepEnter(response) {
 
         ; break;
         case 2:  // expand y axis to show all categories
+            var formatPercent = d3.format(".0%")
+
             var y = d3.scaleLinear()
                 .domain([0,1])
                 .range([yRange,50])
-            var yAxis = d3.axisLeft(y);
+            var yAxis = d3.axisLeft(y)
+                .tickFormat(formatPercent)
+                .tickValues(['.25','.50','.75']);
 
             chartGroup.select(".y")
                 .transition()
@@ -230,7 +234,7 @@ function handleStepEnter(response) {
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     
                 var dataL = 0;
-                var offset = 150;
+                var offset = (xRange)/7;
     
                 var legend = chartGroup.selectAll('.legend')
                         .data(zKeys)
@@ -252,6 +256,7 @@ function handleStepEnter(response) {
                         .attr("width", 10)
                         .attr("height", 10)
                         .style("fill", function (d, i) { return color(i) })
+                        .style("opacity",".5")
                     
                     legend.append('text')
                         .attr("x", 20)
@@ -259,6 +264,7 @@ function handleStepEnter(response) {
                     .text(function (d, i) { return d })
                         .attr("class", "textselected")
                         .style("text-anchor", "start")
+                        .style("font-size","1vw")
 
         ; break;
         case 3: // just Pharmacy
@@ -268,6 +274,12 @@ function handleStepEnter(response) {
         .style("stroke","black")
         .style("stroke-width",".2vw")
         .attr("opacity",1)
+
+        chartGroup.selectAll(".label")
+            .data(data)
+            .enter().append("text")
+            .attr("class","label")
+            .text("test")
                 
         ; break;
         case 4: // just home & building
