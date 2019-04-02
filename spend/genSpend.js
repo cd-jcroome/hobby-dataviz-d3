@@ -13,6 +13,8 @@ var stepHeight = Math.floor(window.innerHeight * 0.75)
 
 var chartGroup = d3.select(".chart").append("g").attr("class","chart2")
 
+var formatPercent = d3.format(".0%")
+
 var nestData = []
 var dict = []
 
@@ -211,18 +213,32 @@ function handleStepEnter(response) {
                 .attr("y", function(d) { return y(d[1]); })
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
                 .attr("width", x.bandwidth())
-                .attr("transform","translate("+(margin.left)+",0)");
+                .attr("transform","translate("+(margin.left)+",0)")
+                
+            chartGroup.append("g")
+                .attr("class","labels")
+                .selectAll("g")
+                .data(data)
+                .enter().append("g")
+                .selectAll("text")
+                .data(function(d){ return d; })
+                .enter().append("text")
+                .attr("class",function(d){return "label "+d.data.Generation})
+                .attr("opacity",0)
+                .text(function(d) { return ((d[1] - d[0])*100).toFixed(1)+"%"; })
+                .attr("x",function(d) { return x(d.data.Generation); })
+                .attr("y", function(d) { return y(d[1]); })
+                .attr("transform","translate("+((margin.left)+(xRange/8))+",0)");
 
         ; break;
         case 2:  // expand y axis to show all categories
-            var formatPercent = d3.format(".0%")
 
             var y = d3.scaleLinear()
                 .domain([0,1])
                 .range([yRange,50])
             var yAxis = d3.axisLeft(y)
                 .tickFormat(formatPercent)
-                .tickValues(['.25','.50','.75']);
+                .tickValues(['.25','.50','.75','1']);
 
             chartGroup.select(".y")
                 .transition()
@@ -232,6 +248,11 @@ function handleStepEnter(response) {
                 .transition()
                 .attr("y",function(d){return y(d[1]);})
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+
+            chartGroup.selectAll(".label")
+                .transition()
+                .attr("y",function(d) { return y(d[1])+(y(d[0])-y(d[1]))/1.5; })
+                .attr("opacity",1)
     
                 var dataL = 0;
                 var offset = (xRange)/7;
@@ -274,12 +295,6 @@ function handleStepEnter(response) {
         .style("stroke","black")
         .style("stroke-width",".2vw")
         .attr("opacity",1)
-
-        chartGroup.selectAll(".label")
-            .data(data)
-            .enter().append("text")
-            .attr("class","label")
-            .text("test")
                 
         ; break;
         case 4: // just home & building
@@ -305,6 +320,10 @@ function handleStepEnter(response) {
                 .style("stroke-width","0")
                 .attr("opacity",".5")
                 .attr("transform","translate("+(0-(xRange/4))+")");
+
+            chartGroup.selectAll(".label")
+                .transition()
+                .attr("transform","translate("+(0-(xRange/12))+")");
 
             chartGroup.selectAll(".Traditionalists")
                 .transition()
@@ -351,12 +370,20 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".bar")
                 .transition()
                 .attr("transform","translate("+(0-(xRange*.75))+")")
+
+            chartGroup.selectAll(".label")
+                .transition()
+                .attr("transform","translate("+(0-(xRange*.60))+")")
         ; break;
         case 7: // back to stacked area - group categories in experiential, misc & responsible?
             chartGroup.selectAll(".bar")
                 .transition()
                 .attr("transform","translate("+0+")")
                 .style("opacity",.8)
+
+            chartGroup.selectAll(".label")
+                .transition()
+                .attr("transform","translate("+0+")")
 
             chartGroup.selectAll(".Traditionalists")
                 .transition()
