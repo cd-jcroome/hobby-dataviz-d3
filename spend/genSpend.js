@@ -185,13 +185,13 @@ function handleStepEnter(response) {
             chartGroup.append("g")
             .attr("class","axis y")
             .attr("transform","translate("+(margin.left)+",0)")
-            .style("font-size","2vw")
+            .style("font-size","1.5vw")
             .call(yAxis)
             
             chartGroup.append("g")
             .attr("class","axis x")
             .attr("transform","translate("+(margin.left)+"," + yRange + ")")
-            .style("font-size","2vw")
+            .style("font-size","1.5vw")
             .call(xAxis)
             
             color = d3.scaleOrdinal().range(['grey','darkgrey','lightgrey','whitesmoke','hotpink','limegreen','steelblue']);
@@ -203,8 +203,8 @@ function handleStepEnter(response) {
                 .data(data)
                 .enter().append("g")
                 .attr("fill", function(d){return color(d.key);})
-                .attr("opacity",.5)
-                .attr("class",function(d,i){return "bar "+d.key.substring(0,3);})
+                .attr("opacity",.8)
+                .attr("class",function(d){return "bar "+"bar"+d.key.substring(0,3);})
                 .selectAll("rect")
                 .data(function(d) { return d; })
                 .enter().append("rect")
@@ -216,14 +216,15 @@ function handleStepEnter(response) {
                 .attr("transform","translate("+(margin.left)+",0)")
                 
             chartGroup.append("g")
-                .attr("class","labels")
                 .selectAll("g")
                 .data(data)
                 .enter().append("g")
+                .attr("class",function(d){return "label "+"label"+d.key.substring(0,3);})
                 .selectAll("text")
                 .data(function(d){ return d; })
                 .enter().append("text")
-                .attr("class",function(d){return "label "+d.data.Generation})
+                .attr("class",function(d,i){return "labelGen "+"label"+d.data.Generation})
+                .style("font-family","sans-serif")
                 .attr("opacity",0)
                 .text(function(d) { return ((d[1] - d[0])*100).toFixed(1)+"%"; })
                 .attr("x",function(d) { return x(d.data.Generation); })
@@ -249,10 +250,10 @@ function handleStepEnter(response) {
                 .attr("y",function(d){return y(d[1]);})
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
 
-            chartGroup.selectAll(".label")
+            chartGroup.selectAll(".label, .labelGen")
                 .transition()
                 .attr("y",function(d) { return y(d[1])+(y(d[0])-y(d[1]))/1.5; })
-                .attr("opacity",1)
+                .attr("opacity",.5)
     
                 var dataL = 0;
                 var offset = (xRange)/7;
@@ -260,11 +261,11 @@ function handleStepEnter(response) {
                 var legend = chartGroup.selectAll('.legend')
                         .data(zKeys)
                         .enter().append('g')
-                        .attr("class", "zKeys")
+                        .attr("class", function(d){return "legend"+d.substring(0,3)})
                         .attr("transform", function (d, i) {
                         if (i === 0) {
                             dataL = d.length + offset 
-                            return "translate("+margin.left+",0)"
+                            return "translate(0,0)"
                         } else { 
                         var newdataL = dataL
                         dataL +=  d.length + offset
@@ -277,7 +278,7 @@ function handleStepEnter(response) {
                         .attr("width", 10)
                         .attr("height", 10)
                         .style("fill", function (d, i) { return color(i) })
-                        .style("opacity",".5")
+                        .style("opacity",.8)
                     
                     legend.append('text')
                         .attr("x", 20)
@@ -290,27 +291,65 @@ function handleStepEnter(response) {
         ; break;
         case 3: // just Pharmacy
 
-        chartGroup.selectAll(".Pha")
+        chartGroup.selectAll(".bar")
+        .transition()
+        .attr("opacity",".2")
+
+        chartGroup.selectAll(".label")
+        .transition()
+        .attr("opacity","0")
+
+        chartGroup.selectAll(".barPha")
         .transition()
         .style("stroke","black")
         .style("stroke-width",".2vw")
-        .attr("opacity",1)
+        .attr("opacity","1")
+
+        chartGroup.selectAll(".legendPha")
+        .transition()
+        .style("stroke","black")
+        .style("stroke-width",".05vw")
+        .attr("opacity","1")
+
+        chartGroup.selectAll(".labelPha, .labelGen")
+        .transition()
+        .attr("opacity","1")
                 
         ; break;
         case 4: // just home & building
         
-        chartGroup.selectAll(".Pha")
+        chartGroup.selectAll(".barPha")
         .transition()
         .style("stroke","none")
         .style("stroke-width","0")
         .style("z-index","-99999")
-        .attr("opacity",.5)
+        .attr("opacity",".2")
+        
+        chartGroup.selectAll(".legendPha")
+        .transition()
+        .style("stroke","none")
+        .style("stroke-width","0")
+        .attr("opacity",".8")
 
-        chartGroup.selectAll(".Fur")
+        chartGroup.selectAll(".barFur")
         .transition()
         .style("stroke","black")
         .style("stroke-width",".2vw")
-        .attr("opacity",1)
+        .attr("opacity","1")
+
+        chartGroup.selectAll(".legendFur")
+        .transition()
+        .style("stroke","black")
+        .style("stroke-width",".05vw")
+        .attr("opacity","1")
+
+        chartGroup.selectAll(".labelPha")
+        .transition()
+        .attr("opacity","0")
+
+        chartGroup.selectAll(".labelFur, .labelGen")
+        .transition()
+        .attr("opacity","1")
 
         ; break;
         case 5: // just boomers, gen x & millenials
