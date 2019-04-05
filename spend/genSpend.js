@@ -161,14 +161,18 @@ function handleStepEnter(response) {
     // response = { element, direction, index }
     switch (response.index){
         case 0: // scroll prompt
-            yRange = (Math.floor(window.innerHeight*.65))
+            yRange = (Math.floor(window.innerHeight*.6))
             xRange = (graphic.node().offsetWidth - 5 - margin.left)
             
             graphic.selectAll(".title").remove()
             chartGroup.selectAll("rect").remove()
             chartGroup.selectAll(".axis").remove()
+            chartGroup.selectAll(".label").remove()
+            chartGroup.selectAll(".legend").remove()
         ; break;
         case 1: // list out 4 generations - stacked area with no height
+            chartGroup.selectAll(".legend").remove()
+
             data = dict.data;
             zKeys = dict.zKeys;
 
@@ -203,7 +207,7 @@ function handleStepEnter(response) {
                 .data(data)
                 .enter().append("g")
                 .attr("fill", function(d){return color(d.key);})
-                .attr("opacity",.8)
+                .style("opacity",.8)
                 .attr("class",function(d){return "bar "+"bar"+d.key.substring(0,3);})
                 .selectAll("rect")
                 .data(function(d) { return d; })
@@ -214,6 +218,7 @@ function handleStepEnter(response) {
                 .attr("height", function(d) { return y(d[0]) - y(d[1]); })
                 .attr("width", x.bandwidth())
                 .attr("transform","translate("+(margin.left)+",0)")
+                .style("z-index","-999999");
                 
             chartGroup.append("g")
                 .selectAll("g")
@@ -223,13 +228,15 @@ function handleStepEnter(response) {
                 .selectAll("text")
                 .data(function(d){ return d; })
                 .enter().append("text")
-                .attr("class",function(d,i){return "labelGen "+"label"+d.data.Generation})
+                .attr("class",function(d){return "labelGen "+"label"+d.data.Generation})
                 .style("font-family","sans-serif")
-                .attr("opacity",0)
+                .style("opacity",0)
                 .text(function(d) { return ((d[1] - d[0])*100).toFixed(1)+"%"; })
                 .attr("x",function(d) { return x(d.data.Generation); })
                 .attr("y", function(d) { return y(d[1]); })
-                .attr("transform","translate("+((margin.left)+(xRange/8))+",0)");
+                .attr("text-anchor","middle")
+                .attr("transform","translate("+((margin.left)+(xRange/8))+",0)")
+                .style("z-index","-999999");
 
         ; break;
         case 2:  // expand y axis to show all categories
@@ -253,7 +260,7 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".label, .labelGen")
                 .transition()
                 .attr("y",function(d) { return y(d[1])+(y(d[0])-y(d[1]))/1.5; })
-                .attr("opacity",.5)
+                .style("opacity",.8)
     
             var dataL = 0;
             var offset = (xRange)/7;
@@ -286,28 +293,46 @@ function handleStepEnter(response) {
             .text(function (d, i) { return d })
                 .attr("class", "textselected")
                 .style("text-anchor", "start")
-                .style("font-size","1vw")
+                .style("font-size",".75vw")
+                .style("font-family","sans-serif")
+
+            chartGroup.selectAll(".bar")
+            .transition()
+            .style("opacity",.8);
+
+            chartGroup.selectAll(".label")
+            .transition()
+            .style("opacity",.8)
+
+            chartGroup.selectAll(".barPha")
+            .transition()
+            .style("stroke","none")
 
         ; break;
         case 3: // just Pharmacy
 
             chartGroup.selectAll(".bar")
             .transition()
-            .attr("opacity",".2")
+            .style("opacity",.2)
+            .style("z-index","-999999");
 
             chartGroup.selectAll(".label")
             .transition()
-            .attr("opacity","0")
+            .style("opacity",0.0001)
 
             chartGroup.selectAll(".barPha")
             .transition()
             .style("stroke","black")
             .style("stroke-width",".2vw")
-            .attr("opacity","1")
+            .style("opacity",1)
 
             chartGroup.selectAll(".labelPha, .labelGen")
             .transition()
-            .attr("opacity","1")
+            .style("opacity",1)
+
+            chartGroup.selectAll(".barFur")
+            .transition()
+            .style("stroke","none")
                 
         ; break;
         case 4: // just home & building
@@ -317,42 +342,46 @@ function handleStepEnter(response) {
             .style("stroke","none")
             .style("stroke-width","0")
             .style("z-index","-99999")
-            .attr("opacity",".2")
+            .style("opacity",.2)
 
             chartGroup.selectAll(".barFur")
             .transition()
             .style("stroke","black")
             .style("stroke-width",".2vw")
-            .attr("opacity","1")
+            .style("opacity",1)
 
             chartGroup.selectAll(".labelPha")
             .transition()
-            .attr("opacity","0")
+            .style("opacity",0.0001)
 
             chartGroup.selectAll(".labelFur, .labelGen")
             .transition()
-            .attr("opacity","1")
+            .style("opacity",1)
 
         ; break;
         case 5: // just boomers, gen x & millenials
-            chartGroup.selectAll(".label")
+            chartGroup.selectAll(".label, .labelGen")
                 .transition()
-                .attr("opacity","100%")
+                .style("opacity",800)
 
             chartGroup.selectAll(".bar")
                 .transition()
                 .style("stroke","none")
                 .style("stroke-width","0")
-                .attr("opacity",".5")
+                .style("opacity",.8)
                 .attr("transform","translate("+(0-(xRange/4))+")");
 
             chartGroup.selectAll(".label")
                 .transition()
                 .attr("transform","translate("+(0-(xRange/4))+")");
 
+            chartGroup.selectAll(".labelTraditionalists")
+                .transition()
+                .style("opacity",0.0001)
+
             chartGroup.selectAll(".Traditionalists")
                 .transition()
-                .style("opacity","0");
+                .style("opacity",0.0001);
 
             var x = d3.scaleBand()
                 .domain(['Baby Boomers','Generation X','Millenials'])
@@ -366,11 +395,11 @@ function handleStepEnter(response) {
         case 6: // just milennials - group all others (not the big 3)?
             chartGroup.selectAll(".Millenials")
                 .transition()
-                .style("opacity","80%")
+                .style("opacity",.8)
 
-            chartGroup.selectAll(".Generation")
+            chartGroup.selectAll(".Generation, .Baby, .labelGeneration")
                 .transition()
-                .attr("opacity","0")
+                .style("opacity",0.0001)
 
             var x = d3.scaleBand()
                         .domain(['Millenials'])
@@ -399,13 +428,9 @@ function handleStepEnter(response) {
                 .transition()
                 .attr("transform","translate("+0+")")
 
-            chartGroup.selectAll(".Traditionalists")
+            chartGroup.selectAll(".Traditionalists, .labelTraditionalists, .Generation, .labelGeneration, .Baby")
                 .transition()
-                .style("opacity",1)
-
-                chartGroup.selectAll(".Generation")
-                    .transition()
-                    .style("opacity",1)
+                .style("opacity",.8)
 
             var x = d3.scaleBand()
                         .domain(['Traditionalists','Baby Boomers','Generation X','Millenials'])
@@ -426,8 +451,6 @@ function handleStepEnter(response) {
             chartGroup.selectAll(".x")
                 .transition()
                 .call(xAxis)
-
-            
 
             chartGroup.selectAll(".Millenials, .labelMillenials")
                 .transition()
