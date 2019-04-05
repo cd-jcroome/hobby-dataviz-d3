@@ -360,7 +360,7 @@ function handleStepEnter(response) {
 
         ; break;
         case 5: // just boomers, gen x & millenials
-            chartGroup.selectAll(".label, .labelGen")
+            chartGroup.selectAll(".label, .labelGen, .labelPha")
                 .transition()
                 .style("opacity",800)
 
