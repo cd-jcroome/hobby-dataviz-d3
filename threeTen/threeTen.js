@@ -13,9 +13,6 @@ var stepHeight = Math.floor(window.innerHeight * 0.75)
 
 var chartGroup = d3.select(".chart").append("g").attr("class","chart2")
 
-yRange = (Math.floor(window.innerHeight*.6))
-xRange = (graphic.node().offsetWidth - 5 - margin.left)
-
 var formatPercent = d3.format(".0%")
 
 var formatDate = d3.timeFormat("%Y-%m-%e")
@@ -44,7 +41,7 @@ text.append("div")
     .attr("class", "step")
     .attr("data-step", "a")
     .attr("id","formholder")
-    .html("<Form Name=\"userDOBForm\" onsubmit=\"init();return false\">When were you born?:<input type=\"date\"name=\"userDobInput\" ID=\"userDobInput\" value=\""+formatDate(new Date())+"\" min=\""+formatDate(parseDate(1902-01-01))+"\"max=\""+formatDate(new Date())+"\"><input type=\"submit\"value=\"Submit\"></Form>");
+    .html("<Form Name=\"userDOBForm\" onsubmit=\"init();return false\">When were you born?<input type=\"date\"name=\"userDobInput\" ID=\"userDobInput\" value=\""+formatDate(new Date())+"\" min=\""+formatDate(parseDate(1902-01-01))+"\"max=\""+formatDate(new Date())+"\"></br><input type=\"submit\"value=\"Submit\"></Form>");
 
 var tooltip = d3.select(".tooltip");
 
@@ -55,6 +52,9 @@ function handleResize() {
     // 2. update width/height of graphic element
     var bodyWidth = d3.select('body').node().offsetWidth;
     var textWidth = text.node().offsetWidth;
+
+    yRange = (Math.floor(window.innerHeight*.65))
+    xRange = bodyWidth *.8
 
     switch(window.innerHeight > window.innerWidth) {
         case false: var graphicWidth = bodyWidth - textWidth; break;
@@ -91,8 +91,8 @@ function getUserAge() {
         wk = (i*7),
         weeks.push([
             d3.timeDay.offset(userDob,wk),
-            formatWeek(d3.timeWeek(d3.timeDay.offset(userDob,wk))),
-            formatYear(d3.timeYear(d3.timeDay.offset(userDob,wk)))-formatYear(d3.timeYear(userDob)),
+            (formatWeek(d3.timeWeek(d3.timeDay.offset(userDob,wk)))),
+            (formatYear(d3.timeYear(d3.timeDay.offset(userDob,wk)))-formatYear(d3.timeYear(userDob))),
             (i < Math.floor(d3.timeDay.count(userDob,now)/7)+1) ? "past" : "present"
     ]);
       }
@@ -107,46 +107,64 @@ function handleStepEnter(response) {
         case 0: 
             d3.selectAll(".title").remove()
             d3.selectAll("circle").remove()
+            d3.selectAll(".axis").remove()
             var x = d3.scaleLinear()
                     .domain([d3.min(weeks, function(d){return d[2];}),d3.max(weeks, function(d){return d[2];})])
                     .range([0,xRange])
-            var xAxis = d3.axisBottom(x).tickValues([]);
+            var xAxis = d3.axisBottom(x).tickValues(['5','10','15','20','25','30','35','40','45','50','55','60','65','70','75','80','85','90']);
             
             var y = d3.scaleLinear()
-                    .domain([d3.min(weeks, function(d){return d[1];}),d3.max(weeks, function(d){return d[1];})])
+                    .domain([0,54])
                     .range([yRange,0])
-            var yAxis = d3.axisLeft(y).tickValues([]);
+            var yAxis = d3.axisLeft(y).tickValues(['13','26','39','52']);
             
             chartGroup.append("g")
             .attr("class","axis y")
             .attr("transform","translate("+(margin.left)+",0)")
-            .call(yAxis)
+            .style("stroke","none")
+            .call(yAxis);
         
             chartGroup.append("g")
             .attr("class","axis x")
             .attr("transform","translate("+(margin.left)+"," + (Math.floor(window.innerHeight*.65)) + ")")
-            .call(xAxis)
+            .style("stroke","none")
+            .call(xAxis);
 
-            graphic.append("text")
-                .attr("class","title")
-                .style("position","absolute")
-                .style("top","0%")
-                .style("right","50%")
-                .style("font-size","2vw")
-                .style("font-color","black")
-                .text((d3.timeDay.count(userDob,now) < 1) ? "When were you born?" : "wow.")
+            (d3.timeDay.count(userDob,now) < 1) ?    
+                text.append("text")
+                    .attr("class","title")
+                    .style("position","absolute")
+                    .style("top","0%")
+                    .style("right","50%")
+                    .style("font-size","2vw")
+                    .style("font-color","black")
+                    .text("When were you born?")
+                :
+                text.append("text")
+                    .attr("class","title")
+                    .style("position","absolute")
+                    .style("top","0%")
+                    .style("right","50%")
+                    .style("font-size","2vw")
+                    .style("font-color","black")
+                    .text("You've lived "+Math.floor(d3.timeDay.count(userDob,now)/7)+" weeks.")
+            ;
             
-                graphic.selectAll("circle")
-                    .data(weeks)
-                    .enter().append("circle")
-                    .attr("class",function(d){return d[2]+d[1];})
-                    .attr("id",function(d){return d[0];})
-                    .attr("x",function(d){return x(d[2]);})
-                    .attr("y",function(d){return y(d[1]);})
-                    .attr("r",".02vw")
-                    .attr("fill","grey")
-                ;
-
+            chartGroup.selectAll("circle")
+                .data(weeks)
+                .enter().append("circle")
+                .attr("class",function(d){return d[2]+d[1];})
+                .attr("id",function(d){return d[0];})
+                .attr("cx",function(d){return x(d[2]);})
+                .attr("cy",function(d){return y(d[1]);})
+                .attr("r",".3vw")
+                .attr("fill","lightgrey")
+                .attr("transform","translate("+(margin.left)+",0)")
+                
+            chartGroup.selectAll("circle")
+                .transition()
+                .attr("fill",function(d){return (d[3] == "past")? "steelblue":"lightgrey"})
+            ;
         ; break;
     }
 }
@@ -180,7 +198,7 @@ function init() {
         graphic: '.scroll__graphic',
         text: '.scroll__text',
         step: '.scroll__text .step',
-        offset: '.74',
+        offset: '.8',
         debug: false,
     })
         .onStepEnter(handleStepEnter);
