@@ -5,7 +5,7 @@ var graphic = container.select('.scroll__graphic');
 var chart = graphic.select('.chart');
 var chart2 = chart.select('.chart2');
 var text = container.select('.scroll__text');
-var step = text.selectAll('.step');
+var step = text.select('.step');
 
 var margin = { top: (window.innerWidth*.14), right: 80, bottom: 60, left: 80 };
 
@@ -25,6 +25,7 @@ var nestData = []
 var dict = []
 var weeks =[]
 var now = new Date;
+var lifeExp = 76
 
 container.append("div")
     .attr("class", "tooltip")
@@ -54,7 +55,7 @@ function handleResize() {
     var textWidth = text.node().offsetWidth;
 
     yRange = (Math.floor(window.innerHeight*.65))
-    xRange = bodyWidth *.8
+    xRange = bodyWidth *.65
 
     switch(window.innerHeight > window.innerWidth) {
         case false: var graphicWidth = bodyWidth - textWidth; break;
@@ -87,7 +88,7 @@ function getUserAge() {
     // weeks = d3.timeDay.range(userDob,userDod,7)
     weeks = []
     weeksAlive = Math.floor(d3.timeDay.count(userDob,now)/7)
-    for (var i = 0, len = (90*52); i < len; i++) {
+    for (var i = 0, len = (lifeExp*52); i < len; i++) {
         wk = (i*7),
         weeks.push([
             d3.timeDay.offset(userDob,wk),
@@ -108,30 +109,41 @@ function handleStepEnter(response) {
             d3.selectAll(".title").remove()
             d3.selectAll("circle").remove()
             d3.selectAll(".axis").remove()
+
             var x = d3.scaleLinear()
                     .domain([d3.min(weeks, function(d){return d[2];}),d3.max(weeks, function(d){return d[2];})])
-                    .range([0,xRange])
-            var xAxis = d3.axisBottom(x).tickValues(['5','10','15','20','25','30','35','40','45','50','55','60','65','70','75','80','85','90']);
+                    .range([10,xRange])
+            var xAxis = d3.axisBottom(x).tickValues(['5','10','15','20','25','30','35','40','45','50','55','60','65','70']);
             
             var y = d3.scaleLinear()
                     .domain([0,54])
-                    .range([yRange,0])
+                    .range([(yRange-30),0])
             var yAxis = d3.axisLeft(y).tickValues(['13','26','39','52']);
-            
-            chartGroup.append("g")
-            .attr("class","axis y")
-            .attr("transform","translate("+(margin.left)+",0)")
-            .style("stroke","none")
-            .call(yAxis);
         
             chartGroup.append("g")
-            .attr("class","axis x")
-            .attr("transform","translate("+(margin.left)+"," + (Math.floor(window.innerHeight*.65)) + ")")
-            .style("stroke","none")
-            .call(xAxis);
+                .attr("class","axis x")
+                .attr("transform","translate("+(margin.left)+"," + (yRange-25) + ")")
+                // .style("line stroke","white")
+                .call(xAxis);
+            chartGroup.append("text")
+                .attr("transform","translate("+(xRange/2)+","+ (yRange+5)+")")
+                .style("text-anchor","middle")
+                .text("years");
+            
+            chartGroup.append("g")
+                .attr("class","axis y")
+                .attr("transform","translate("+(margin.left)+",0)")
+                // .style("line stroke","white")
+                .call(yAxis);
+            chartGroup.append("text")
+                .attr("y",margin.left-30)
+                .attr("x",0-(yRange/2))
+                .attr("transform","rotate(-90)")
+                .style("text-anchor","middle")
+                .text("weeks");
 
             (d3.timeDay.count(userDob,now) < 1) ?    
-                text.append("text")
+                text.append("div").append("text")
                     .attr("class","title")
                     .style("position","absolute")
                     .style("top","0%")
@@ -140,7 +152,7 @@ function handleStepEnter(response) {
                     .style("font-color","black")
                     .text("When were you born?")
                 :
-                text.append("text")
+                text.append("div").append("text")
                     .attr("class","title")
                     .style("position","absolute")
                     .style("top","0%")
