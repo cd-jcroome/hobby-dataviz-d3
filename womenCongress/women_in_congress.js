@@ -72,8 +72,8 @@ d3.csv("https://gist.githubusercontent.com/Jasparr77/eb2c35c5ba28e5480569cb87b1e
 		.attr("text-anchor","end")
 		.attr("transform", "rotate(-90)")
 });
-function init() {
-	window.addEventListener('resize', debounce(resize, 150))
-}
+// function init() {
+// 	window.addEventListener('resize', debounce(resize, 150))
+// }
 
-init()
+// init()

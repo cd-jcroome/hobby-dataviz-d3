@@ -32,7 +32,7 @@ container.append("div")
 text.append("div")
     .attr("class", "step")
     .attr("data-step", "a")
-    .html("<h1>Spending Shifts Across the Generations</h1>")
+    .html("<p>Spending Shifts Across the Generations</p>")
     .style("height",stepHeight +"px");
         
 text.append("div")
