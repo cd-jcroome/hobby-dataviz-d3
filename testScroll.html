@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VizLab | Scroll</title>
+<link rel="stylesheet" type="text/css" href="../hobby-dataviz-portfolio/static/vizzes/style.css">
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+<header class="header"id="headerVizDetail">
+          <a href="{% url 'vizzes:index' %}"><div id="vizdetailTitleBox"><p class="title"id="vizdetailTitle">JC</p></div></a>
+          <p class="vizVerbose">VizTitle goes here</p> 
+          <div class="linksbar"> 
+               <a class="headerlink" href="{% url 'vizzes:VizList' %}">back</a>
+          </div>
+</header>
+     <section id="scroll">
+          <div class="vizDesc"><p>Description goes here</p></div>
+          <div class="scroll__graphic sticky"><svg class="chart"></svg></div>
+          <div class="scroll__text"></div>
+          <script src="https://unpkg.com/scrollama"></script>
+          <script src="https://russellgoldenberg.github.io/scrollama/stickyfill.min.js"></script>
+          <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+          <script type="text/javascript" src="https://d3js.org/topojson.v2.min.js"></script>
+          <script type="text/javascript" src="./threeTen/threeTen.js"></script>
+          <div class="footer">
+               <p>Added to DB? Not yet.</p>
+          </div>   
+     </section>
+     <div class ="footerContactBar">
+         <div class="footercontactbutton empty"></div>
+         <div class="footercontactbutton email"><a href="mailto:jjcroome@gmail.com"target="_blank"><img src="../hobby-dataviz-portfolio/static/images/email_PNG15.png"></a></div>
+         <div class="footercontactbutton linkedin"><a href="https://www.linkedin.com/in/jaspercroome/"target="_blank"><img src="../hobby-dataviz-portfolio/static/images/In-Blue-96.png"alt="jasper's linkedin"></a></div>
+         <div class="footercontactbutton twitter"><a href="https://twitter.com/CrasperJoome"target="_blank"><img src="../hobby-dataviz-portfolio/static/images/Twitter_Logo_Blue.png"alt="jasper's twitter"></a></div>
+         <div class="footercontactbutton github"><a href="https://github.com/Jasparr77"target="_blank"><img src="../hobby-dataviz-portfolio/static/images/GitHub-Mark-64px.png"alt="jasper's GitHub"></a></div>
+         <div class="footercontactbutton empty"></div>
+     </div>
