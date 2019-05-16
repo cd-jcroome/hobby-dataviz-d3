@@ -104,7 +104,8 @@ chartGroup.selectAll(".line")
             .attr("opacity","100%");
             div.transition().duration(200).style("opacity", .9);
             div.html(d.key)
-            .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+            .style("left", (d3.event.pageX - margin.left) + "px")
+            .style("top", (d3.event.pageY -(mainheight/10)) + "px");
           })
         .on("mouseout", function() {
           d3.select(this)

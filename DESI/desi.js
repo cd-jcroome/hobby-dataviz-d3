@@ -5,9 +5,9 @@ var margin = {
     left: window.innerWidth*.02 };
 
 var mainwidth = (window.innerWidth - margin.left - margin.right),
-	mainheight = (window.innerHeight*.6) - margin.top - margin.bottom;
+	mainheight = (window.innerHeight*.8) - margin.top - margin.bottom;
 
-var svg = d3.select(".scroll__graphic").append("svg")
+var svg = d3.select("#staticBody").append("svg")
 .attr("class","container")
 .attr("width", mainwidth + margin.left + margin.right)
 .attr("height", mainheight + margin.top + margin.bottom);
@@ -15,7 +15,7 @@ var svg = d3.select(".scroll__graphic").append("svg")
 var chartGroup = svg.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div")
+var div = d3.select("#staticBody").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
     .style("position","absolute")
@@ -68,6 +68,7 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
     var xAxis = d3.axisBottom(x);
 
     var yearline = d3.line()
+        .curve(d3.curveMonotoneX)
         .x(function(d) {return x(d.key);})
         .y(function(d) {return y(d.value.totalScore);});
 
@@ -78,9 +79,23 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         .attr("class",function(d){return d.key;})
         .attr("d",function(d){ return yearline(d.values);})
         .attr("fill","none")
-        .attr("stroke-width",".01vw")
-        .attr("stroke","grey")
+        .attr("stroke-width",".05vw")
+        .attr("stroke","lightgrey")
         .attr("transform","translate("+mainwidth*.1+",0)")
+        .on("mouseover", function(d) {
+            d3.select(this)
+            .attr("id","selectedPath")
+            .attr("stroke-width","1vw")
+            div.transition().duration(200).style("opacity", .9);
+            div.html(d.key)
+            .style("left", (d3.event.pageX - margin.left) + "px").style("top", (d3.event.pageY - (margin.top + margin.bottom + (mainheight/10)) + "px"));
+          })
+        .on("mouseout", function() {
+          d3.select(this)
+          .attr("id","selectedPath")
+          .attr("stroke-width",".05vw")
+          div.transition().duration(500).style("opacity", 0);
+          });
 
     chartGroup.selectAll("circle")
     .data(nested_data)
@@ -91,7 +106,7 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
     .attr("class",function(d){return d.country;})
     .style("opacity",.5)
     .attr("r", ".5vw")
-    .attr("stroke","white")
+    .attr("stroke","lightgrey")
     .attr("stroke-width", ".1vw")
     .attr("transform","translate("+mainwidth*.1+",0)")
     .on("mouseover", function(d) {
@@ -104,46 +119,16 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/673faca63682a4c8788025ac021
         .attr("stoke-width",".1vw");
         div.transition().duration(200).style("opacity", .95);
         div.html(d.country + " | "+ d.year +"<br/>"
-        +"Weighted DESI: "+ d.totalScore.toLocaleString("en", {style: "decimal",minimumFractionDigits: 2})+"<br/>"
-        // +"Rank: "+(i)
-        ).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-    })// fade out tooltip on mouse out               
+        +"Weighted DESI: "+ d.totalScore.toLocaleString("en", {style: "decimal",minimumFractionDigits: 2})+"<br/>")
+            .style("left", (d3.event.pageX - margin.left) + "px").style("top", (d3.event.pageY - (margin.top + margin.bottom + (mainheight/10)) + "px"));
+        })// fade out tooltip on mouse out               
     .on("mouseout", function() {
         d3.select(this)
         .attr("r",".5vw")
-        .attr("fill",function(d,i){return greys(d.number);})
+        .attr("fill",function(d,i){return color(d.number);})
         .style("opacity",.5);
         div.transition().duration(500).style("opacity", 0);
     });
-
-    chartGroup.selectAll(".line")
-    .data(line_data)
-    .enter()
-    .append("path")
-        // .attr("class",function(d){return d.key+"Line"})
-        .attr("d", function(d){
-            return line(d.values);
-        })
-		.attr("fill","none")
-        .attr("stroke","black")
-        .attr("stroke-width", ".1vw")
-        .attr("opacity",".5")
-        .on("mouseover", function(d) {
-            d3.select(this)
-            .attr("id","selectedPath")
-            .attr("stroke-width","1vw")
-            .attr("opacity","100%");
-            div.transition().duration(200).style("opacity", .9);
-            div.html(d.key)
-            .style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
-          })
-        .on("mouseout", function() {
-          d3.select(this)
-          .attr("id","selectedPath")
-          .attr("stroke-width",".1vw")
-          .attr("opacity",".5"),
-          div.transition().duration(500).style("opacity", 0);
-          });
 
     chartGroup.append("g")
     .attr("class","axis y")
