@@ -7,7 +7,7 @@ var margin = {
 var mainwidth = (window.innerWidth - margin.left - margin.right),
 	mainheight = (window.innerHeight*.6) - margin.top - margin.bottom;
 
-var svg = d3.select(".scroll__graphic").append("svg")
+var svg = d3.select("#staticBody").append("svg")
 .attr("class","container")
 .attr("width", mainwidth + margin.left + margin.right)
 .attr("height", mainheight + margin.top + margin.bottom);
@@ -15,7 +15,7 @@ var svg = d3.select(".scroll__graphic").append("svg")
 var chartGroup = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", 0).style("position","absolute").style("text-align","center").style("background","whitesmoke").style("padding","8px").style("border-radius","8px").style("pointer-events","none");
+var div = d3.select("#staticBody").append("div").attr("class", "tooltip").style("opacity", 0).style("position","absolute").style("text-align","center").style("background","whitesmoke").style("padding","8px").style("border-radius","8px").style("pointer-events","none");
     
 d3.csv('https://gist.githubusercontent.com/Jasparr77/0e278e24b4b8af013f2ba6d71ec0c979/raw/74e69a442eb4a2cdaf3152f63b91a54d7e83ceb0/FOTP.csv', function(data){
 
@@ -96,6 +96,7 @@ chartGroup.selectAll(".line")
         .attr("stroke","url(#linear-gradient")
         .attr("stroke-width", ".1vw")
         .attr("opacity",".5")
+        .attr("transform","translate("+margin.left+",0)")
         .on("mouseover", function(d) {
             d3.select(this)
             .attr("id","selectedPath")
@@ -115,11 +116,12 @@ chartGroup.selectAll(".line")
 
 chartGroup.append("g")
 .attr("class","axis y")
+.attr("transform","translate("+margin.left+",0)")
 .call(yAxis)
 
 chartGroup.append("g")
 .attr("class","axis x")
-.attr("transform","translate(0,"+mainheight+")")
+.attr("transform","translate("+margin.left+","+mainheight+")")
 .call(xAxis)
 
 
