@@ -1,11 +1,11 @@
 var margin = { top: 20, right: 20, bottom: 60, left: 30 };
 
 var mainwidth = (window.innerWidth - margin.left - margin.right),
-	mainheight = (window.innerHeight*.6) - margin.top - margin.bottom;
+	mainheight = (window.innerHeight*.75) - margin.top - margin.bottom;
 
 var color = d3.scaleOrdinal().range(['orange','steelblue','grey','lightgrey','lightblue','whitesmoke'])
 
-var svg = d3.select(".mainviz").append("svg")
+var svg = d3.select("#staticBody").append("svg")
 .attr("class","container")
 .attr("width", mainwidth + margin.left + margin.right)
 .attr("height", mainheight + margin.top + margin.bottom);
@@ -13,7 +13,7 @@ var svg = d3.select(".mainviz").append("svg")
 var chartGroup = svg.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div")
+var div = d3.select("#staticBody").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
     .style("position","absolute")
@@ -23,12 +23,11 @@ var div = d3.select(".scroll__graphic").append("div")
     .style("border-radius","8px")
     .style("pointer-events","none");
 
-var legend = d3.select(".scroll__graphic").append("div")
+var legend = d3.select("#staticBody").append("div")
     .attr("class","legend")
     .style("opacity",.7)
     .style("position","inline")
     .style("left",margin.left+"px")
-    // .style("top",mainheight+"px")
 
 d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a37f34/raw/f9bc083b0d6711b0877621abecfca5b1c01ecc81/execTime.tsv',function(data){
     
@@ -99,7 +98,6 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
         })
             .attr("class", "textselected")
             .style("text-anchor", "start")
-            // .style("font-size", 15)
 // End legend
     var y = d3.scaleBand()
     .domain(data.map(function(d){ return d.date;}).sort(d3.descending))
@@ -132,8 +130,8 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/063eb94e3c46ed56f4bb373f53a
         div.html( (d.listed_title||d.top_category) + " | "+ d.duration)
             .transition().duration(600)
             .style("opacity",1)
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY - 28) + "px");
+            .style("left", (d3.event.pageX - margin.left) + "px")
+            .style("top", (d3.event.pageY - (Number(mainheight)*.25)) + "px");
     })// fade out tooltip on mouse out               
     .on("mouseout", function() {
         d3.select(this)

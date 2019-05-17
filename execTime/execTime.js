@@ -5,7 +5,7 @@ var mainwidth = (window.innerWidth - margin.left - margin.right),
 
 var color = d3.scaleOrdinal().range(['orange','steelblue','grey','lightgrey','lightblue','whitesmoke'])
 
-var svg = d3.select(".scroll__graphic").append("svg")
+var svg = d3.select("#staticBody").append("svg")
 .attr("class","container")
 .attr("width", mainwidth + margin.left + margin.right)
 .attr("height", mainheight + margin.top + margin.bottom);
@@ -13,7 +13,7 @@ var svg = d3.select(".scroll__graphic").append("svg")
 var chartGroup = svg.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div")
+var div = d3.select("#staticBody").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
     .style("position","absolute")
