@@ -73,9 +73,9 @@ d3.tsv('https://gist.githubusercontent.com/Jasparr77/27f28d6f8c3ade63793b08902d2
                 .style("opacity", ".9");		
             div.html(d.Season + "<br/>"  + 'Average Attendance: ' + Math.floor(d.avgAtt)/1000 +'k' 
 			+ ' <br/>Average Home Win Pct: '
-			+ (d.homeWinPct).toFixed(2)+'%')	
-				.style("left", (d3.event.pageX)-margin.left + "px")
-                .style("top", (d3.event.pageY)-(margin.top*5) + "px");	
+			+ (d.homeWinPct).toFixed(2)+'%')
+			.style("left", (d3.event.pageX - margin.left) + "px")
+			.style("top", (d3.event.pageY -(mainheight/10)) + "px");	
             })					
         .on("mouseout", function(d) {		
             div.transition()		

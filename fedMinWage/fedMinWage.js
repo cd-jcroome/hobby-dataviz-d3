@@ -11,15 +11,13 @@ var mainwidth = (window.innerWidth - margin.left - margin.right)
 var w = mainwidth * .05
   , h = mainheight * .5;
 
-var svg = d3.select(".scroll__graphic").append("svg").attr("class", "container").attr("width", mainwidth + margin.left + margin.right).attr("height", mainheight + margin.bottom + margin.top);
+var svg = d3.select("#staticBody").append("svg").attr("class", "container").attr("width", mainwidth + margin.left + margin.right).attr("height", mainheight + margin.bottom + margin.top);
 
 var chartGroup = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var div = d3.select(".scroll__graphic").append("div").attr("class", "tooltip").style("opacity", "0").style("width", "40").style("position","absolute").style("text-align","center").style("background","lightsteelblue").style("padding","8px").style("border-radius","none").style("pointer-events","none")
+var div = d3.select("#staticBody").append("div").attr("class", "tooltip").style("opacity", "0").style("width", "40").style("position","absolute").style("text-align","center").style("background","lightsteelblue").style("padding","8px").style("border-radius","none").style("pointer-events","none")
 
 var path = d3.geoPath();
-
-    console.log('this is working')
     d3.tsv("https://gist.githubusercontent.com/Jasparr77/80574e8c8409ca34a9fd29f33cfc6be5/raw/a1e1e6de6d13c2082c8711f069fa2c25c1031df0/minWage.tsv", function(data) {
         
     d3.json("https://cloud-cube.s3.amazonaws.com/ourp4ike3lex/public/us-10m.v1.json", function(us){
@@ -106,7 +104,9 @@ var path = d3.geoPath();
             div.html(d.name + "<br/>" + d.Total.toLocaleString("en", {
                 style: "percent",
                 minimumFractionDigits: 2
-            })).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+            }))
+            .style("left", (d3.event.pageX - margin.left) + "px")
+            .style("top", (d3.event.pageY -(mainheight/10)) + "px");
         })// fade out tooltip on mouse out               
         .on("mouseout", function() {
             div.transition().duration(500).style("opacity", 0);
