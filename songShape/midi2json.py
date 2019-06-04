@@ -1,22 +1,19 @@
 import py_midicsv
-import numpy
+import pandas
 import json
 import csv
 
+
+# convert file to csv
 mc = py_midicsv.midi_to_csv("songs/mary.mid")
-m_head = mc[0]
-mx = csv.DictReader(mc)
-mj = open('mary.json','w')
 
-for row in mx:
-    json.dump(row,mj)
-    mj.write('\n')
+# append note and octave data
 
-# with open('mary.json','w') as outfile:
-#     json.dump(mary,outfile)
-# print slayer
+with open('mary.csv','w') as m_csv:
+    writer = csv.writer(m_csv)
+    writer.writerows([mc])
 
-# write midi file to json, with tick being x axis, and figuring out "data" to be note and duration.
+# write midi file to csv, with tick being x axis, and figuring out "data" to be note and duration.
 # floor()
 # octave # will be radius - floor of (number divided by 12)
 # numpy.floor(midi{NoteOnEvent}.data)
@@ -38,4 +35,5 @@ for row in mx:
 
 # https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
 # https://www.midimountain.com/midi/midi_note_numbers.html
+# https://en.wikipedia.org/wiki/Circle_of_fifths
 print('ding!')
