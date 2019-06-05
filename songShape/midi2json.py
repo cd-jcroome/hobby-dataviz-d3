@@ -1,22 +1,21 @@
 import py_midicsv
-import pandas
+import pandas as pd
 import json
 import csv
+from os import listdir
+from os.path import isfile, join, splitext
 
+# for all of the mid or midi files in a given folder...
+files = [f for f in listdir('./songs') if isfile(join('./songs/',f))]
+print(files)
+## convert midifile to pandas df
+for f in files:
+    mc = py_midicsv.midi_to_csv(join('./songs/',f))
+    mcdf = pd.DataFrame(mc)
+    print(mcdf[0])
 
-# convert file to csv
-mc = py_midicsv.midi_to_csv("songs/mary.mid")
-
-# append note and octave data
-
-with open('mary.csv','w') as m_csv:
-    writer = csv.writer(m_csv)
-    writer.writerows([mc])
-
-# write midi file to csv, with tick being x axis, and figuring out "data" to be note and duration.
-# floor()
-# octave # will be radius - floor of (number divided by 12)
-# numpy.floor(midi{NoteOnEvent}.data)
+## append note and octave data to the df
+## octave # will be radius - floor of (number divided by 12)
 # note will be angle - (remainder of (number divided by 12)) multiplied by the variable
 # note_angle = {'angles':[
 #     {0,{'note':'C','angle':0}},
@@ -32,6 +31,10 @@ with open('mary.csv','w') as m_csv:
 #     {10,{'note':'A#','angle':300}},
 #     {5,{'note':'F','angle':330}}
 #     ]}
+
+    with open(join('./output/',splitext(f)[0],'.csv').replace("/.csv",".csv"),'w') as m_csv:
+        for row in mc:
+            m_csv.write(row)
 
 # https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
 # https://www.midimountain.com/midi/midi_note_numbers.html
