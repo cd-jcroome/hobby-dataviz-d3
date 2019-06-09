@@ -59,7 +59,7 @@ d3.csv('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/song
     }
 
     var songPath = d3.line()
-        .curve(d3.curveCardinal.tension(.2))
+        .curve(d3.curveCardinal.tension(0))
         .x(function(d){return x(plotX(d['angle'],d['octave']))})
         .y(function(d){return y(plotY(d['angle'],d['octave']))})
     
@@ -76,8 +76,8 @@ d3.csv('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/song
     chartGroup.append("path")
         .attr("class","songPath")
         .attr("d",songPath(data))
-        .attr("fill","none")
-        .attr("stroke","lightgrey")
+        .attr("fill","lightgrey")
+        .attr("stroke","black")
         .attr("stroke-width",".1vw")
     
     var path = chartGroup.select(".songPath")

@@ -1,4 +1,4 @@
-,0,1,2,3,4,5,6,note_value,octave,note,note_nmd,note_name,angle
+,section,tick,event_desc,event_details,midi_note_number,5,6,note_value,octave,note,note_nmd,note_name,angle
 0,0, 0, Header, 1, 2, 220,,2,0,2,2,D,60
 1,1, 0, Start_track,,,,,0,0,0,0,C,0
 2,1, 0, Time_signature, 4, 2, 24, 8,2,0,2,2,D,60
