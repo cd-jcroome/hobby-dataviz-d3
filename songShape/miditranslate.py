@@ -21,16 +21,29 @@ nmd['note'] = pd.to_numeric(nmd['note'],errors='ignore').astype(int)
 for f in files:
     mc = py_midicsv.midi_to_csv(join('./songs/',f))
     mcdf = pd.DataFrame(mc)
-    mcdf = mcdf[0].str.replace(' ','').str.split(',',expand=True).replace('\n','',regex=True).rename(columns={0:'section',1:'tick',2:'event_desc',3:'event_details',4:'midi_note_number',5:'note_veloctiy'})
-    
-    mcdf['note_value'] = pd.to_numeric(mcdf['midi_note_number'],errors='coerce').fillna(0).astype(int)
+    mcdf = mcdf[0].str.replace(
+        ' ',''
+        ).str.split(',',expand=True
+            ).replace(
+                '\n','',regex=True
+                    ).rename(
+                        columns={
+                            0:'section',
+                            1:'tick',
+                            2:'event_desc',
+                            3:'event_details',
+                            4:'note_number',
+                            5:'note_velocity'
+                        })
 
+    mcdf['note_value'] = pd.to_numeric(mcdf['note_number'],errors='coerce').fillna(0).astype(int)
+    mcdf['note_velocity'] = pd.to_numeric(mcdf['note_velocity'],errors='coerce').fillna(0).astype(int)
+    mcdf['tick'] = pd.to_numeric(mcdf['tick'],errors='coerce').fillna(0).astype(int)
 # convert tick to time_delta
-    # if mcdf['event_desc'] == "Tempo":
-    #     spqn = pd.to_numeric(mcdf['event_details'])/1000000
-    # else:
-    #     spqn = .5
-    #     tpqn = 480
+    spqn = .5
+    tpqn = 480
+    spt = spqn/tpqn
+    mcdf['second'] = mcdf['tick'].map(lambda x: x*spt)
     
 # octave will be radius - floor of (number divided by 12), note will be angle - (remainder of (number divided by 12)) multiplied by the variable
     mcdf['octave'],mcdf['note'] = mcdf['note_value']//12,mcdf['note_value']%12
