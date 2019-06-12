@@ -9,6 +9,7 @@ verify_ssl = true
 py-midicsv = "*"
 numpy = "*"
 pandas = "*"
+mido = "*"
 
 [requires]
 python_version = "3.7"
