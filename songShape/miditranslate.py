@@ -25,13 +25,12 @@ for f in files:
     for i, track in enumerate(mid.tracks):
         for msg in track:
             mc.append('{},{}'.format(i,msg.dict()))
-    print(mc)
     mcdf = pd.DataFrame(mc)[0].str.replace('{','').str.replace('}','').str.replace('\'','').str.replace(' ','').str.split(",",expand=True)
     print(mcdf)
 
     for key, mcdfgb in mcdf.groupby(0):
         mjr[str(key)] = mcdfgb.to_dict('records')
- 
+    
     # mcdf['note_value'] = pd.to_numeric(mcdf['note_number'],errors='coerce').fillna(0).astype(int)
     # mcdf['note_velocity'] = pd.to_numeric(mcdf['note_velocity'],errors='coerce').fillna(0).astype(int)
     # mcdf['tick'] = pd.to_numeric(mcdf['tick'],errors='coerce').fillna(0).astype(int)
@@ -52,8 +51,7 @@ for f in files:
     m_json = join('./output/',splitext(f)[0],'.json').replace("/.json",".json")
 
     with open(m_json,'w') as m_json:
-        mjrf = json.dumps(mjr,indent=4)
-        json.dump(mjr,m_json,indent=4)
+        json.dump(mjr,m_json,indent=2)
 
 # https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
 # https://www.midimountain.com/midi/midi_note_numbers.html
