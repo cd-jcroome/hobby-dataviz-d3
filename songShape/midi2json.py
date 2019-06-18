@@ -37,12 +37,12 @@ for f in files:
 
 # octave will be radius - floor of (number divided by 12), note will be angle - (remainder of (number divided by 12)) multiplied by the variable
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
-    mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd').drop(['note','velocity','time','note_value_nmd'],axis=1)
+    mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd').drop(['note','velocity','time','note_value_nmd'],axis=1).groupby('type')
 # convert to JSON
     print('...converting {} to JSON...'.format(f))
-    for key, gb in mcdfx.groupby('type'):
-        gb = gb.to_dict('records')
-        mjr[str(key)] = gb
+    for key, gb in mcdfx:
+        gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).to_dict('records')
+        mjr[str(key)] = gb1
     m_json = join('./output/',splitext(f)[0],'.json').replace("/.json",".json")
     with open(m_json,'w') as m_json:
         json.dump(mjr,m_json,indent=2)

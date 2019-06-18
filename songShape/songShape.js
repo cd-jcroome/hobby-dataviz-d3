@@ -32,22 +32,22 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
-d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/Slayer_-_Expendable_youth.json', function(data){
+d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/mary.json', function(data){
     console.log(data)
-    noteData = data[2].filter(
-        function(d){
-            return (
-                d.event_desc = "Note_on_c" ?
-                d.note_veloctiy >0 ? // check the typo!
-                        true : false
-                    : false
-            )
-        }
-    )
-    function onlyNotes(check){
-        return check = "Note_on_c";
-    }    
-    console.log(noteData)
+    // noteData = data[2].filter(
+    //     function(d){
+    //         return (
+    //             d.event_desc = "Note_on_c" ?
+    //             d.note_veloctiy >0 ? // check the typo!
+    //                     true : false
+    //                 : false
+    //         )
+    //     }
+    // )
+    // function onlyNotes(check){
+    //     return check = "Note_on_c";
+    // }    
+    // console.log(noteData)
 
     handleResize()
     var x = d3.scaleLinear()
