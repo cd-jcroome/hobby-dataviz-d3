@@ -32,7 +32,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
-d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/Slayer_-_Expendable_youth.json', function(data){
+d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SuperMarioBrothers.json', function(data){
     console.log(data)
     noteData = data.note_on.filter(function(d){
         if (d.note_velocity > 0) {
@@ -77,27 +77,28 @@ d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/son
         .attr("opacity",.7)
         .attr("stroke-width",".2vw")   
 
-    chartGroup.selectAll(".line")
-    .data(noteData)
-    .enter()
+    chartGroup
+    // .selectAll(".line")
+    // .data(noteData)
+    // .enter()
         .append("path")
-        .attr("class",function(d){return d.channel+" line songPath"})
+        .attr("class","songPath"})
         .attr("d",songPath(noteData))
         .attr("fill","none")
         .attr("stroke","grey")
         .attr("stroke-width",".1vw")
     
-    // var path = chartGroup.select(".songPath")
+    var path = chartGroup.select(".songPath")
 
-    // var totalLength = path.node().getTotalLength();
+    var totalLength = path.node().getTotalLength();
 
-    // path
-    //     .attr("stroke-dasharray", totalLength + " " + totalLength)
-    //     .attr("stroke-dashoffset", totalLength)
-    //     .transition()
-    //     .duration((noteData[lastRecord].note_seconds)*100)
-    //     .ease(d3.easeBackIn)
-    //     .attr("stroke-dashoffset", 0)
+    path
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration((noteData[lastRecord].note_seconds)*100)
+        .ease(d3.easeBackIn)
+        .attr("stroke-dashoffset", 0)
     
 
     chartGroup.selectAll(".noteCircle")
