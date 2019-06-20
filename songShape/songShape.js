@@ -32,30 +32,25 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
-d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/mary.json', function(data){
+d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/Slayer_-_Expendable_youth.json', function(data){
     console.log(data)
-    // noteData = data[2].filter(
-    //     function(d){
-    //         return (
-    //             d.event_desc = "Note_on_c" ?
-    //             d.note_veloctiy >0 ? // check the typo!
-    //                     true : false
-    //                 : false
-    //         )
-    //     }
-    // )
-    // function onlyNotes(check){
-    //     return check = "Note_on_c";
-    // }    
-    // console.log(noteData)
+    noteData = data.note_on.filter(function(d){
+        if (d.note_velocity > 0) {
+            return true
+        } else {
+            return false;
+        }
+    })
+    lastRecord = noteData.length-1
+    console.log(noteData[lastRecord])
 
     handleResize()
     var x = d3.scaleLinear()
-            .domain([-8,8])
+            .domain([-9,9])
             .range([0,xRange]);
 
     var y = d3.scaleLinear()
-            .domain([-8,8])
+            .domain([-9,9])
             .range([yRange,0]);
 
     function plotX(radians, radius){
@@ -67,11 +62,11 @@ d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/son
 
     var songPath = d3.line()
         .curve(d3.curveCardinalClosed.tension(0.7))
-        .x(function(d){return x(plotX(d['angle'],(d['octave']+1)))})
-        .y(function(d){return y(plotY(d['angle'],(d['octave']+1)))})
+        .x(function(d){return x(plotX(d['angle'],(d['octave'])))})
+        .y(function(d){return y(plotY(d['angle'],(d['octave'])))})
     
     chartGroup.selectAll(".circleFifths")
-        .data([0,1,2,3,4,5,6,7,8,9])
+        .data([1,2,3,4,5,6,7,8,9])
         .enter().append("circle")
         .attr("class",function(d){return "circleFifths"+" "+d})
         .attr("cx",x(0))
@@ -79,39 +74,44 @@ d3.json('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/son
         .attr("r",function(d){return y((d))})
         .attr("fill","none")
         .attr("stroke","lightgrey")
+        .attr("opacity",.7)
         .attr("stroke-width",".2vw")   
 
-    chartGroup.append("path")
-        .attr("class","songPath")
+    chartGroup.selectAll(".line")
+    .data(noteData)
+    .enter()
+        .append("path")
+        .attr("class",function(d){return d.channel+" line songPath"})
         .attr("d",songPath(noteData))
-        .attr("fill","salmon")
-        .attr("opacity",.25)
-        .attr("stroke","whitesmoke")
+        .attr("fill","none")
+        .attr("stroke","grey")
         .attr("stroke-width",".1vw")
     
-    var path = chartGroup.select(".songPath")
+    // var path = chartGroup.select(".songPath")
 
-    var totalLength = path.node().getTotalLength();
+    // var totalLength = path.node().getTotalLength();
 
-    path
-        .attr("stroke-dasharray", totalLength + " " + totalLength)
-        .attr("stroke-dashoffset", totalLength)
-        .transition()
-        .duration(16000)
-        .ease(d3.easeCircleInOut)
-        .attr("stroke-dashoffset", 0)
+    // path
+    //     .attr("stroke-dasharray", totalLength + " " + totalLength)
+    //     .attr("stroke-dashoffset", totalLength)
+    //     .transition()
+    //     .duration((noteData[lastRecord].note_seconds)*100)
+    //     .ease(d3.easeBackIn)
+    //     .attr("stroke-dashoffset", 0)
+    
 
     chartGroup.selectAll(".noteCircle")
         .data(noteData)
         .enter().append("circle")
         .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
-        .attr("cx",function(d){return x(plotX(d['angle'],(d['octave']+1)))})
-        .attr("cy",function(d){return y(plotY(d['angle'],(d['octave']+1)))})
+        .attr("cx",function(d){return x(plotX(d['angle'],(d['octave'])))})
+        .attr("cy",function(d){return y(plotY(d['angle'],(d['octave'])))})
         .attr("r",".2vw")
-        .attr("fill","whitesmoke")
-        .transition()
-        .delay(function(d,i){return (i/81)*1000;})
-        .attr("fill",'steelblue')
+        .attr("fill","salmon")
+        // .attr("opacity",0)
+        // .transition()
+        // .delay(function(d){return d.note_seconds*1000;})
+        .attr("opacity",.8)
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
