@@ -1,42 +1,7 @@
 {
-  "('control_change', 0.0)": [
+  "0.0": [
     {
       "channel": 0.0,
-      "control": 91.0,
-      "type": "control_change",
-      "value": 58.0,
-      "note_time": 0,
-      "note_seconds": 0.0
-    },
-    {
-      "channel": 0.0,
-      "control": 10.0,
-      "type": "control_change",
-      "value": 69.0,
-      "note_time": 0,
-      "note_seconds": 0.0
-    },
-    {
-      "channel": 0.0,
-      "control": 0.0,
-      "type": "control_change",
-      "value": 0.0,
-      "note_time": 0,
-      "note_seconds": 0.0
-    },
-    {
-      "channel": 0.0,
-      "control": 32.0,
-      "type": "control_change",
-      "value": 0.0,
-      "note_time": 0,
-      "note_seconds": 0.0
-    }
-  ],
-  "('note_on', 0.0)": [
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 72.0,
       "note_time": 0,
@@ -44,11 +9,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 70.0,
       "note_time": 0,
@@ -56,23 +20,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 72.0,
       "note_time": 25,
@@ -80,23 +31,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 60.0,
       "note_velocity": 71.0,
       "note_time": 25,
@@ -104,23 +42,10 @@
       "octave": 5.0,
       "note_value": 0.0,
       "note_name": "C",
-      "angle": 0.0
+      "angle": 0
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 60.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 0.0,
-      "note_name": "C",
-      "angle": 0.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 79.0,
       "note_time": 25,
@@ -128,35 +53,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 206,
-      "note_seconds": 0.46818181818181814,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 25,
-      "note_seconds": 0.056818181818181816,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 85.0,
       "note_time": 25,
@@ -164,11 +64,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 79.0,
       "note_time": 0,
@@ -176,23 +75,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 78.0,
       "note_time": 25,
@@ -200,23 +86,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 74.0,
       "note_time": 25,
@@ -224,35 +97,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 462,
-      "note_seconds": 1.05,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 75.0,
       "note_time": 50,
@@ -260,11 +108,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 77.0,
       "note_time": 0,
@@ -272,23 +119,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 77.0,
       "note_time": 25,
@@ -296,23 +130,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 75.0,
       "note_time": 25,
@@ -320,35 +141,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 462,
-      "note_seconds": 1.05,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 82.0,
       "note_time": 50,
@@ -356,11 +152,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 79.0,
       "note_time": 0,
@@ -368,23 +163,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 67.0,
       "note_velocity": 84.0,
       "note_time": 25,
@@ -392,23 +174,10 @@
       "octave": 5.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 67.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 67.0,
       "note_velocity": 75.0,
       "note_time": 25,
@@ -416,35 +185,10 @@
       "octave": 5.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 462,
-      "note_seconds": 1.05,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 67.0,
-      "note_velocity": 0.0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 5.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 73.0,
       "note_time": 50,
@@ -452,11 +196,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 78.0,
       "note_time": 0,
@@ -464,23 +207,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 69.0,
       "note_time": 25,
@@ -488,23 +218,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 60.0,
       "note_velocity": 71.0,
       "note_time": 25,
@@ -512,23 +229,10 @@
       "octave": 5.0,
       "note_value": 0.0,
       "note_name": "C",
-      "angle": 0.0
+      "angle": 0
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 60.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 0.0,
-      "note_name": "C",
-      "angle": 0.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 80.0,
       "note_time": 25,
@@ -536,35 +240,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 206,
-      "note_seconds": 0.46818181818181814,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 25,
-      "note_seconds": 0.056818181818181816,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 84.0,
       "note_time": 25,
@@ -572,11 +251,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 79.0,
       "note_time": 0,
@@ -584,23 +262,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 76.0,
       "note_time": 25,
@@ -608,23 +273,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 74.0,
       "note_time": 25,
@@ -632,23 +284,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 77.0,
       "note_time": 25,
@@ -656,35 +295,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 206,
-      "note_seconds": 0.46818181818181814,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 25,
-      "note_seconds": 0.056818181818181816,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 75.0,
       "note_time": 25,
@@ -692,11 +306,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 55.0,
       "note_velocity": 78.0,
       "note_time": 0,
@@ -704,23 +317,10 @@
       "octave": 4.0,
       "note_value": 7.0,
       "note_name": "C#",
-      "angle": 210.0
+      "angle": 210
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 74.0,
       "note_time": 25,
@@ -728,23 +328,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 64.0,
       "note_velocity": 81.0,
       "note_time": 25,
@@ -752,23 +339,10 @@
       "octave": 5.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
+      "angle": 120
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 64.0,
-      "note_velocity": 0.0,
-      "note_time": 231,
-      "note_seconds": 0.525,
-      "octave": 5.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 62.0,
       "note_velocity": 70.0,
       "note_time": 25,
@@ -776,35 +350,10 @@
       "octave": 5.0,
       "note_value": 2.0,
       "note_name": "D",
-      "angle": 60.0
+      "angle": 60
     },
     {
       "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 55.0,
-      "note_velocity": 0.0,
-      "note_time": 206,
-      "note_seconds": 0.46818181818181814,
-      "octave": 4.0,
-      "note_value": 7.0,
-      "note_name": "C#",
-      "angle": 210.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 62.0,
-      "note_velocity": 0.0,
-      "note_time": 25,
-      "note_seconds": 0.056818181818181816,
-      "octave": 5.0,
-      "note_value": 2.0,
-      "note_name": "D",
-      "angle": 60.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 60.0,
       "note_velocity": 73.0,
       "note_time": 25,
@@ -812,11 +361,10 @@
       "octave": 5.0,
       "note_value": 0.0,
       "note_name": "C",
-      "angle": 0.0
+      "angle": 0
     },
     {
       "channel": 0.0,
-      "type": "note_on",
       "note_midi_value": 52.0,
       "note_velocity": 72.0,
       "note_time": 0,
@@ -824,40 +372,7 @@
       "octave": 4.0,
       "note_value": 4.0,
       "note_name": "E",
-      "angle": 120.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 60.0,
-      "note_velocity": 0.0,
-      "note_time": 974,
-      "note_seconds": 2.2136363636363634,
-      "octave": 5.0,
-      "note_value": 0.0,
-      "note_name": "C",
-      "angle": 0.0
-    },
-    {
-      "channel": 0.0,
-      "type": "note_on",
-      "note_midi_value": 52.0,
-      "note_velocity": 0.0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 4.0,
-      "note_value": 4.0,
-      "note_name": "E",
-      "angle": 120.0
-    }
-  ],
-  "('program_change', 0.0)": [
-    {
-      "channel": 0.0,
-      "program": 24.0,
-      "type": "program_change",
-      "note_time": 0,
-      "note_seconds": 0.0
+      "angle": 120
     }
   ]
 }

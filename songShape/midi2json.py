@@ -25,10 +25,15 @@ for f in files:
         for msg in track:
             mc.append(msg.dict())
 
-    mcdf = pd.DataFrame(mc)
-    mcdf['note_midi_value'] = mcdf['note']
-    mcdf['note_velocity'] = mcdf['velocity']
-    mcdf['note_time'] = mcdf['time']
+    mcdf_raw = pd.DataFrame(mc)
+    mcdf_raw['note_midi_value'] = mcdf_raw['note']
+    mcdf_raw['note_velocity'] = mcdf_raw['velocity']
+    mcdf_raw['note_time'] = mcdf_raw['time']
+# filter to just note_on events
+    note_on_only_vel = mcdf_raw['note_velocity']>0
+    note_on_only = mcdf_raw['type'] == 'note_on'
+    mcdf_1 = mcdf_raw[note_on_only_vel]
+    mcdf = mcdf_1[note_on_only]
 # convert tick to time_delta
     mspq = 500000
     tpq = mid.ticks_per_beat
@@ -39,8 +44,8 @@ for f in files:
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
     
     mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd'
-    ).drop(['note','velocity','time','note_value_nmd'],axis=1
-    ).groupby(['type','channel'])
+    ).drop(['note','velocity','time','note_value_nmd','type'],axis=1
+    ).groupby('channel')
 # convert to JSON
     print('...converting {} to JSON...'.format(f))
     for key, gb in mcdfx:
