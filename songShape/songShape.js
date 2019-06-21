@@ -34,15 +34,8 @@ function handleResize() {
 }
 d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.json', function(data){
     console.log(data)
-    noteData = data.filter(function(d){
-        if (d.note_velocity > 0) {
-            return true
-        } else {
-            return false;
-        }
-    })
-    lastRecord = noteData.length-1
-    // console.log(noteData)
+
+    lastRecord = data.length-1
 
     handleResize()
     var x = d3.scaleLinear()
@@ -81,11 +74,11 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
 
     // chartGroup
     // .selectAll("line")
-    // .data(noteData)
+    // .data(data)
     // .enter()
     //     .append("path")
     //     .attr("class",function(d){return d.channel})
-    //     .attr("d",function(d) {return songPath(noteData);})
+    //     .attr("d",function(d) {return songPath(data);})
     //     .attr("fill","none")
     //     .attr("stroke",function(d){return color(d.channel)})
     //     .attr("stroke-width",".1vw");
@@ -98,13 +91,13 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
         // .attr("stroke-dasharray", totalLength + " " + totalLength)
         // .attr("stroke-dashoffset", totalLength)
         // .transition()
-        // .duration((noteData[lastRecord].note_seconds)*1000)
+        // .duration((data[lastRecord].note_seconds)*1000)
         // .ease(d3.easeBackIn)
         // .attr("stroke-dashoffset", 0)
     
 
     chartGroup.selectAll(".noteCircle")
-        .data(noteData)
+        .data(data)
         .enter().append("circle")
         .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
         .attr("cx",function(d){return x(plotX(d['angle'],(d['octave'])))})
