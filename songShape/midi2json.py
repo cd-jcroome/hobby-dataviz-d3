@@ -26,9 +26,9 @@ for f in files:
             mc.append(msg.dict())
 
     mcdf = pd.DataFrame(mc)
-    mcdf['note_midi_value'] = mcdf['note'].fillna(0).astype(int)
-    mcdf['note_velocity'] = mcdf['velocity'].fillna(0).astype(int)
-    mcdf['note_time'] = mcdf['time'].fillna(0).astype(int).cumsum()
+    mcdf['note_midi_value'] = mcdf['note']
+    mcdf['note_velocity'] = mcdf['velocity']
+    mcdf['note_time'] = mcdf['time']
 # convert tick to time_delta
     mspq = 500000
     tpq = mid.ticks_per_beat
@@ -37,7 +37,10 @@ for f in files:
 
 # octave will be radius - floor of (number divided by 12), note will be angle - (remainder of (number divided by 12)) multiplied by the variable
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
-    mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd').drop(['note','velocity','time','note_value_nmd'],axis=1).groupby(['type','channel'])
+    
+    mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd'
+    ).drop(['note','velocity','time','note_value_nmd'],axis=1
+    ).groupby(['type','channel'])
 # convert to JSON
     print('...converting {} to JSON...'.format(f))
     for key, gb in mcdfx:
