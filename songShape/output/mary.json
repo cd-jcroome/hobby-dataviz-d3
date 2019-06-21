@@ -1,5 +1,5 @@
 {
-  "control_change": [
+  "('control_change', 0.0)": [
     {
       "channel": 0.0,
       "control": 91.0,
@@ -57,45 +57,7 @@
       "angle": 0
     }
   ],
-  "end_of_track": [
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 1,
-      "note_seconds": 0.0022727272727272726,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 8144,
-      "note_seconds": 18.509090909090908,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "key_signature": [
-    {
-      "key": "C",
-      "type": "key_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "note_on": [
+  "('note_on', 0.0)": [
     {
       "channel": 0.0,
       "type": "note_on",
@@ -913,7 +875,7 @@
       "angle": 120
     }
   ],
-  "program_change": [
+  "('program_change', 0.0)": [
     {
       "channel": 0.0,
       "program": 24.0,
@@ -922,23 +884,6 @@
       "note_velocity": 0,
       "note_time": 1,
       "note_seconds": 0.0022727272727272726,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "time_signature": [
-    {
-      "clocks_per_click": 24.0,
-      "denominator": 4.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 4.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
       "octave": 0,
       "note_value": 0,
       "note_name": "C",

@@ -1,5 +1,5 @@
 {
-  "control_change": [
+  "('control_change', 0.0)": [
     {
       "channel": 0.0,
       "control": 0.0,
@@ -13,7 +13,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 1.0)": [
     {
       "channel": 1.0,
       "control": 0.0,
@@ -27,7 +29,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 2.0)": [
     {
       "channel": 2.0,
       "control": 0.0,
@@ -41,7 +45,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 9.0)": [
     {
       "channel": 9.0,
       "control": 0.0,
@@ -57,64 +63,7 @@
       "angle": 0
     }
   ],
-  "end_of_track": [
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 14032,
-      "note_seconds": 73.08333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 28160,
-      "note_seconds": 146.66666666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 42288,
-      "note_seconds": 220.25,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 56464,
-      "note_seconds": 294.0833333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "note_off": [
+  "('note_off', 0.0)": [
     {
       "channel": 0.0,
       "type": "note_off",
@@ -3702,7 +3651,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_off', 1.0)": [
     {
       "channel": 1.0,
       "type": "note_off",
@@ -7434,7 +7385,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_off', 2.0)": [
     {
       "channel": 2.0,
       "type": "note_off",
@@ -10926,7 +10879,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_off', 9.0)": [
     {
       "channel": 9.0,
       "type": "note_off",
@@ -15464,7 +15419,7 @@
       "angle": 180
     }
   ],
-  "note_on": [
+  "('note_on', 0.0)": [
     {
       "channel": 0.0,
       "type": "note_on",
@@ -19052,7 +19007,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 1.0)": [
     {
       "channel": 1.0,
       "type": "note_on",
@@ -22784,7 +22741,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 2.0)": [
     {
       "channel": 2.0,
       "type": "note_on",
@@ -26276,7 +26235,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 9.0)": [
     {
       "channel": 9.0,
       "type": "note_on",
@@ -30814,7 +30775,7 @@
       "angle": 180
     }
   ],
-  "program_change": [
+  "('program_change', 0.0)": [
     {
       "channel": 0.0,
       "program": 26.0,
@@ -30827,7 +30788,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 1.0)": [
     {
       "channel": 1.0,
       "program": 26.0,
@@ -30840,7 +30803,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 2.0)": [
     {
       "channel": 2.0,
       "program": 26.0,
@@ -30853,200 +30818,13 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 9.0)": [
     {
       "channel": 9.0,
       "program": 0.0,
       "type": "program_change",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 42288,
-      "note_seconds": 220.25,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "set_tempo": [
-    {
-      "tempo": 571428.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 571428.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 571428.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 14032,
-      "note_seconds": 73.08333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 571428.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 28160,
-      "note_seconds": 146.66666666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 571428.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 42288,
-      "note_seconds": 220.25,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "time_signature": [
-    {
-      "clocks_per_click": 96.0,
-      "denominator": 4.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 4.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "clocks_per_click": 96.0,
-      "denominator": 4.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 4.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "clocks_per_click": 96.0,
-      "denominator": 4.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 4.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 14032,
-      "note_seconds": 73.08333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "clocks_per_click": 96.0,
-      "denominator": 4.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 4.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 28160,
-      "note_seconds": 146.66666666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "clocks_per_click": 96.0,
-      "denominator": 4.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 4.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 42288,
-      "note_seconds": 220.25,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "track_name": [
-    {
-      "name": "Sequenced by P.J. Barnes",
-      "type": "track_name",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "name": "Countermelody",
-      "type": "track_name",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 14032,
-      "note_seconds": 73.08333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "name": "Bass Line",
-      "type": "track_name",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 28160,
-      "note_seconds": 146.66666666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "name": "Percussion",
-      "type": "track_name",
       "note_midi_value": 0,
       "note_velocity": 0,
       "note_time": 42288,

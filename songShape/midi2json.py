@@ -37,7 +37,7 @@ for f in files:
 
 # octave will be radius - floor of (number divided by 12), note will be angle - (remainder of (number divided by 12)) multiplied by the variable
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
-    mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd').drop(['note','velocity','time','note_value_nmd'],axis=1).groupby('type')
+    mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd').drop(['note','velocity','time','note_value_nmd'],axis=1).groupby(['type','channel'])
 # convert to JSON
     print('...converting {} to JSON...'.format(f))
     for key, gb in mcdfx:

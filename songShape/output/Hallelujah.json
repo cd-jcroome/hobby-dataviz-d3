@@ -1,5 +1,5 @@
 {
-  "control_change": [
+  "('control_change', 0.0)": [
     {
       "channel": 0.0,
       "control": 7.0,
@@ -13,7 +13,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 1.0)": [
     {
       "channel": 1.0,
       "control": 7.0,
@@ -27,7 +29,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 2.0)": [
     {
       "channel": 2.0,
       "control": 7.0,
@@ -41,7 +45,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 3.0)": [
     {
       "channel": 3.0,
       "control": 7.0,
@@ -55,7 +61,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 4.0)": [
     {
       "channel": 4.0,
       "control": 7.0,
@@ -69,7 +77,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 5.0)": [
     {
       "channel": 5.0,
       "control": 7.0,
@@ -83,7 +93,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('control_change', 9.0)": [
     {
       "channel": 9.0,
       "control": 7.0,
@@ -99,111 +111,7 @@
       "angle": 0
     }
   ],
-  "end_of_track": [
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50040,
-      "note_seconds": 208.5,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 99360,
-      "note_seconds": 414.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 149520,
-      "note_seconds": 623.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 199680,
-      "note_seconds": 832.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 250020,
-      "note_seconds": 1041.75,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 299285,
-      "note_seconds": 1247.0208333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 349328,
-      "note_seconds": 1455.5333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "type": "end_of_track",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 398401,
-      "note_seconds": 1660.0041666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "key_signature": [
-    {
-      "key": "C",
-      "type": "key_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "note_on": [
+  "('note_on', 0.0)": [
     {
       "channel": 0.0,
       "type": "note_on",
@@ -9563,7 +9471,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 1.0)": [
     {
       "channel": 1.0,
       "type": "note_on",
@@ -32483,7 +32393,9 @@
       "note_value": 4,
       "note_name": "E",
       "angle": 120
-    },
+    }
+  ],
+  "('note_on', 2.0)": [
     {
       "channel": 2.0,
       "type": "note_on",
@@ -39131,7 +39043,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 3.0)": [
     {
       "channel": 3.0,
       "type": "note_on",
@@ -96107,7 +96021,9 @@
       "note_value": 4,
       "note_name": "E",
       "angle": 120
-    },
+    }
+  ],
+  "('note_on', 4.0)": [
     {
       "channel": 4.0,
       "type": "note_on",
@@ -102539,7 +102455,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 5.0)": [
     {
       "channel": 5.0,
       "type": "note_on",
@@ -111539,7 +111457,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('note_on', 9.0)": [
     {
       "channel": 9.0,
       "type": "note_on",
@@ -127573,7 +127493,7 @@
       "angle": 0
     }
   ],
-  "program_change": [
+  "('program_change', 0.0)": [
     {
       "channel": 0.0,
       "program": 24.0,
@@ -127586,7 +127506,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 1.0)": [
     {
       "channel": 1.0,
       "program": 0.0,
@@ -127599,7 +127521,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 2.0)": [
     {
       "channel": 2.0,
       "program": 0.0,
@@ -127612,7 +127536,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 3.0)": [
     {
       "channel": 3.0,
       "program": 24.0,
@@ -127625,7 +127551,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 4.0)": [
     {
       "channel": 4.0,
       "program": 32.0,
@@ -127638,7 +127566,9 @@
       "note_value": 0,
       "note_name": "C",
       "angle": 0
-    },
+    }
+  ],
+  "('program_change', 5.0)": [
     {
       "channel": 5.0,
       "program": 26.0,
@@ -127647,723 +127577,6 @@
       "note_velocity": 0,
       "note_time": 299285,
       "note_seconds": 1247.0208333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "set_tempo": [
-    {
-      "tempo": 638298.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 638298.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49680,
-      "note_seconds": 207.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 645161.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49686,
-      "note_seconds": 207.025,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 652174.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49693,
-      "note_seconds": 207.05416666666667,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 659341.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49699,
-      "note_seconds": 207.07916666666665,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 666667.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49706,
-      "note_seconds": 207.10833333333332,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 674157.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49713,
-      "note_seconds": 207.1375,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 681818.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49719,
-      "note_seconds": 207.1625,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 689655.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49726,
-      "note_seconds": 207.19166666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 697674.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49733,
-      "note_seconds": 207.22083333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 705882.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49739,
-      "note_seconds": 207.24583333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 714286.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49746,
-      "note_seconds": 207.275,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 722892.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49753,
-      "note_seconds": 207.30416666666667,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 731707.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49759,
-      "note_seconds": 207.32916666666665,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 740741.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49766,
-      "note_seconds": 207.35833333333332,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 750000.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49773,
-      "note_seconds": 207.3875,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 759494.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49779,
-      "note_seconds": 207.4125,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 769231.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49786,
-      "note_seconds": 207.44166666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 779221.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49793,
-      "note_seconds": 207.47083333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 789474.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49799,
-      "note_seconds": 207.49583333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 800000.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49806,
-      "note_seconds": 207.525,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 810811.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49812,
-      "note_seconds": 207.54999999999998,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 821918.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49819,
-      "note_seconds": 207.57916666666665,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 833333.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49826,
-      "note_seconds": 207.60833333333332,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 845070.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49832,
-      "note_seconds": 207.63333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 857143.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49839,
-      "note_seconds": 207.6625,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 869565.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49846,
-      "note_seconds": 207.69166666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 882353.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49852,
-      "note_seconds": 207.71666666666667,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 895522.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49859,
-      "note_seconds": 207.74583333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 909091.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49866,
-      "note_seconds": 207.775,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 923077.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49872,
-      "note_seconds": 207.79999999999998,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 937500.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49879,
-      "note_seconds": 207.82916666666665,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 952381.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49886,
-      "note_seconds": 207.85833333333332,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 967742.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49892,
-      "note_seconds": 207.88333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 983607.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49899,
-      "note_seconds": 207.9125,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1000000.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49906,
-      "note_seconds": 207.94166666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1016949.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49912,
-      "note_seconds": 207.96666666666667,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1034483.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49919,
-      "note_seconds": 207.99583333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1052632.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49925,
-      "note_seconds": 208.02083333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1071429.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49932,
-      "note_seconds": 208.04999999999998,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1090909.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49939,
-      "note_seconds": 208.07916666666665,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1111111.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49945,
-      "note_seconds": 208.10416666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1132075.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49952,
-      "note_seconds": 208.13333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1153846.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49959,
-      "note_seconds": 208.1625,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1176471.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49965,
-      "note_seconds": 208.1875,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1200000.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49972,
-      "note_seconds": 208.21666666666667,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1224490.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49979,
-      "note_seconds": 208.24583333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1250000.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49985,
-      "note_seconds": 208.27083333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1276596.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49992,
-      "note_seconds": 208.29999999999998,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1304348.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 49999,
-      "note_seconds": 208.32916666666665,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1333333.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50005,
-      "note_seconds": 208.35416666666666,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1363636.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50012,
-      "note_seconds": 208.38333333333333,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1395349.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50019,
-      "note_seconds": 208.4125,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1428571.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50025,
-      "note_seconds": 208.4375,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1463415.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50032,
-      "note_seconds": 208.46666666666667,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 1500000.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50039,
-      "note_seconds": 208.49583333333334,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    },
-    {
-      "tempo": 638298.0,
-      "type": "set_tempo",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 50040,
-      "note_seconds": 208.5,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "time_signature": [
-    {
-      "clocks_per_click": 12.0,
-      "denominator": 8.0,
-      "notated_32nd_notes_per_beat": 8.0,
-      "numerator": 6.0,
-      "type": "time_signature",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
-      "octave": 0,
-      "note_value": 0,
-      "note_name": "C",
-      "angle": 0
-    }
-  ],
-  "track_name": [
-    {
-      "name": "untitled",
-      "type": "track_name",
-      "note_midi_value": 0,
-      "note_velocity": 0,
-      "note_time": 0,
-      "note_seconds": 0.0,
       "octave": 0,
       "note_value": 0,
       "note_name": "C",

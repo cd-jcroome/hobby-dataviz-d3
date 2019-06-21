@@ -32,8 +32,8 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
-d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SuperMarioBrothers.json', function(data){
-    console.log(data)
+d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.json', function(data){
+    // console.log(data)
     noteData = data.note_on.filter(function(d){
         if (d.note_velocity > 0) {
             return true
@@ -42,7 +42,7 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
         }
     })
     lastRecord = noteData.length-1
-    console.log(noteData[lastRecord])
+    console.log(noteData)
 
     handleResize()
     var x = d3.scaleLinear()
@@ -52,6 +52,8 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
     var y = d3.scaleLinear()
             .domain([-9,9])
             .range([yRange,0]);
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
     function plotX(radians, radius){
         return Math.sin(radians)*radius
@@ -78,27 +80,27 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
         .attr("stroke-width",".2vw")   
 
     chartGroup
-    // .selectAll(".line")
-    // .data(noteData)
-    // .enter()
+    .selectAll("line")
+    .data(noteData)
+    .enter()
         .append("path")
-        .attr("class","songPath"})
-        .attr("d",songPath(noteData))
+        .attr("class",function(d){return d.channel})
+        .attr("d",function(d) {return songPath(noteData);})
         .attr("fill","none")
-        .attr("stroke","grey")
+        .attr("stroke",function(d){return color(d.channel)})
         .attr("stroke-width",".1vw")
     
-    var path = chartGroup.select(".songPath")
+    // var path = chartGroup.select(".songPath")
 
-    var totalLength = path.node().getTotalLength();
+    // var totalLength = path.node().getTotalLength();
 
-    path
-        .attr("stroke-dasharray", totalLength + " " + totalLength)
-        .attr("stroke-dashoffset", totalLength)
-        .transition()
-        .duration((noteData[lastRecord].note_seconds)*100)
-        .ease(d3.easeBackIn)
-        .attr("stroke-dashoffset", 0)
+    // path
+        // .attr("stroke-dasharray", totalLength + " " + totalLength)
+        // .attr("stroke-dashoffset", totalLength)
+        // .transition()
+        // .duration((noteData[lastRecord].note_seconds)*1000)
+        // .ease(d3.easeBackIn)
+        // .attr("stroke-dashoffset", 0)
     
 
     chartGroup.selectAll(".noteCircle")
