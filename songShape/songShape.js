@@ -66,22 +66,22 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
         .attr("class",function(d){return "circleFifths"+" "+d})
         .attr("cx",x(0))
         .attr("cy",y(0))
-        .attr("r",function(d){return y((d))})
+        .attr("r",function(d){return y(d)})
         .attr("fill","none")
         .attr("stroke","lightgrey")
         .attr("opacity",.7)
         .attr("stroke-width",".2vw")   
 
-    // chartGroup
-    // .selectAll("line")
-    // .data(data)
-    // .enter()
-    //     .append("path")
-    //     .attr("class",function(d){return d.channel})
-    //     .attr("d",function(d) {return songPath(data);})
-    //     .attr("fill","none")
-    //     .attr("stroke",function(d){return color(d.channel)})
-    //     .attr("stroke-width",".1vw");
+    chartGroup
+    .selectAll("line")
+    .data(data[0])
+    .enter()
+        .append("path")
+        .attr("class",function(d){return d.channel})
+        .attr("d",function(d) {return songPath(data);})
+        .attr("fill","none")
+        .attr("stroke",function(d){return color(d.channel)})
+        .attr("stroke-width",".1vw");
     
     // var path = chartGroup.select(".songPath")
 
