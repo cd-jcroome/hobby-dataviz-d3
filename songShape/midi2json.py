@@ -28,7 +28,7 @@ for f in files:
     mcdf_raw = pd.DataFrame(mc)
     mcdf_raw['note_midi_value'] = mcdf_raw['note']
     mcdf_raw['note_velocity'] = mcdf_raw['velocity']
-    mcdf_raw['note_time'] = mcdf_raw['time']
+    mcdf_raw['note_time'] = mcdf_raw['time'].cumsum()
 # filter to just note_on events
     note_on_only_vel = mcdf_raw['note_velocity']>0
     note_on_only = mcdf_raw['type'] == 'note_on'
@@ -49,7 +49,7 @@ for f in files:
 # convert to JSON
     print('...converting {} to JSON...'.format(f))
     for key, gb in mcdfx:
-        gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).to_dict('records')
+        gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).sort_values('note_seconds').to_dict('records')
         mjr[str(key)] = gb1
     m_json = join('./output/',splitext(f)[0],'.json').replace("/.json",".json")
     with open(m_json,'w') as m_json:
