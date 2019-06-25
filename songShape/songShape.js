@@ -32,8 +32,21 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
-d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.json', function(data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv', function(data){
     console.log(data)
+
+    var lineData = d3.nest()
+        .key(function(d){return d['channel']})
+        .key(function(d){return d['']}).sortKeys(d3.ascending)
+        .rollup(function(leaves){
+            return {
+                seconds: d3.sum(leaves, function(d){return Number(d['note_seconds']);}),
+                angle: d3.sum(leaves, function(d){return Number(d['angle']);}),
+                octave: d3.sum(leaves, function(d){return Number(d['octave']);})
+            }
+        })
+        .entries(data)
+    console.log(lineData)
 
     lastRecord = data.length-1
 
@@ -57,8 +70,8 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
 
     var songPath = d3.line()
         .curve(d3.curveCardinalClosed.tension(0.7))
-        .x(function(d){return x(plotX(d['angle'],(d['octave'])))})
-        .y(function(d){return y(plotY(d['angle'],(d['octave'])))})
+        .x(function(d){return x(plotX(d.value['angle'],(d.value['octave'])))})
+        .y(function(d){return y(plotY(d.value['angle'],(d.value['octave'])))})
     
     chartGroup.selectAll(".circleFifths")
         .data([1,2,3,4,5,6,7,8,9])
@@ -72,30 +85,6 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
         .attr("opacity",.7)
         .attr("stroke-width",".2vw")   
 
-    chartGroup
-    .selectAll("line")
-    .data(data[0])
-    .enter()
-        .append("path")
-        .attr("class",function(d){return d.channel})
-        .attr("d",function(d) {return songPath(data);})
-        .attr("fill","none")
-        .attr("stroke",function(d){return color(d.channel)})
-        .attr("stroke-width",".1vw");
-    
-    // var path = chartGroup.select(".songPath")
-
-    // var totalLength = path.node().getTotalLength();
-
-    // path
-        // .attr("stroke-dasharray", totalLength + " " + totalLength)
-        // .attr("stroke-dashoffset", totalLength)
-        // .transition()
-        // .duration((data[lastRecord].note_seconds)*1000)
-        // .ease(d3.easeBackIn)
-        // .attr("stroke-dashoffset", 0)
-    
-
     chartGroup.selectAll(".noteCircle")
         .data(data)
         .enter().append("circle")
@@ -103,11 +92,38 @@ d3.json('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output
         .attr("cx",function(d){return x(plotX(d['angle'],(d['octave'])))})
         .attr("cy",function(d){return y(plotY(d['angle'],(d['octave'])))})
         .attr("r",".2vw")
-        .attr("fill","salmon")
+        .attr("fill",function(d){return color(d['channel'])})
         // .attr("opacity",0)
         // .transition()
         // .delay(function(d){return d.note_seconds*1000;})
-        .attr("opacity",.8)
+        // .attr("opacity",.8)
+
+    chartGroup.selectAll(".line")
+        .data(lineData)
+        .enter()
+        .append("path")
+        .attr("class",function(d){return d['key']+" songPath"})
+        .attr("d",function(d) {return songPath(d.values);})
+        .attr("fill",function(d){return color(d['key'])})
+        .attr("fill-opacity",.4)
+        .attr("stroke",function(d){return color(d['key'])})
+        // .attr("stroke","white")
+        .attr("stroke-opacity",.8)
+        // .attr("stroke","black")
+        .attr("stroke-width",".1vw");
+    
+    // var path = chartGroup.select(".songPath")
+
+    // var totalLength = path.node().getTotalLength();
+
+    // path
+    //     .attr("stroke-dasharray", totalLength + " " + totalLength)
+    //     .attr("stroke-dashoffset", totalLength)
+    //     .transition()
+    //     .duration((data[lastRecord].note_seconds)*1000)
+    //     // .ease(d3.easeBackIn)
+    //     .attr("stroke-dashoffset", 0)
+
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
