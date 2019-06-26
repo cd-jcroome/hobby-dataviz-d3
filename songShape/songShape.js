@@ -59,8 +59,12 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             .domain([-9,9])
             .range([yRange,0]);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20)
+    var z = d3.scaleLinear()
+            .domain([-9,9])
+            .range([yRange,0]);
 
+    var color = d3.scaleOrdinal(d3.schemeCategory20)
+    var standardRadius = 5
     function plotX(radians, radius){
         return Math.sin(radians)*radius
     }
@@ -70,16 +74,25 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     var songPath = d3.line()
         .curve(d3.curveCardinalClosed.tension(0.7))
-        .x(function(d){return x(plotX(d.value['angle'],(d.value['octave'])))})
-        .y(function(d){return y(plotY(d.value['angle'],(d.value['octave'])))})
+        .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
+        .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
     
+    var song3d = d3._3d()
+        .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
+        .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
+        .z(function(d){return z(d['octave'])})
+        .scale(100)
+        .origin([480,250])
+        .shape('LINE_STRIP')
+
     chartGroup.selectAll(".circleFifths")
         .data([1,2,3,4,5,6,7,8,9])
         .enter().append("circle")
         .attr("class",function(d){return "circleFifths"+" "+d})
         .attr("cx",x(0))
         .attr("cy",y(0))
-        .attr("r",function(d){return y(d)})
+        .attr("cz",function(d){return z(d)})
+        .attr("r",y(4))
         .attr("fill","none")
         .attr("stroke","lightgrey")
         .attr("opacity",.7)
@@ -89,8 +102,8 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .data(data)
         .enter().append("circle")
         .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
-        .attr("cx",function(d){return x(plotX(d['angle'],(d['octave'])))})
-        .attr("cy",function(d){return y(plotY(d['angle'],(d['octave'])))})
+        .attr("cx",function(d){return x(plotX(d['angle'],standardRadius))})
+        .attr("cy",function(d){return y(plotY(d['angle'],standardRadius))})
         .attr("r",".2vw")
         .attr("fill",function(d){return color(d['channel'])})
         // .attr("opacity",0)
@@ -127,3 +140,4 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
+// http://billdwhite.com/wordpress/2015/01/12/d3-in-3d-combining-d3-js-and-three-js/
