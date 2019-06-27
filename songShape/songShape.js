@@ -64,7 +64,9 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             .range([yRange,0]);
 
     var color = d3.scaleOrdinal(d3.schemeCategory20)
+
     var standardRadius = 5
+
     function plotX(radians, radius){
         return Math.sin(radians)*radius
     }
@@ -72,58 +74,77 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         return Math.cos(radians)*radius
     }
 
-    var songPath = d3.line()
-        .curve(d3.curveCardinalClosed.tension(0.7))
-        .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
-        .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
+    // var songPath = d3.line()
+    //     .curve(d3.curveCardinalClosed.tension(0.7))
+    //     .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
+    //     .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
     
-    var song3d = d3._3d()
+    var _3d = d3._3d()
         .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
         .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
         .z(function(d){return z(d['octave'])})
-        .scale(100)
-        .origin([480,250])
-        .shape('LINE_STRIP')
+        .scale(5)
+        .origin([200, 350])
+        .rotateX(30)
+        .rotateY(30)
+        .shape('POINT')
 
-    chartGroup.selectAll(".circleFifths")
-        .data([1,2,3,4,5,6,7,8,9])
-        .enter().append("circle")
-        .attr("class",function(d){return "circleFifths"+" "+d})
-        .attr("cx",x(0))
-        .attr("cy",y(0))
-        .attr("cz",function(d){return z(d)})
-        .attr("r",y(4))
-        .attr("fill","none")
-        .attr("stroke","lightgrey")
-        .attr("opacity",.7)
-        .attr("stroke-width",".2vw")   
+    var songShapeData = _3d(lineData.values)
 
-    chartGroup.selectAll(".noteCircle")
-        .data(data)
-        .enter().append("circle")
+    chartGroup.selectAll(".noteCircle").data(songShapeData)
+        .enter()
+        .append("circle")
+        .attr("d",songShapeData)
         .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
         .attr("cx",function(d){return x(plotX(d['angle'],standardRadius))})
         .attr("cy",function(d){return y(plotY(d['angle'],standardRadius))})
-        .attr("r",".2vw")
-        .attr("fill",function(d){return color(d['channel'])})
+        .attr("r","1vw")
+        .attr("fill",function(d){return color(d['key'])})
+        .attr("fill-opacity",.4)
+        .attr("stroke",function(d){return color(d['key'])})
+        .attr("stroke-opacity",.8)
+        .attr("stroke-width",".1vw")
+
+
+    // chartGroup.selectAll(".circleFifths")
+    //     .data([1,2,3,4,5,6,7,8,9])
+    //     .enter().append("circle")
+    //     .attr("class",function(d){return "circleFifths"+" "+d})
+    //     .attr("cx",x(0))
+    //     .attr("cy",y(0))
+    //     .attr("cz",function(d){return z(d)})
+    //     .attr("r",y(4))
+    //     .attr("fill","none")
+    //     .attr("stroke","lightgrey")
+    //     .attr("opacity",.7)
+    //     .attr("stroke-width",".2vw")   
+
+    // chartGroup.selectAll(".noteCircle")
+    //     .data(data)
+    //     .enter().append("circle")
+    //     .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
+    //     .attr("cx",function(d){return x(plotX(d['angle'],standardRadius))})
+    //     .attr("cy",function(d){return y(plotY(d['angle'],standardRadius))})
+    //     .attr("r","1vw")
+    //     .attr("fill",function(d){return color(d['channel'])})
         // .attr("opacity",0)
         // .transition()
         // .delay(function(d){return d.note_seconds*1000;})
         // .attr("opacity",.8)
 
-    chartGroup.selectAll(".line")
-        .data(lineData)
-        .enter()
-        .append("path")
-        .attr("class",function(d){return d['key']+" songPath"})
-        .attr("d",function(d) {return songPath(d.values);})
-        .attr("fill",function(d){return color(d['key'])})
-        .attr("fill-opacity",.4)
-        .attr("stroke",function(d){return color(d['key'])})
-        // .attr("stroke","white")
-        .attr("stroke-opacity",.8)
-        // .attr("stroke","black")
-        .attr("stroke-width",".1vw");
+    // chartGroup.selectAll(".line")
+    //     .data(lineData)
+    //     .enter()
+    //     .append("path")
+    //     .attr("class",function(d){return d['key']+" songPath"})
+    //     .attr("d",function(d) {return songPath(d.values);})
+    //     .attr("fill",function(d){return color(d['key'])})
+    //     .attr("fill-opacity",.4)
+    //     .attr("stroke",function(d){return color(d['key'])})
+    //     // .attr("stroke","white")
+    //     .attr("stroke-opacity",.8)
+    //     // .attr("stroke","black")
+    //     .attr("stroke-width",".1vw");
     
     // var path = chartGroup.select(".songPath")
 
@@ -140,4 +161,3 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
-// http://billdwhite.com/wordpress/2015/01/12/d3-in-3d-combining-d3-js-and-three-js/
