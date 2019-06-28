@@ -33,16 +33,17 @@ function handleResize() {
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
 d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv', function(data){
-    console.log(data)
+    handleResize()
 
     var lineData = d3.nest()
-        .key(function(d){return d['channel']})
-        .key(function(d){return d['']}).sortKeys(d3.ascending)
+        // .key(function(d){return d['channel']})
+        .key(function(d){return d['']})
         .rollup(function(leaves){
             return {
-                seconds: d3.sum(leaves, function(d){return Number(d['note_seconds']);}),
-                angle: d3.sum(leaves, function(d){return Number(d['angle']);}),
-                octave: d3.sum(leaves, function(d){return Number(d['octave']);})
+                x: d3.sum(leaves, function(d){return Math.sin(d['angle']*5)}), // x coordinate for note
+                y: d3.sum(leaves, function(d){return Math.cos(d['angle']*5)}), // y coordinate for note
+                z: d3.sum(leaves, function(d){return Number(d['octave']);}),    // z coordinate for octave
+                channel: d3.max(leaves, function(d){return Number(d['channel'])})
             }
         })
         .entries(data)
@@ -50,7 +51,6 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     lastRecord = data.length-1
 
-    handleResize()
     var x = d3.scaleLinear()
             .domain([-9,9])
             .range([0,xRange]);
@@ -65,14 +65,14 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     var color = d3.scaleOrdinal(d3.schemeCategory20)
 
-    var standardRadius = 5
+    // var standardRadius = 5
 
-    function plotX(radians, radius){
-        return Math.sin(radians)*radius
-    }
-    function plotY(radians, radius){
-        return Math.cos(radians)*radius
-    }
+    // function plotX(radians, radius){
+    //     return Math.sin(radians)*radius
+    // }
+    // function plotY(radians, radius){
+    //     return Math.cos(radians)*radius
+    // }
 
     // var songPath = d3.line()
     //     .curve(d3.curveCardinalClosed.tension(0.7))
@@ -80,30 +80,56 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     //     .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
     
     var _3d = d3._3d()
-        .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
-        .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
-        .z(function(d){return z(d['octave'])})
-        .scale(5)
-        .origin([200, 350])
-        .rotateX(30)
-        .rotateY(30)
-        .shape('POINT')
+        .x(function(d){return d.value['x']; })
+        .y(function(d){return d.value['y']; })
+        .z(function(d){return d.value['z']; })
+        .scale(60)
+        .origin([400, window.innerHeight*.60])
+        .rotateX(45)
+        .rotateY(0)
+        .shape('POINT');
 
-    var songShapeData = _3d(lineData.values)
+    function plotData(data,tt){
+        console.log(data)
+        var points = chartGroup.selectAll('circle').data(data);
 
-    chartGroup.selectAll(".noteCircle").data(songShapeData)
-        .enter()
-        .append("circle")
-        .attr("d",songShapeData)
-        .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
-        .attr("cx",function(d){return x(plotX(d['angle'],standardRadius))})
-        .attr("cy",function(d){return y(plotY(d['angle'],standardRadius))})
-        .attr("r","1vw")
-        .attr("fill",function(d){return color(d['key'])})
-        .attr("fill-opacity",.4)
-        .attr("stroke",function(d){return color(d['key'])})
-        .attr("stroke-opacity",.8)
-        .attr("stroke-width",".1vw")
+        points
+            .enter()
+            .append('circle')
+            .attr('class','_3d')
+            .attr('opacity',0)
+            .attr('cx',function(d){return d.projected['x'];})
+            .attr('cy',function(d){return d.projected['y'];})
+            .merge(points)
+            .transition().duration(tt)
+            .attr('r','.4vw')
+            .attr('stroke','white')
+            .attr('fill',function(d){return color(d.value['channel']);})
+            .attr('opacity',.8);
+
+        points.exit().remove();
+
+        d3.selectAll('._3d').sort(d3._3d().sort);
+    }
+    function init(){
+        var data = _3d(lineData)
+        plotData(data,1000)
+    }
+    init()
+
+    // chartGroup.selectAll(".noteCircle").data(songShapeData)
+    //     .enter()
+    //     .append("circle")
+    //     .attr("d",songShapeData)
+    //     .attr("class",function(d){return "noteCircle"+" "+d['note_name']+"_"+d['octave']})
+    //     .attr("cx",function(d){return x(plotX(d['angle'],standardRadius))})
+    //     .attr("cy",function(d){return y(plotY(d['angle'],standardRadius))})
+    //     .attr("r","1vw")
+    //     .attr("fill",function(d){return color(d['key'])})
+    //     .attr("fill-opacity",.4)
+    //     .attr("stroke",function(d){return color(d['key'])})
+    //     .attr("stroke-opacity",.8)
+    //     .attr("stroke-width",".1vw")
 
 
     // chartGroup.selectAll(".circleFifths")
