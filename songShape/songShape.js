@@ -17,16 +17,15 @@ container.append('svg').attr('class','chart');
 
 var tooltip = d3.select(".tooltip");
 var formHolder = d3.select("#formholder");
-var chartGroup = d3.select(".chart")
+var chartGroup = d3.select(".chart");
 
 function handleResize() {
     var bodyWidth = (Math.floor(window.innerWidth*.95));
     yRange = 600
     xRange = 600
 
-
     var chartMargin = 5;
-    var chartWidth = xRange-chartMargin;
+    chartWidth = xRange-chartMargin;
 
     chartGroup
         .style('width', chartWidth + 'px')
@@ -35,8 +34,7 @@ function handleResize() {
 d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv', function(data){
     handleResize()
 
-    var lineData = d3.nest()
-        // .key(function(d){return d['channel']})
+    var pointData = d3.nest()
         .key(function(d){return d['']})
         .rollup(function(leaves){
             return {
@@ -47,23 +45,24 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             }
         })
         .entries(data)
-    console.log(lineData)
 
-    lastRecord = data.length-1
+    var octaveCircles = [[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7],[0,0,8]]
 
-    var x = d3.scaleLinear()
-            .domain([-9,9])
-            .range([0,xRange]);
+    chartGroup.call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
 
-    var y = d3.scaleLinear()
-            .domain([-9,9])
-            .range([yRange,0]);
+    // lastRecord = data.length-1
 
-    var z = d3.scaleLinear()
-            .domain([-9,9])
-            .range([yRange,0]);
+    // var x = d3.scaleLinear()
+    //         .domain([-9,9])
+    //         .range([0,xRange]);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20)
+    // var y = d3.scaleLinear()
+    //         .domain([-9,9])
+    //         .range([yRange,0]);
+
+    // var z = d3.scaleLinear()
+    //         .domain([-9,9])
+    //         .range([yRange,0]);
 
     // var standardRadius = 5
 
@@ -78,42 +77,92 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     //     .curve(d3.curveCardinalClosed.tension(0.7))
     //     .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
     //     .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20), beta = 0, alpha = 0, startAngle = 45; origin = [(chartWidth/2),300], scale = 20;
+    var mx, my, mouseX, mouseY;
     
-    var _3d = d3._3d()
-        .x(function(d){return d.value['x']; })
-        .y(function(d){return d.value['y']; })
-        .z(function(d){return d.value['z']; })
-        .scale(60)
-        .origin([400, window.innerHeight*.60])
-        .rotateX(45)
-        .rotateY(0)
+    var point3d = d3._3d()
+        .x(function(d){return d.value['x']*3; })
+        .y(function(d){return d.value['y']*3; })
+        .z(function(d){return d.value['z']*2; })
+        .scale(scale)
+        .origin(origin)
+        .rotateX( startAngle)
+        .rotateY(-startAngle)
         .shape('POINT');
 
-    function plotData(data,tt){
-        console.log(data)
+    var centerLine3d = d3._3d()
+        .shape('LINE_STRIP')
+        .origin(origin)
+        .rotateX( startAngle)
+        .rotateY(-startAngle)
+        .scale(scale);
+
+    function plotPointData(data,tt){
         var points = chartGroup.selectAll('circle').data(data);
 
         points
             .enter()
             .append('circle')
-            .attr('class','_3d')
+            .attr('class','_3d points')
             .attr('opacity',0)
-            .attr('cx',function(d){return d.projected['x'];})
-            .attr('cy',function(d){return d.projected['y'];})
+            .attr('cx',posPointX)
+            .attr('cy',posPointY)
             .merge(points)
             .transition().duration(tt)
-            .attr('r','.4vw')
+            .attr('r','4px')
             .attr('stroke','white')
             .attr('fill',function(d){return color(d.value['channel']);})
-            .attr('opacity',.8);
+            .attr('opacity',.8)
+            .attr('cx',posPointX)
+            .attr('cy',posPointY);
 
         points.exit().remove();
 
-        d3.selectAll('._3d').sort(d3._3d().sort);
+        // var line = chartGroup.selectAll('path').data(data);
+
+        // line
+        //     .enter()
+        //     .append('path')
+        //     .attr('class','_3d centerLine')
+        //     .merge(line)
+        //     .attr('stroke','lightgrey')
+        //     .attr('stroke-width','.5px')
+        //     .attr('d',centerLine3d.draw)
+
+        // d3.selectAll('._3d').sort(d3._3d().sort);
     }
+
+    function posPointX(d){
+        return d.projected.x;
+    }
+
+    function posPointY(d){
+        return d.projected.y;
+    }
+
     function init(){
-        var data = _3d(lineData)
-        plotData(data,1000)
+        var data = point3d(pointData)
+        plotPointData(data,1000)
+    }
+
+    function dragStart(){
+        mx = d3.event.x;
+        my = d3.event.y;
+    }
+
+    function dragged(){
+        mouseX = mouseX || 0;
+        mouseY = mouseY || 0;
+        beta = (d3.event.x - mx + mouseX) * Math.PI / 230;
+        alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * -1;
+        var data = point3d.rotateX(alpha - startAngle).rotateY(beta + startAngle)(pointData)
+        plotPointData(data,0)
+    }
+
+    function dragEnd(){
+        mouseX = d3.event.x - mx + mouseX;
+        mouseY = d3.event.y - my + mouseY;
     }
     init()
 
