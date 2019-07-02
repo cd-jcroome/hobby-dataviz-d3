@@ -31,7 +31,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', Math.floor(window.innerHeight*.80) + 'px');
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv', function(data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.csv', function(data){
     handleResize()
 
     var pointData = d3.nest()
@@ -45,8 +45,6 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             }
         })
         .entries(data)
-
-    var octaveCircles = [[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7],[0,0,8]]
 
     chartGroup.call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
 
@@ -78,7 +76,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     //     .x(function(d){return x(plotX(d.value['angle'],standardRadius))})
     //     .y(function(d){return y(plotY(d.value['angle'],standardRadius))})
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20), beta = 0, alpha = 0, startAngle = 45; origin = [(chartWidth/2),300], scale = 20;
+    var color = d3.scaleOrdinal(d3.schemeCategory10), j = 8, beta = 0, alpha = 0, startAngle = startAngle = Math.PI/4; origin = [(chartWidth/2),300], scale = 20, centerLine = [];
     var mx, my, mouseX, mouseY;
     
     var point3d = d3._3d()
@@ -87,19 +85,28 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .z(function(d){return d.value['z']*2; })
         .scale(scale)
         .origin(origin)
-        .rotateX( startAngle)
-        .rotateY(-startAngle)
+        .rotateY( startAngle)
+        .rotateX(-startAngle)
         .shape('POINT');
 
     var centerLine3d = d3._3d()
         .shape('LINE_STRIP')
         .origin(origin)
-        .rotateX( startAngle)
-        .rotateY(-startAngle)
+        .rotateY( startAngle)
+        .rotateX(-startAngle)
         .scale(scale);
 
+    var songPath3d = d3._3d()
+        .shape('LINE_STRIP')
+        .origin(origin)
+        .rotateY( startAngle)
+        .rotateX(-startAngle)
+        .scale(scale);
+
+    // data = [data,octaveCircles]
+
     function plotPointData(data,tt){
-        var points = chartGroup.selectAll('circle').data(data);
+        var points = chartGroup.selectAll('circle').data(data[0]);
 
         points
             .enter()
@@ -111,26 +118,42 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             .merge(points)
             .transition().duration(tt)
             .attr('r','4px')
-            .attr('stroke','white')
-            .attr('fill',function(d){return color(d.value['channel']);})
+            .attr('fill','none')
+            .attr('stroke',function(d){return color(d.value['channel']);})
+            .attr('stroke-width','2px')
             .attr('opacity',.8)
             .attr('cx',posPointX)
             .attr('cy',posPointY);
 
         points.exit().remove();
 
-        // var line = chartGroup.selectAll('path').data(data);
+        var line = chartGroup.selectAll('path').data(data[1]);
 
-        // line
-        //     .enter()
-        //     .append('path')
-        //     .attr('class','_3d centerLine')
-        //     .merge(line)
-        //     .attr('stroke','lightgrey')
-        //     .attr('stroke-width','.5px')
-        //     .attr('d',centerLine3d.draw)
+        line
+            .enter()
+            .append('path')
+            .attr('class','_3d centerLine')
+            .merge(line)
+            .attr('stroke','grey')
+            .attr('stroke-width','1px')
+            .attr('d',centerLine3d.draw);
 
-        // d3.selectAll('._3d').sort(d3._3d().sort);
+        line.exit().remove();
+
+        var songPath = chartGroup.selectAll('path').data(data[2]);
+
+        songPath
+            .enter()
+            .append('path')
+            .attr('class','_3d songPath')
+            .merge(line)
+            .attr('stroke',function(d){return color(d.value['channel']);})
+            .attr('stroke-width','2px')
+            .attr('d',songPath3d.draw);
+
+        songPath.exit().remove();
+
+        d3.selectAll('._3d').sort(d3._3d().sort);
     }
 
     function posPointX(d){
@@ -142,7 +165,14 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     }
 
     function init(){
-        var data = point3d(pointData)
+        centerLine = []
+        d3.range(0, 16, 1).forEach(function(d){ centerLine.push([0,0,d]); });
+        console.log(centerLine)
+        var data = [
+            point3d(pointData),
+            centerLine3d([centerLine]),
+            songPath3d([pointData])
+        ]
         plotPointData(data,1000)
     }
 
@@ -155,8 +185,12 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         mouseX = mouseX || 0;
         mouseY = mouseY || 0;
         beta = (d3.event.x - mx + mouseX) * Math.PI / 230;
-        alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * -1;
-        var data = point3d.rotateX(alpha - startAngle).rotateY(beta + startAngle)(pointData)
+        alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * (-1);
+        var data = [
+            point3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)(pointData),
+            centerLine3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)([centerLine]),
+            songPath3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)([pointData])
+        ]
         plotPointData(data,0)
     }
 
