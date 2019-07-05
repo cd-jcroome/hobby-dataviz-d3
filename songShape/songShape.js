@@ -21,20 +21,22 @@ var chartGroup = d3.select(".chart");
 
 function handleResize() {
     var bodyWidth = (Math.floor(window.innerWidth*.95));
-    yRange = 800
-    xRange = 800
+    var bodyHeight = (Math.floor(window.innerHeight*.80))
+        
+    minDim = Math.min(bodyWidth, bodyHeight)
+
+    yRange = minDim
+    xRange = minDim
 
     var chartMargin = 5;
     chartWidth = xRange-chartMargin;
 
     chartGroup
         .style('width', chartWidth + 'px')
-        .style('height', Math.floor(window.innerHeight*.80) + 'px');
+        .style('height', bodyHeight + 'px');
 }
 d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.csv', function(data){
     handleResize()
-
-    var standardRadius = 5
 
     var pointData = d3.nest()
         .key(function(d){return d['']})
@@ -101,10 +103,11 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("class",function(d){return d['key']+" songPath"})
         .attr("d",function(d) {return songPath(d.values);})
         .attr("fill",function(d){return color(Number(d['key']))})
-        .attr("fill-opacity",.05)
+        // .attr("fill","none")
+        .attr("fill-opacity",.2)
         .attr("stroke",function(d){return color(Number(d['key']))})
         // .attr("stroke","white")
-        .attr("stroke-opacity",.2)
+        .attr("stroke-opacity",.4)
         // .attr("stroke","black")
         .attr("stroke-width",".1vw");
 
@@ -114,14 +117,16 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("class","noteCircle")
         .attr("cx",function(d){return x(d.value['x']);})
         .attr("cy",function(d){return y(d.value['y']);})
-        .attr("r",".25vw")
-        .attr("fill","black")
-        .attr("fill-opacity",.001)
-        // .attr("stroke-opacity",0)
-        // .transition()
-        // .duration(function(d){return d.value['time']*1000})
-        .attr("stroke-opacity",1)
-        .attr("stroke",function(d){return color(d['channel'])});  
+        .attr("r",".3vw")
+        .attr("fill","grey")
+        .attr("fill-opacity",0)
+        .attr("stroke-opacity",0)
+        .transition(d3.easeCircle,7)
+        .duration(function(d){return d.value['time']*1000})
+        .attr("fill-opacity",1)
+        .transition(d3.easeCircle,7)
+        .duration(function(d){return (d.value['time']+1)*1000})
+        .attr("fill-opacity",0);  
     
     // var path = chartGroup.select(".songPath")
 
