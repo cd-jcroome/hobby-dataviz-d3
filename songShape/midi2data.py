@@ -47,8 +47,14 @@ for f in files:
     mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd'
     ).drop(['note','velocity','time','note_value_nmd','type','clocks_per_click','control','denominator','notated_32nd_notes_per_beat','numerator','program','value'],axis=1
     )
-    mcdf_j = mcdfx.groupby('channel')
+    mcdf_h = mcdfx
+    mcdf_h['prior_midi_note'] = mcdf_h['note_midi_value'].shift(+1)
+    mcdf_h['prior_note_name'] = mcdf_h['note_name'].shift(+1)
+    mcdf_h['prior_octave'] = mcdf_h['octave'].shift(+1)
+    mcdf_h = mcdf_h.groupby(['channel','note_midi_value','prior_midi_note','octave','note_name','prior_octave','prior_note_name']).size().reset_index(name='edge_count')
+
 # convert to JSON
+    mcdf_j = mcdfx.groupby('channel')
     print('...converting {} to JSON...'.format(f))
     for key, gb in mcdf_j:
         gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).sort_values('note_seconds').to_dict('records')
@@ -59,7 +65,9 @@ for f in files:
 # convert to csv
     print('...converting {} to CSV...'.format(f))
     m_csv = join('./output/',splitext(f)[0],'.csv').replace("/.csv",".csv")
+    mh_csv = join('./output/',splitext(f)[0],'_group.csv').replace("/_group.csv","_group.csv")
     mcdfx.to_csv(m_csv)
+    mcdf_h.to_csv(mh_csv)
 
 # https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
 # https://www.midimountain.com/midi/midi_note_numbers.html
