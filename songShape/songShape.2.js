@@ -53,16 +53,24 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     cluster(root);
 
-    console.log(root)
-
     chartGroup
         .attr("width",diameter)
         .attr("height",diameter)
-    .append("g")
 
-    var link = chartGroup.append("g").selectAll(".link"),
+    var link = chartGroup.append("g").attr("class","linkGroup").selectAll(".link"),
         node = chartGroup.append("g").attr("class","nodeGroup").selectAll(".node");
     
+    console.log(root.leaves())
+    priors = packagePriors(root.leaves())
+    console.log(priors)
+
+    link = link
+        .data(priors)
+        .enter().append("path")
+        .each(function(d){ d.source = d[0], d.target = d[d.length - 1]; })
+        .attr("class","link")
+        .attr("d",line);
+
     node = node
         .data(root.leaves())
         .enter().append("text")
@@ -88,7 +96,6 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
                     node.key = name.substring(i+1);
                 }
             }
-            console.log(node)
             return node;
         }
         data.forEach(function(d) {
@@ -97,5 +104,19 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
         return d3.hierarchy(map[""]);
     }
-})
+
+    function packagePriors(nodes){
+        var map = {}
+        prior = []
+
+        nodes.forEach(function(d){
+            map[d.data['octave']+" "+d.data['note_name']] = d;
+        });
+        nodes.forEach(function(d){
+            if (d.data['prior_octave']+" "+d.data['prior_note_name'])
+                prior.push([d.data['octave']+" "+d.data['note_name'],d.data['prior_octave']+" "+d.data['prior_note_name']]);
+                });
+        return prior
+    }
+});
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
