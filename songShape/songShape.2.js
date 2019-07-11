@@ -2,6 +2,8 @@ var container = d3.select('#staticBody')
 
 var margin = { top: (window.innerWidth*.14), right: 80, bottom: 60, left: 80 };
 
+var color = d3.scaleOrdinal(d3.schemeCategory20)
+
 container.append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
@@ -36,6 +38,13 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     if (error) throw error;
     handleResize()
 
+   data['octave'] = function(d){return Number(d['octave'])};
+    console.log(data)
+
+    var edgeSize = d3.scaleLinear()
+        .domain([d3.min(data, function(d){return d['edge_count'];}),d3.max(data, function(d){return d['edge_count'];})])
+        .range([.01,.05])
+
     var diameter  = minDim
     radius = diameter/2
     innerRadius = radius - 120;
@@ -60,16 +69,20 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     var link = chartGroup.append("g").attr("class","linkGroup").selectAll(".link"),
         node = chartGroup.append("g").attr("class","nodeGroup").selectAll(".node");
     
-    console.log(root.leaves())
-    priors = packagePriors(root.leaves())
-    console.log(priors)
+    console.log(packagePriors(root.leaves()))
 
     link = link
-        .data(priors)
+        .data(packagePriors(root.leaves()))
         .enter().append("path")
         .each(function(d){ d.source = d[0], d.target = d[d.length - 1]; })
         .attr("class","link")
+        .attr("fill","none")
+        .attr("stroke","grey")
+        .attr("stroke-opacity",".8")
+        .attr("stroke-width",function(d){return(function(i){console.log( edgeSize(num(d.i.data['edge_count']))+"vw");});})
         .attr("d",line);
+
+    d3.selectAll(".linkGroup").attr("transform","translate("+radius+","+radius+")");
 
     node = node
         .data(root.leaves())
@@ -99,7 +112,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             return node;
         }
         data.forEach(function(d) {
-            find(d['octave']+" "+d['note_name'],d);
+            find(Math.floor(d['octave'])+" "+d['note_name'],d);
         });
 
         return d3.hierarchy(map[""]);
@@ -107,16 +120,20 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     function packagePriors(nodes){
         var map = {}
-        prior = []
-
+        priors = []
+        channel = []
         nodes.forEach(function(d){
             map[d.data['octave']+" "+d.data['note_name']] = d;
         });
         nodes.forEach(function(d){
-            if (d.data['prior_octave']+" "+d.data['prior_note_name'])
-                prior.push([d.data['octave']+" "+d.data['note_name'],d.data['prior_octave']+" "+d.data['prior_note_name']]);
+            if (d.data['octave']+" "+d.data['note_name'])
+                d = [d]
+                d.forEach(function(i){
+                    priors.push(map[i.data['octave']+" "+i.data['note_name']].path(map[i.data['prior_octave']+" "+i.data['prior_note_name']]))
+                    channel.push(i.data['channel'])
+                })
                 });
-        return prior
+        return priors
     }
 });
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
