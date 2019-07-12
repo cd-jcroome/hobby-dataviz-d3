@@ -34,7 +34,7 @@ function handleResize() {
     chartWidth = xRange-chartMargin;
 
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah_group.csv', function(error, data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Slayer_-_Expendable_youth_group.csv', function(error, data){
     if (error) throw error;
     handleResize()
 
@@ -58,7 +58,10 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .angle(function(d){return d.x / 180 * Math.PI});
     
     var root = packageHierarchy(data)
-        .sum(function(d){return d['edge_count']; });
+        .sum(function(d){return d['edge_count']; })
+        .sum(function(d){return Math.floor(d['angle'])*(Math.floor(d['octave'])/9)});
+
+    console.log(root)
 
     cluster(root);
 
@@ -79,7 +82,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill","none")
         .attr("stroke","grey")
         .attr("stroke-opacity",".8")
-        .attr("stroke-width",function(d){return(function(i){console.log( edgeSize(num(d.i.data['edge_count']))+"vw");});})
+        .attr("stroke-width",".05vw")
         .attr("d",line);
 
     d3.selectAll(".linkGroup").attr("transform","translate("+radius+","+radius+")");

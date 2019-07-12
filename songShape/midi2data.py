@@ -51,7 +51,7 @@ for f in files:
     mcdf_h['prior_midi_note'] = mcdf_h['note_midi_value'].shift(+1)
     mcdf_h['prior_note_name'] = mcdf_h['note_name'].shift(+1)
     mcdf_h['prior_octave'] = mcdf_h['octave'].shift(+1)
-    mcdf_h = mcdf_h.groupby(['channel','note_midi_value','prior_midi_note','octave','note_name','prior_octave','prior_note_name']).size().reset_index(name='edge_count')
+    mcdf_h = mcdf_h.groupby(['channel','angle','note_midi_value','octave','note_name','prior_midi_note','prior_octave','prior_note_name']).size().reset_index(name='edge_count')
 
 # convert to JSON
     mcdf_j = mcdfx.groupby('channel')
