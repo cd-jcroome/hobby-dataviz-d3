@@ -2,8 +2,6 @@ var container = d3.select('#staticBody')
 
 var margin = { top: (window.innerWidth*.14), right: 80, bottom: 60, left: 80 };
 
-var color = d3.scaleOrdinal(d3.schemeCategory20)
-
 container.append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
@@ -34,16 +32,17 @@ function handleResize() {
     chartWidth = xRange-chartMargin;
 
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Slayer_-_Expendable_youth_group.csv', function(error, data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah_group.csv', function(error, data){
     if (error) throw error;
     handleResize()
 
-   data['octave'] = function(d){return Number(d['octave'])};
     console.log(data)
 
     var edgeSize = d3.scaleLinear()
         .domain([d3.min(data, function(d){return d['edge_count'];}),d3.max(data, function(d){return d['edge_count'];})])
         .range([.01,.05])
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
     var diameter  = minDim
     radius = diameter/2
@@ -59,11 +58,13 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     
     var root = packageHierarchy(data)
         .sum(function(d){return d['edge_count']; })
-        .sum(function(d){return Math.floor(d['angle'])*(Math.floor(d['octave'])/9)});
 
-    console.log(root)
 
     cluster(root);
+
+    root.leaves().forEach(function(d){
+        d.x = Math.floor(d.data['angle'])+(30*((Math.floor(d.data['octave'])-4)/8))
+    });
 
     chartGroup
         .attr("width",diameter)
@@ -80,7 +81,8 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .each(function(d){ d.source = d[0], d.target = d[d.length - 1]; })
         .attr("class","link")
         .attr("fill","none")
-        .attr("stroke","grey")
+        // .attr("stroke",function(d){color(d[0].data['channel'])})
+        .attr("stroke","salmon")
         .attr("stroke-opacity",".8")
         .attr("stroke-width",".05vw")
         .attr("d",line);
