@@ -40,7 +40,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     var edgeSize = d3.scaleLinear()
         .domain([d3.min(data, function(d){return d['edge_count'];}),d3.max(data, function(d){return d['edge_count'];})])
-        .range([.01,.05])
+        .range([2,12])
 
     var color = d3.scaleOrdinal(d3.schemeCategory20)
 
@@ -64,6 +64,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     root.leaves().forEach(function(d){
         d.x = Math.floor(d.data['angle'])+(30*((Math.floor(d.data['octave'])-4)/8))
+        // d.x = Math.floor((30*(d.data['angle']/360))+((Math.floor(d.data['octave'])/8)*360))
     });
 
     chartGroup
@@ -74,17 +75,17 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         node = chartGroup.append("g").attr("class","nodeGroup").selectAll(".node");
     
     console.log(packagePriors(root.leaves()))
-
+    
     link = link
         .data(packagePriors(root.leaves()))
         .enter().append("path")
         .each(function(d){ d.source = d[0], d.target = d[d.length - 1]; })
         .attr("class","link")
         .attr("fill","none")
-        // .attr("stroke",function(d){color(d[0].data['channel'])})
-        .attr("stroke","salmon")
+        .attr("stroke",function(d){return color(d[0].data['channel'])})
         .attr("stroke-opacity",".8")
-        .attr("stroke-width",".05vw")
+        .attr("stroke-width",function(d){return edgeSize(d[0].data['edge_count'])+"px"})
+        // .attr("stroke-width","12px")
         .attr("d",line);
 
     d3.selectAll(".linkGroup").attr("transform","translate("+radius+","+radius+")");

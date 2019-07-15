@@ -35,7 +35,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', bodyHeight + 'px');
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.csv', function(data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SuperMarioBrothers.csv', function(data){
     handleResize()
 
     var pointData = d3.nest()
@@ -94,7 +94,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill","none")
         .attr("stroke","lightgrey")
         .attr("opacity",.7)
-        .attr("stroke-width",".05vw")  
+        .attr("stroke-width",".05vw");  
 
     chartGroup.selectAll(".line")
         .data(lineData)
@@ -115,18 +115,22 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .enter()
         .append("circle")
         .attr("class","noteCircle")
-        .attr("cx",function(d){return x(d.value['x']);})
-        .attr("cy",function(d){return y(d.value['y']);})
+        .attr("cx",function(d){return x(d.value['x']); })
+        .attr("cy",function(d){return y(d.value['y']); })
         .attr("r",".3vw")
-        .attr("fill","grey")
-        .attr("fill-opacity",0)
-        .attr("stroke-opacity",0)
-        .transition(d3.easeCircle,7)
-        .duration(function(d){return d.value['time']*1000})
-        .attr("fill-opacity",1)
-        .transition(d3.easeCircle,7)
-        .duration(function(d){return (d.value['time']+1)*1000})
-        .attr("fill-opacity",0);  
+        .attr("fill",function(d){return color(d.value['channel']); })
+        .attr("fill-opacity","0")
+        .attr("stroke","none")
+        .transition()
+        .delay(function(d){return (d.value['time'])*1000; })
+        .attr("fill-opacity","1")
+        .attr("stroke","white")
+        .attr("r",".6vw")
+        .transition()
+        .delay(function(d){return (d.value['time'])*1000; })
+        .attr("fill-opacity","0")
+        .attr("stroke","none")
+        .attr("r",".15vw");
     
     // var path = chartGroup.select(".songPath")
 
