@@ -35,8 +35,23 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', bodyHeight + 'px');
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SuperMarioBrothers.csv', function(data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.csv', function(data){
     handleResize()
+
+    var x = d3.scaleLinear()
+            .domain([-9,9])
+            .range([0,xRange]);
+
+    var y = d3.scaleLinear()
+            .domain([-9,9])
+            .range([yRange,0]);
+
+    var songPath = d3.line()
+        .curve(d3.curveNatural)
+        .x(function(d){return x(d.value['x'])})
+        .y(function(d){return y(d.value['y'])});
+
+    var color = d3.scaleOrdinal(d3.schemeCategory10)
 
     var pointData = d3.nest()
         .key(function(d){return d['']})
@@ -68,22 +83,6 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     lastRecord = data.length-1
 
-    var x = d3.scaleLinear()
-            .domain([-9,9])
-            .range([0,xRange]);
-
-    var y = d3.scaleLinear()
-            .domain([-9,9])
-            .range([yRange,0]);
-
-    var songPath = d3.line()
-        .curve(d3.curveNatural)
-        .x(function(d){return x(d.value['x'])})
-        .y(function(d){return y(d.value['y'])});
-
-    var color = d3.scaleOrdinal(d3.schemeCategory20)
-
-
     chartGroup.selectAll(".circleFifths")
         .data(data)
         .enter().append("circle")
@@ -92,9 +91,9 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("cy",y(0))
         .attr("r",function(d){return y(d['octave'])})
         .attr("fill","none")
-        .attr("stroke","lightgrey")
+        .attr("stroke","darkgrey")
         .attr("opacity",.7)
-        .attr("stroke-width",".05vw");  
+        .attr("stroke-width",".02vw");  
 
     chartGroup.selectAll(".line")
         .data(lineData)
@@ -103,13 +102,10 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("class",function(d){return d['key']+" songPath"})
         .attr("d",function(d) {return songPath(d.values);})
         .attr("fill",function(d){return color(Number(d['key']))})
-        // .attr("fill","none")
         .attr("fill-opacity",.2)
         .attr("stroke",function(d){return color(Number(d['key']))})
-        // .attr("stroke","white")
         .attr("stroke-opacity",.4)
-        // .attr("stroke","black")
-        .attr("stroke-width",".1vw");
+        .attr("stroke-width",".01vw");
 
     chartGroup.selectAll(".noteCircle").data(pointData)
         .enter()
@@ -122,28 +118,14 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill-opacity","0")
         .attr("stroke","none")
         .transition()
-        .delay(function(d){return (d.value['time'])*1000; })
-        .attr("fill-opacity","1")
-        .attr("stroke","white")
-        .attr("r",".6vw")
+            .delay(function(d){return (d.value['time'])*1000; })
+            .attr("fill-opacity",.6)
+            .attr("stroke","white")
+            .attr("r",".6vw")
         .transition()
-        .delay(function(d){return (d.value['time'])*1000; })
-        .attr("fill-opacity","0")
-        .attr("stroke","none")
-        .attr("r",".15vw");
-    
-    // var path = chartGroup.select(".songPath")
-
-    // var totalLength = path.node().getTotalLength();
-
-    // path
-    //     .attr("stroke-dasharray", totalLength + " " + totalLength)
-    //     .attr("stroke-dashoffset", totalLength)
-    //     .transition()
-    //     .duration((data[lastRecord].note_seconds)*1000)
-    //     // .ease(d3.easeBackIn)
-    //     .attr("stroke-dashoffset", 0)
-
+            .attr("fill-opacity","0")
+            .attr("stroke","none")
+            .attr("r",".15vw")
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
