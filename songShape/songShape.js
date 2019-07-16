@@ -118,7 +118,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill-opacity","0")
         .attr("stroke","none")
         .transition()
-            .delay(function(d){return (d.value['time'])*1000; })
+            .delay(function(d){return (d.value['time'])*10; })
             .attr("fill-opacity",.6)
             .attr("stroke","white")
             .attr("r",".6vw")

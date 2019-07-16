@@ -27,6 +27,7 @@ for f in files:
             mc.append(msg.dict())
 
     mcdf_raw = pd.DataFrame(mc)
+
     mcdf_raw['note_midi_value'] = mcdf_raw['note']
     mcdf_raw['note_velocity'] = mcdf_raw['velocity']
 # convert tick to time_delta
@@ -35,6 +36,9 @@ for f in files:
     tpq = mid.ticks_per_beat
     spt = (mspq/tpq)/1000000
     mcdf_raw['note_seconds'] = mcdf_raw['note_time'].map(lambda x: x*spt)
+
+    m_raw_csv = join('./output/raw/',splitext(f)[0],'_raw.csv').replace("/_raw.csv","_raw.csv")
+    mcdf_raw.to_csv(m_raw_csv)
 # filter to just note_on events
     note_on_only_vel = mcdf_raw['note_velocity']>0
     note_on_only = mcdf_raw['type'] == 'note_on'
@@ -45,9 +49,8 @@ for f in files:
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
     
     mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd'
-    ).drop(['time','note_time','note','velocity','note_velocity','note_value_nmd','type','clocks_per_click','control','denominator','notated_32nd_notes_per_beat','numerator','program','value'],axis=1
     )
-    mcdf_h = mcdfx
+    mcdfx[['channel','note_seconds','octave','note_name','angle']]
     # mcdf_h['prior_midi_note'] = mcdf_h['note_midi_value'].shift(+1)
     # mcdf_h['prior_note_name'] = mcdf_h['note_name'].shift(+1)
     # mcdf_h['prior_octave'] = mcdf_h['octave'].shift(+1)
@@ -59,14 +62,12 @@ for f in files:
     for key, gb in mcdf_j:
         gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).sort_values('note_seconds').to_dict('records')
         mjr[str(key)] = gb1
-    m_json = join('./output/',splitext(f)[0],'.json').replace("/.json",".json")
+    m_json = join('./output/json/',splitext(f)[0],'.json').replace("/.json",".json")
     with open(m_json,'w') as m_json:
         json.dump(mjr,m_json,indent=2)
 # convert to csv
     print('...converting {} to CSV...'.format(f))
     m_csv = join('./output/',splitext(f)[0],'.csv').replace("/.csv",".csv")
-    m_raw_csv = join('./output/',splitext(f)[0],'_raw.csv').replace("/_raw.csv","_raw.csv")
-    mcdf_raw.to_csv(m_raw_csv)
     mcdfx.to_csv(m_csv)
     # mcdf_h.to_csv(mh_csv)
 
