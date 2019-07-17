@@ -10,6 +10,7 @@ py-midicsv = "*"
 numpy = "*"
 pandas = "*"
 mido = "*"
+beautifulsoup4 = "*"
 
 [requires]
 python_version = "3.7"

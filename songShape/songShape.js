@@ -35,7 +35,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', bodyHeight + 'px');
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Hallelujah.csv', function(data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/19-2000.csv', function(data){
     handleResize()
 
     var x = d3.scaleLinear()
@@ -118,7 +118,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill-opacity","0")
         .attr("stroke","none")
         .transition()
-            .delay(function(d){return (d.value['time'])*10; })
+            .delay(function(d){return (d.value['time'])*100; })
             .attr("fill-opacity",.6)
             .attr("stroke","white")
             .attr("r",".6vw")
