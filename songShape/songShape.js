@@ -53,6 +53,8 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     var color = d3.scaleOrdinal(d3.schemeCategory10)
 
+    let octaves = [...new Set(data['octave'])];
+    
     var pointData = d3.nest()
         .key(function(d){return d['']})
         .rollup(function(leaves){
@@ -89,7 +91,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("class","circleFifths")
         .attr("cx",x(0))
         .attr("cy",y(0))
-        .attr("r",function(d){return y(d['octave'])})
+        .attr("r",function(d){return y(Number(d['octave']))})
         .attr("fill","none")
         .attr("stroke","darkgrey")
         .attr("opacity",.7)
@@ -113,19 +115,20 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("class","noteCircle")
         .attr("cx",function(d){return x(d.value['x']); })
         .attr("cy",function(d){return y(d.value['y']); })
-        .attr("r",".3vw")
+        // .attr("r",".3vw")
         .attr("fill",function(d){return color(d.value['channel']); })
-        .attr("fill-opacity","0")
-        .attr("stroke","none")
-        .transition()
-            .delay(function(d){return (d.value['time'])*100; })
+        // .attr("fill-opacity","0")
+        // .attr("stroke","none")
+        // .transition()
+        //     .delay(function(d){return (d.value['time'])*100; })
             .attr("fill-opacity",.6)
-            .attr("stroke","white")
-            .attr("r",".6vw")
-        .transition()
-            .attr("fill-opacity","0")
-            .attr("stroke","none")
-            .attr("r",".15vw")
+            // .attr("stroke","white")
+            // .atty("stroke-width",".04vw")
+        //     .attr("r",".6vw")
+        // .transition()
+        //     .attr("fill-opacity","0")
+        //     .attr("stroke","none")
+            .attr("r",".2vw")
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
