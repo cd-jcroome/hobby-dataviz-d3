@@ -35,7 +35,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', bodyHeight + 'px');
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/19-2000.csv', function(data){
+d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/Baby.csv', function(data){
     handleResize()
 
     var x = d3.scaleLinear()
@@ -53,7 +53,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
 
     var color = d3.scaleOrdinal(d3.schemeCategory10)
 
-    let octaves = [...new Set(data['octave'])];
+    let octaves = [1,2,3,4,5,6,7,8];
     
     var pointData = d3.nest()
         .key(function(d){return d['']})

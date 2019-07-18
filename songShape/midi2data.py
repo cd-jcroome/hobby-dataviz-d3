@@ -42,8 +42,8 @@ for f in files:
 # filter to just note_on events
     note_on_only_vel = mcdf_raw['note_velocity']>0
     note_on_only = mcdf_raw['type'] == 'note_on'
-    mcdf_1 = mcdf_raw[note_on_only_vel]
-    mcdf = mcdf_1[note_on_only]
+    mcdf = mcdf_raw[note_on_only_vel]
+    mcdf = mcdf[note_on_only]
 
 # octave will be radius - floor of (number divided by 12), note will be angle - (remainder of (number divided by 12)) multiplied by the variable
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
