@@ -1,17 +1,25 @@
 from bs4 import BeautifulSoup as bs
 import requests
-import urllib
+import urllib.request as urlr
 import sys
 import re
 
 _URL = 'https://free-midi.org/download'
 
 # get list of all locations for artists songs, e.g. "3-17152-a-boys-best-friend-white-stripes"
-artist_page = requests.get(sys.argv[1])
+artist_name = input("what's the artist name?\n")
+artist_page = requests.get(input("Where are the songs located?\n"))
 soup = bs(artist_page.text, "html.parser")
+tracks = soup.select('a[href^="download"]')
+locs = []
+for i, x in enumerate(tracks):
+    locs.append(tracks[i].attrs['href'])
+print(locs)
 
-tracks = soup.select('div[itemprop="tracks"]')
-print(tracks)
-# hit freemidi.org/getter-[location]
-# print(soup)
 # download midi file to artist folder
+for l in locs:
+    rq = 'https://freemidi.org/'+l
+    res = urlr.urlopen(rq)
+    midi = open("songs/"+artist_name+"/"+l+".midi","wb")
+    midi.write(res.read())
+    midi.close
