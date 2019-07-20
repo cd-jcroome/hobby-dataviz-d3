@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import requests
 import urllib.request as urlr
-import sys
+import sys, os
 import re
 
 _URL = 'https://free-midi.org/download'
@@ -20,6 +20,10 @@ print(locs)
 for l in locs:
     rq = 'https://freemidi.org/'+l
     res = urlr.urlopen(rq)
-    midi = open("songs/"+artist_name+"/"+l+".midi","wb")
+    artist_dir = "songs/"+artist_name+"/"
+    if not os.path.exists(artist_dir):
+        os.makedirs(artist_dir)
+    midi = open(artist_dir+l+".midi","wb")
     midi.write(res.read())
     midi.close
+    print("ding!")
