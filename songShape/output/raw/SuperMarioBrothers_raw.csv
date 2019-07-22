@@ -1,8 +1,8 @@
 ,channel,clocks_per_click,control,denominator,name,notated_32nd_notes_per_beat,note,numerator,program,tempo,time,type,value,velocity,note_midi_value,note_velocity,note_time,note_seconds
 0,,96.0,,4.0,,8.0,,4.0,,,0,time_signature,,,,,0,0.0
-1,,,,,,,,,,571428.0,0,set_tempo,,,,,-254,-1.3229166666666665
-2,,,,,,,,,,,0,end_of_track,,,,,140465029467648,731588695144.0
-3,,,,,Sequenced by P.J. Barnes,,,,,,0,track_name,,,,,-242,-1.2604166666666665
+1,,,,,,,,,,571428.0,0,set_tempo,,,,,-248,-1.2916666666666665
+2,,,,,,,,,,,0,end_of_track,,,,,0,0.0
+3,,,,,Sequenced by P.J. Barnes,,,,,,0,track_name,,,,,-248,-1.2916666666666665
 4,0.0,,0.0,,,,,,,,0,control_change,0.0,,,,0,0.0
 5,0.0,,,,,,,,26.0,,0,program_change,,,,,0,0.0
 6,,96.0,,4.0,,8.0,,4.0,,,0,time_signature,,,,,-1,-0.005208333333333333

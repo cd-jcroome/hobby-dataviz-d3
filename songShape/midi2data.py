@@ -49,8 +49,8 @@ for f in files:
     mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
     
     mcdfx = mcdf.join(nmd,on='note_value',rsuffix='_nmd'
-    )
-    mcdfx[['channel','note_seconds','octave','note_name','angle']]
+    ).sort_values(by='note_seconds')
+    # mcdfx[['channel','note_seconds','octave','note_name','angle']]
     # mcdf_h['prior_midi_note'] = mcdf_h['note_midi_value'].shift(+1)
     # mcdf_h['prior_note_name'] = mcdf_h['note_name'].shift(+1)
     # mcdf_h['prior_octave'] = mcdf_h['octave'].shift(+1)
