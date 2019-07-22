@@ -31,7 +31,7 @@ for f in files:
     mcdf_raw['note_midi_value'] = mcdf_raw['note']
     mcdf_raw['note_velocity'] = mcdf_raw['velocity']
 # convert tick to time_delta
-    mcdf_raw['note_time'] = mcdf_raw['time'].cumsum()
+    mcdf_raw['note_time'] = mcdf_raw.groupby('channel')['time'].cumsum()
     mspq = 500000
     tpq = mid.ticks_per_beat
     spt = (mspq/tpq)/1000000
