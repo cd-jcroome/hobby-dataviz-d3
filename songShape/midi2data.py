@@ -6,7 +6,8 @@ from os import listdir
 from os.path import isfile, join, splitext
 
 # for all of the mid or midi files in a given folder...
-files = [f for f in listdir('./songs') if isfile(join('./songs/',f))]
+songs_folder = input("where are the songs?\n")
+files = [f for f in listdir('./songs/'+songs_folder+'/') if isfile(join('./songs/'+songs_folder+'/',f))]
 print(files)
 
 d = {
@@ -18,7 +19,7 @@ nmd['note_value'] = pd.to_numeric(nmd['note_value'],errors='ignore').astype(int)
 
 ## convert midifile to pandas df
 for f in files:
-    mid = MidiFile(join('./songs/',f))
+    mid = MidiFile(join('./songs/'+songs_folder+'/',f))
     
     mc = []
     mjr = {}
@@ -55,19 +56,19 @@ for f in files:
     # mcdf_h['prior_note_name'] = mcdf_h['note_name'].shift(+1)
     # mcdf_h['prior_octave'] = mcdf_h['octave'].shift(+1)
     # mcdf_h = mcdf_h.groupby(['channel','angle','note_midi_value','octave','note_name','prior_midi_note','prior_octave','prior_note_name']).size().reset_index(name='edge_count')
-
+    output_location = input('what do you want to call the output folder?\n')
 # convert to JSON
     mcdf_j = mcdfx.groupby('channel')
     print('...converting {} to JSON...'.format(f))
     for key, gb in mcdf_j:
         gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).sort_values('note_seconds').to_dict('records')
         mjr[str(key)] = gb1
-    m_json = join('./output/json/',splitext(f)[0],'.json').replace("/.json",".json")
+    m_json = join('./output/json/'+output_location,splitext(f)[0],'.json')
     with open(m_json,'w') as m_json:
         json.dump(mjr,m_json,indent=2)
 # convert to csv
     print('...converting {} to CSV...'.format(f))
-    m_csv = join('./output/',splitext(f)[0],'.csv').replace("/.csv",".csv")
+    m_csv = join('./output/'+output_location,splitext(f)[0],'.csv')
     mcdfx.to_csv(m_csv)
     # mcdf_h.to_csv(mh_csv)
 

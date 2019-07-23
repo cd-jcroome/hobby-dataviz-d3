@@ -35,7 +35,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', bodyHeight + 'px');
 }
-d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv', function(data){
+d3.csv('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/SevenNationArmy.csv', function(data){
     handleResize()
 
     var x = d3.scaleLinear()
@@ -47,20 +47,22 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
             .range([yRange,0]);
 
     var songPath = d3.line()
-        .curve(d3.curveNatural)
+        // .curve(d3.curveNatural)
         .x(function(d){return x(d.value['x'])})
         .y(function(d){return y(d.value['y'])});
 
     var color = d3.scaleOrdinal(d3.schemeCategory10)
 
-    let octaves = [1,2,3,4,5,6,7,8];
-    
+    anglePrep = function(d){
+        return d/180 * Math.PI
+    ;}
+
     var pointData = d3.nest()
         .key(function(d){return d['']})
         .rollup(function(leaves){
             return {
-                x: d3.sum(leaves, function(d){return Math.sin(d['angle'])*d['octave']}), // x coordinate for note
-                y: d3.sum(leaves, function(d){return Math.cos(d['angle'])*d['octave']}), // y coordinate for note
+                x: d3.sum(leaves, function(d){return Math.sin(anglePrep(d['angle']))*d['octave']}), // x coordinate for note
+                y: d3.sum(leaves, function(d){return Math.cos(anglePrep(d['angle']))*d['octave']}), // y coordinate for note
                 channel: d3.max(leaves, function(d){return Number(d['channel'])}),
                 time: d3.max(leaves, function(d){return Number(d['note_seconds'])})
             }
@@ -72,30 +74,39 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
     .key(function(d){return d['']})
     .rollup(function(leaves){
         return {
-            x: d3.sum(leaves, function(d){return Math.sin(d['angle'])*d['octave']}), // x coordinate for note
-            y: d3.sum(leaves, function(d){return Math.cos(d['angle'])*d['octave']}), // y coordinate for note
+            x: d3.sum(leaves, function(d){return Math.sin(anglePrep(d['angle']))*d['octave']}), // x coordinate for note
+            y: d3.sum(leaves, function(d){return Math.cos(anglePrep(d['angle']))*d['octave']}), // y coordinate for note
             channel: d3.max(leaves, function(d){return Number(d['channel'])}),
             time: d3.max(leaves, function(d){return Number(d['note_seconds'])})
         }
     })
     .entries(data)
 
-        console.log(pointData)
-        console.log(lineData)
+    var noteData = [
+        {'note_name':'C','angle':0},
+        {'note_name':'G','angle':30},
+        {'note_name':'D','angle':60},
+        {'note_name':'A','angle':90},
+        {'note_name':'E','angle':120},
+        {'note_name':'B','angle':150},
+        {'note_name':'F#','angle':180},
+        {'note_name':'C#','angle':210},
+        {'note_name':'G#','angle':240},
+        {'note_name':'D#','angle':270},
+        {'note_name':'A#','angle':300},
+        {'note_name':'F','angle':330}
+    ]
 
     lastRecord = data.length-1
 
-    chartGroup.selectAll(".circleFifths")
-        .data(data)
-        .enter().append("circle")
-        .attr("class","circleFifths")
-        .attr("cx",x(0))
-        .attr("cy",y(0))
-        .attr("r",function(d){return y(Number(d['octave']))})
-        .attr("fill","none")
-        .attr("stroke","darkgrey")
-        .attr("opacity",.7)
-        .attr("stroke-width",".02vw");  
+    chartGroup.selectAll(".notePoint")
+        .data(noteData)
+        .enter().append("text")
+        .attr("class","notePoint")
+        .attr("dy",".31em")
+        .attr("x",function(d){ return x((Math.sin(anglePrep(d['angle'])))*8); })
+        .attr("y",function(d){ return y((Math.cos(anglePrep(d['angle'])))*8); })
+        .text(function(d){ return d['note_name']; });
 
     chartGroup.selectAll(".line")
         .data(lineData)
@@ -106,8 +117,20 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill",function(d){return color(Number(d['key']))})
         .attr("fill-opacity",.2)
         .attr("stroke",function(d){return color(Number(d['key']))})
-        .attr("stroke-opacity",.4)
+        .attr("stroke-opacity",.1)
         .attr("stroke-width",".01vw");
+
+        chartGroup.selectAll(".circleFifths")
+            .data(data)
+            .enter().append("circle")
+            .attr("class","circleFifths")
+            .attr("cx",x(0))
+            .attr("cy",y(0))
+            .attr("r",function(d){return y(Number(d['octave']+2))})
+            .attr("fill","none")
+            .attr("stroke","white")
+            .attr("opacity",1)
+            .attr("stroke-width",".02vw");  
 
     chartGroup.selectAll(".noteCircle").data(pointData)
         .enter()
@@ -120,7 +143,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .attr("fill-opacity","0")
         .attr("stroke","none")
         .transition()
-            .delay(function(d){return (d.value['time'])*500; })
+            .delay(function(d){return (d.value['time'])*1000; })
             .attr("fill-opacity",.6)
             .attr("stroke","white")
             .attr("stroke-width",".04vw")
@@ -128,7 +151,7 @@ d3.csv('https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/
         .transition()
             .attr("fill-opacity","0")
             .attr("stroke","none")
-            .attr("r",".2vw")
+    //         .attr("r",".2vw")
 
 })
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
