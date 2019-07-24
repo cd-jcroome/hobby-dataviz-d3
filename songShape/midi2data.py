@@ -19,8 +19,8 @@ nmd['note_value'] = pd.to_numeric(nmd['note_value'],errors='ignore').astype(int)
 
 ## convert midifile to pandas df
 for f in files:
-    mid = MidiFile(join('./songs/'+songs_folder+'/',f))
-    
+    print("working on \'"+f+"\'")
+    mid = MidiFile('./songs/'+songs_folder+'/'+f)
     mc = []
     mjr = {}
     for i, track in enumerate(mid.tracks):

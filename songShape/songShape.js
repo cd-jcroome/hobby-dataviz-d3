@@ -35,7 +35,7 @@ function handleResize() {
         .style('width', chartWidth + 'px')
         .style('height', bodyHeight + 'px');
 }
-d3.csv('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/SevenNationArmy.csv', function(data){
+d3.csv('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/Hallelujah.csv', function(data){
     handleResize()
 
     var x = d3.scaleLinear()
@@ -47,7 +47,7 @@ d3.csv('https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/song
             .range([yRange,0]);
 
     var songPath = d3.line()
-        // .curve(d3.curveNatural)
+        .curve(d3.curveBasis)
         .x(function(d){return x(d.value['x'])})
         .y(function(d){return y(d.value['y'])});
 
