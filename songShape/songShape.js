@@ -54,7 +54,7 @@ d3.csv(
 
     var songPath = d3
       .line()
-      .curve(d3.curveBasis)
+      .curve(d3.curveNatural)
       .x(function(d) {
         return x(d.value["x"]);
       })
@@ -153,6 +153,7 @@ d3.csv(
         return d["note_name"];
       });
 
+    //   shapes
     chartGroup
       .selectAll(".line")
       .data(lineData)
@@ -167,58 +168,59 @@ d3.csv(
       .attr("fill", function(d) {
         return color(Number(d["key"]));
       })
-      .attr("fill-opacity", 0.2)
+      .attr("fill-opacity", 0)
       .attr("stroke", function(d) {
         return color(Number(d["key"]));
       })
-      .attr("stroke-opacity", 0.1)
-      .attr("stroke-width", ".01vw");
-
-    // chartGroup
-    //   .selectAll(".circleFifths")
-    //   .data(data)
-    //   .enter()
-    //   .append("circle")
-    //   .attr("class", "circleFifths")
-    //   .attr("cx", x(0))
-    //   .attr("cy", y(0))
-    //   .attr("r", function(d) {
-    //     return y(Number(d["octave"] + 2));
-    //   })
-    //   .attr("fill", "none")
-    //   .attr("stroke", "white")
-    //   .attr("opacity", 1)
-    //   .attr("stroke-width", ".02vw");
+      .attr("stroke-opacity", 0.15)
+      .attr("stroke-width", ".1vw");
 
     chartGroup
-      .selectAll(".noteCircle")
-      .data(pointData)
+      .selectAll(".circleFifths")
+      .data(data)
       .enter()
       .append("circle")
-      .attr("class", "noteCircle")
-      .attr("cx", function(d) {
-        return x(d.value["x"]);
+      .attr("class", "circleFifths")
+      .attr("cx", x(0))
+      .attr("cy", y(0))
+      .attr("r", function(d) {
+        return y(Number(d["octave"] + 2));
       })
-      .attr("cy", function(d) {
-        return y(d.value["y"]);
-      })
-      .attr("r", ".3vw")
-      .attr("fill", function(d) {
-        return color(d.value["channel"]);
-      })
-      .attr("fill-opacity", "0")
-      .attr("stroke", "none")
-      .transition()
-      .delay(function(d) {
-        return d.value["time"] * 1000;
-      })
-      .attr("fill-opacity", 0.6)
+      .attr("fill", "none")
       .attr("stroke", "white")
-      .attr("stroke-width", ".04vw")
-      .attr("r", ".6vw")
-      .transition()
-      .attr("fill-opacity", "0")
-      .attr("stroke", "none");
+      .attr("opacity", 1)
+      .attr("stroke-width", ".02vw");
+
+    //   dots
+    // chartGroup
+    //   .selectAll(".noteCircle")
+    //   .data(pointData)
+    //   .enter()
+    //   .append("circle")
+    //   .attr("class", "noteCircle")
+    //   .attr("cx", function(d) {
+    //     return x(d.value["x"]);
+    //   })
+    //   .attr("cy", function(d) {
+    //     return y(d.value["y"]);
+    //   })
+    //   .attr("r", ".15vw")
+    //   .attr("fill", function(d) {
+    //     return color(d.value["channel"]);
+    //   })
+    //   .attr("fill-opacity", "0")
+    //   .attr("stroke", "none")
+    //   .transition()
+    //   .delay(function(d) {
+    //     return d.value["time"] * 1000;
+    //   })
+    //   .attr("fill-opacity", 0.6)
+    //   .attr("stroke", "white")
+    //   .attr("stroke-width", ".04vw")
+    //   .attr("r", ".3vw")
+    //   .transition()
+    //   .attr("fill-opacity", "0")
+    //   .attr("stroke", "none");
     //         .attr("r",".2vw")
   }
 );
