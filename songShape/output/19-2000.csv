@@ -1,4 +1,4 @@
-,channel,control,data,name,note,pitch,program,tempo,text,time,type,value,velocity,note_midi_value,note_velocity,note_time,note_seconds,note_bar,octave,note_value,note_value_nmd,note_name,angle
+,channel,control,data,name,note,pitch,program,tempo,text,time,type,value,velocity,note_midi_value,note_velocity,note_time,note_seconds,tpb,octave,note_value,note_value_nmd,note_name,angle
 28,9.0,,,,42.0,,,,,192,note_on,,112.0,42.0,112.0,192,0.5,192,3.0,6.0,6,F#,180
 30,9.0,,,,42.0,,,,,52,note_on,,112.0,42.0,112.0,288,0.75,192,3.0,6.0,6,F#,180
 32,9.0,,,,42.0,,,,,52,note_on,,112.0,42.0,112.0,384,1.0,192,3.0,6.0,6,F#,180

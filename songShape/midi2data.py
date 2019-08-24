@@ -1,4 +1,4 @@
-from mido import MidiFile
+from mido import MidiFile, MetaMessage
 import pandas as pd
 import json
 import csv
@@ -27,23 +27,24 @@ for f in files:
         for i, track in enumerate(mid.tracks):
             for msg in track:
                 mc.append(msg.dict())
-
         mcdf_raw = pd.DataFrame(mc)
-
         mcdf_raw['note_midi_value'] = mcdf_raw['note']
         mcdf_raw['note_velocity'] = mcdf_raw['velocity']
     # convert tick to time_delta
         mcdf_raw['note_time'] = mcdf_raw.groupby('channel')['time'].cumsum()
         mspq = 500000
-        tpq = mid.ticks_per_beat
-        # TODO: Beats per tick.
-        spt = (mspq/tpq)/1000000
-        mcdf_raw['note_seconds'] = mcdf_raw['note_time'].map(lambda x: x*spt)
-        mcdf_raw['breakpoint'] = mcdf_raw['denominator'].map(lambda x: x*tpq*2)
+        tpb = mid.ticks_per_beat
+        nd = int(str(MetaMessage('time_signature')).split()[3].replace('numerator=',''))/int(str(MetaMessage('time_signature')).split()[4].replace('denominator=',''))
+        bp = tpb * 8 * nd
+        spt = (mspq/tpb)/1000000
 
+        mcdf_raw['note_seconds'] = mcdf_raw['note_time'].map(lambda x: x*spt)
+        mcdf_raw['tpb'] = tpb
+        mcdf_raw['chunk'] = mcdf_raw['note_time']//bp
 
         m_raw_csv = join('./output/raw/',splitext(f)[0],'_raw.csv').replace("/_raw.csv","_raw.csv")
         mcdf_raw.to_csv(m_raw_csv)
+        print("...converting {} to raw CSV...".format(f))
     # filter to just note_on events
         note_on_only_vel = mcdf_raw['note_velocity']>0
         note_on_only = mcdf_raw['type'] == 'note_on'
