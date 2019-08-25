@@ -94,7 +94,7 @@ d3.csv(
     var lineData = d3
       .nest()
       .key(function(d) {
-        return d["chunk"];
+        return d["channel_chunk"];
       })
       .key(function(d) {
         return d[""];
@@ -136,22 +136,22 @@ d3.csv(
 
     lastRecord = data.length - 1;
 
-    chartGroup
-      .selectAll(".notePoint")
-      .data(noteData)
-      .enter()
-      .append("text")
-      .attr("class", "notePoint")
-      .attr("dy", ".31em")
-      .attr("x", function(d) {
-        return x(Math.sin(anglePrep(d["angle"])) * 8);
-      })
-      .attr("y", function(d) {
-        return y(Math.cos(anglePrep(d["angle"])) * 8);
-      })
-      .text(function(d) {
-        return d["note_name"];
-      });
+    chartGroup;
+    //   .selectAll(".notePoint")
+    //   .data(noteData)
+    //   .enter()
+    //   .append("text")
+    //   .attr("class", "notePoint")
+    //   .attr("dy", ".31em")
+    //   .attr("x", function(d) {
+    //     return x(Math.sin(anglePrep(d["angle"])) * 8);
+    //   })
+    //   .attr("y", function(d) {
+    //     return y(Math.cos(anglePrep(d["angle"])) * 8);
+    //   })
+    //   .text(function(d) {
+    //     return d["note_name"];
+    //   });
 
     //   shapes
     chartGroup
@@ -166,33 +166,33 @@ d3.csv(
         return songPath(d.values);
       })
       .attr("fill", function(d) {
-        return color(Number(d["key"]));
+        return color(Number(d["key"].substring(0, 2)));
       })
-      .attr("fill-opacity", 0)
+      .attr("fill-opacity", 0.0)
       .attr("stroke", function(d) {
-        return color(Number(d["key"]));
+        return color(Number(d["key"].substring(0, 2)));
       })
-      .attr("stroke-opacity", 0.15)
-      .attr("stroke-width", ".1vw");
+      .attr("stroke-opacity", 0.05)
+      .attr("stroke-width", ".05vw");
 
-    chartGroup
-      .selectAll(".circleFifths")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("class", "circleFifths")
-      .attr("cx", x(0))
-      .attr("cy", y(0))
-      .attr("r", function(d) {
-        return y(Number(d["octave"] + 2));
-      })
-      .attr("fill", "none")
-      .attr("stroke", "white")
-      .attr("opacity", 1)
-      .attr("stroke-width", ".02vw");
+    // chartGroup
+    //   .selectAll(".circleFifths")
+    //   .data(data)
+    //   .enter()
+    //   .append("circle")
+    //   .attr("class", "circleFifths")
+    //   .attr("cx", x(0))
+    //   .attr("cy", y(0))
+    //   .attr("r", function(d) {
+    //     return y(Number(d["octave"] + 2));
+    //   })
+    //   .attr("fill", "none")
+    //   .attr("stroke", "white")
+    //   .attr("opacity", 1)
+    //   .attr("stroke-width", ".02vw");
 
     //   dots
-    // chartGroup
+    chartGroup;
     //   .selectAll(".noteCircle")
     //   .data(pointData)
     //   .enter()
@@ -220,8 +220,8 @@ d3.csv(
     //   .attr("r", ".3vw")
     //   .transition()
     //   .attr("fill-opacity", "0")
-    //   .attr("stroke", "none");
-    //         .attr("r",".2vw")
+    //   .attr("stroke", "none")
+    //   .attr("r", ".2vw");
   }
 );
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
