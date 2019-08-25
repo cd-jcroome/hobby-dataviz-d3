@@ -40,11 +40,11 @@ for f in files:
 
         mcdf_raw['note_seconds'] = mcdf_raw['note_time'].map(lambda x: x*spt)
         mcdf_raw['tpb'] = tpb
-        mcdf_raw['chunk'] = mcdf_raw['note_time']//bp
+        mcdf_raw['channel_chunk'] = mcdf_raw['channel'].map(str)+'_'+(mcdf_raw['note_time']//bp).map(str)
 
+        print("...converting {} to raw CSV...".format(f))
         m_raw_csv = join('./output/raw/',splitext(f)[0],'_raw.csv').replace("/_raw.csv","_raw.csv")
         mcdf_raw.to_csv(m_raw_csv)
-        print("...converting {} to raw CSV...".format(f))
     # filter to just note_on events
         note_on_only_vel = mcdf_raw['note_velocity']>0
         note_on_only = mcdf_raw['type'] == 'note_on'
