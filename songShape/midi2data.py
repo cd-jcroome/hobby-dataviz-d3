@@ -6,7 +6,7 @@ from os import listdir
 from os.path import isfile, join, splitext
 
 # for all of the mid or midi files in a given folder...
-songs_folder = input("where are the songs?\n")
+songs_folder = input("where are the songs? (hit enter if they're in the same folder)\n")
 files = [f for f in listdir('./songs/'+songs_folder+'/') if isfile(join('./songs/'+songs_folder+'/',f))]
 print(files)
 
@@ -45,6 +45,20 @@ for f in files:
         print("...converting {} to raw CSV...".format(f))
         m_raw_csv = join('./output/raw/',splitext(f)[0],'_raw.csv').replace("/_raw.csv","_raw.csv")
         mcdf_raw.to_csv(m_raw_csv)
+    # get note metadata
+        instruments = pd.read_csv('instrument_names.tsv',sep='\t')
+        mcdf_meta = pd.read_csv(m_raw_csv)
+        pco = mcdf_meta['program'] >= 0
+        mcdf_meta = mcdf_meta[pco]
+        instruments['program'] = instruments['key'].map(lambda x: x-1)
+        mcdf_meta = mcdf_meta.join(instruments,on='program',rsuffix='_ins').filter(items=['channel','instrument'])
+        print(mcdf_meta)
+        mcdf_raw = mcdf_raw.join(mcdf_meta,on='channel',rsuffix='_meta')
+        mcdf_raw.to_csv(m_raw_csv)
+        
+        m_meta_csv = join('./output/meta/',splitext(f)[0],'_meta.csv').replace("/_meta.csv","_meta.csv")
+        mcdf_meta.to_csv(m_meta_csv)
+
     # filter to just note_on events
         note_on_only_vel = mcdf_raw['note_velocity']>0
         note_on_only = mcdf_raw['type'] == 'note_on'

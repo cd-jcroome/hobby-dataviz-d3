@@ -4,3 +4,6 @@
     [] animate on click
     [] node.js or angular to serve up app
     [] get timing right.
+
+2019/08/27
+    [] add instrument name to data
