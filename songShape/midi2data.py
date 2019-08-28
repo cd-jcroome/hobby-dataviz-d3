@@ -48,23 +48,19 @@ for f in files:
     # get note metadata
         instruments = pd.read_csv('instrument_names.tsv',sep='\t')
         mcdf_meta = pd.read_csv(m_raw_csv)
-        pco = mcdf_meta['program'] >= 0
-        mcdf_meta = mcdf_meta[pco]
+        program_only = mcdf_meta['program'] >= 0
+        mcdf_meta = mcdf_meta[program_only]
         instruments['program'] = instruments['key'].map(lambda x: x-1)
-        mcdf_meta = mcdf_meta.join(instruments,on='program',rsuffix='_ins').filter(items=['channel','instrument'])
-        print(mcdf_meta)
-        mcdf_raw = mcdf_raw.join(mcdf_meta,on='channel',rsuffix='_meta')
+        mcdf_meta = mcdf_meta.join(instruments,on='program',rsuffix='_ins').filter(items=['channel','instrument']).set_index('channel')
+        mcdf_raw = mcdf_raw.join(mcdf_meta, on='channel',how='left',rsuffix='_meta')
+        
+    # re-write raw csv
         mcdf_raw.to_csv(m_raw_csv)
         
-        m_meta_csv = join('./output/meta/',splitext(f)[0],'_meta.csv').replace("/_meta.csv","_meta.csv")
-        mcdf_meta.to_csv(m_meta_csv)
-
     # filter to just note_on events
-        note_on_only_vel = mcdf_raw['note_velocity']>0
-        note_on_only = mcdf_raw['type'] == 'note_on'
+        note_on_only_vel = (mcdf_raw['note_velocity']>0) & (mcdf_raw['type'] == 'note_on')
         mcdf = mcdf_raw[note_on_only_vel]
-        mcdf = mcdf[note_on_only]
-
+       
     # octave will be radius - floor of (number divided by 12), note will be angle - (remainder of (number divided by 12)) multiplied by the variable
         mcdf['octave'],mcdf['note_value'] = mcdf['note_midi_value']//12,mcdf['note_midi_value']%12
         

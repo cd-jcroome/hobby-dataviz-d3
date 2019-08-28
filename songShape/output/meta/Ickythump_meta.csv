@@ -1,6 +1,6 @@
-,channel,instrument
-49,1.0,Distortion Guitar
-50,0.0,Distortion Guitar
-3347,3.0,Lead 2 (sawtooth)
-3348,2.0,Lead 2 (sawtooth)
-3523,9.0,Acoustic Grand Piano
+channel,instrument
+1.0,Distortion Guitar
+0.0,Distortion Guitar
+3.0,Lead 2 (sawtooth)
+2.0,Lead 2 (sawtooth)
+9.0,Acoustic Grand Piano
