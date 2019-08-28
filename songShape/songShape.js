@@ -49,7 +49,7 @@ function handleResize() {
     .style("pointer-events", "none");
 }
 d3.csv(
-  "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/SevenNationArmy.csv",
+  "https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv",
   function(data) {
     console.log(data);
     handleResize();
@@ -98,7 +98,10 @@ d3.csv(
           }),
           time: d3.max(leaves, function(d) {
             return Number(d["note_seconds"]);
-          })
+          }),
+          instrument: function(d) {
+            return d["instrument"];
+          }
         };
       })
       .entries(data);
@@ -106,7 +109,7 @@ d3.csv(
     var lineData = d3
       .nest()
       .key(function(d) {
-        return d["channel_chunk"];
+        return d["channel_chunk"] + " " + d["instrument"];
       })
       .key(function(d) {
         return d[""];
@@ -195,7 +198,7 @@ d3.csv(
           .duration(400)
           .style("opacity", 0.9);
         div
-          .html(d.key + "\n" + "channel")
+          .html(d.key + "\n")
           .style("left", d3.event.pageX - margin.left + "px")
           .style(
             "top",
