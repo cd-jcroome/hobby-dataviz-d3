@@ -14,4 +14,7 @@
         [] selector for instrument type
     [] style
         [] font
-        [] colors - red background, black white grey strokes 
+        [] colors - red background, black white grey strokes
+        [] change drums to just dots
+    [] performance
+        [] just one c/fifths per occurence

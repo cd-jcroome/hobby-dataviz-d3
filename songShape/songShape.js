@@ -49,7 +49,7 @@ function handleResize() {
     .style("pointer-events", "none");
 }
 d3.csv(
-  "https://cdn.jsdelivr.net/gh/jasparr77/hobby-dataviz-d3/songShape/output/SevenNationArmy.csv",
+  "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/SevenNationArmy.csv",
   function(data) {
     console.log(data);
     handleResize();
@@ -88,20 +88,17 @@ d3.csv(
       .rollup(function(leaves) {
         return {
           x: d3.sum(leaves, function(d) {
-            return Math.sin(anglePrep(d["angle"])) * d["octave"];
+            return Math.sin(anglePrep(d["angle"])) * (1 / d["octave"]);
           }), // x coordinate for note
           y: d3.sum(leaves, function(d) {
-            return Math.cos(anglePrep(d["angle"])) * d["octave"];
+            return Math.cos(anglePrep(d["angle"])) * (1 / d["octave"]);
           }), // y coordinate for note
           channel: d3.max(leaves, function(d) {
             return Number(d["channel"]);
           }),
           time: d3.max(leaves, function(d) {
             return Number(d["note_seconds"]);
-          }),
-          instrument: function(d) {
-            return d["instrument"];
-          }
+          })
         };
       })
       .entries(data);
@@ -109,7 +106,7 @@ d3.csv(
     var lineData = d3
       .nest()
       .key(function(d) {
-        return d["channel_chunk"] + " " + d["instrument"];
+        return d["channel_chunk"] + "|" + d["instrument"];
       })
       .key(function(d) {
         return d[""];
@@ -159,14 +156,33 @@ d3.csv(
       .attr("class", "notePoint")
       .attr("dy", ".31em")
       .attr("x", function(d) {
-        return x(Math.sin(anglePrep(d["angle"])) * 8);
+        return x(Math.sin(anglePrep(d["angle"])) * 0.95);
       })
       .attr("y", function(d) {
-        return y(Math.cos(anglePrep(d["angle"])) * 8);
+        return y(Math.cos(anglePrep(d["angle"])) * 0.95);
       })
       .text(function(d) {
         return d["note_name"];
       });
+    // add circles
+    chartGroup
+      .selectAll(".circleFifths")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("class", "circleFifths")
+      .attr("cx", x(0))
+      .attr("cy", y(0))
+      .attr("r", function(d) {
+        return xRange * (1 / Number(d["octave"]));
+      })
+      .attr("fill", "none")
+      .attr("text", function(d) {
+        return d["octave"];
+      })
+      .attr("stroke", "lightgrey")
+      .attr("opacity", 1)
+      .attr("stroke-width", ".02vw");
 
     //   shapes
     chartGroup
@@ -198,14 +214,9 @@ d3.csv(
           .duration(400)
           .style("opacity", 0.9);
         div
-          .html(d.key + "\n")
+          .html(d["key"].substring(9))
           .style("left", d3.event.pageX - margin.left + "px")
-          .style(
-            "top",
-            d3.event.pageY -
-              (margin.top + margin.bottom + bodyHeight / 10) +
-              "px"
-          );
+          .style("top", d3.event.pageY - margin.bottom + "px");
       })
       .on("mouseout", function(d) {
         d3.select(this)
@@ -216,22 +227,6 @@ d3.csv(
           .duration(400)
           .style("opacity", 0);
       });
-
-    chartGroup
-      .selectAll(".circleFifths")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("class", "circleFifths")
-      .attr("cx", x(0))
-      .attr("cy", y(0))
-      .attr("r", function(d) {
-        return y(Number(d["octave"] + 2));
-      })
-      .attr("fill", "none")
-      .attr("stroke", "white")
-      .attr("opacity", 1)
-      .attr("stroke-width", ".02vw");
 
     //   dots
     chartGroup
