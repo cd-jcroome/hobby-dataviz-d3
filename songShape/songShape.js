@@ -29,7 +29,7 @@ function handleResize() {
   yRange = minDim;
   xRange = minDim;
 
-  var chartMargin = 5;
+  var chartMargin = 0;
   chartWidth = xRange - chartMargin;
 
   chartGroup
@@ -73,8 +73,37 @@ d3.csv(
       .y(function(d) {
         return y(d.value["y"]);
       });
+    var instruments = [
+      "Overdriven Guitar",
+      "Distortion Guitar",
+      "Lead 2 (sawtooth)",
+      "Electric Bass (pick)",
+      "Acoustic Grand Piano"
+    ];
+    var color = d3
+      .scaleOrdinal()
+      .domain(instruments)
+      .range(["#FF0000", "#FF0000", "#CC0066", "#000", "#CCC"]);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    var opacity = d3
+      .scaleOrdinal()
+      .domain(instruments)
+      .range([".1", ".1", ".1", ".1", "0"]);
+
+    var noteData = [
+      { note_name: "C", angle: 0 },
+      { note_name: "G", angle: 30 },
+      { note_name: "D", angle: 60 },
+      { note_name: "A", angle: 90 },
+      { note_name: "E", angle: 120 },
+      { note_name: "B", angle: 150 },
+      { note_name: "F#", angle: 180 },
+      { note_name: "C#", angle: 210 },
+      { note_name: "G#", angle: 240 },
+      { note_name: "D#", angle: 270 },
+      { note_name: "A#", angle: 300 },
+      { note_name: "F", angle: 330 }
+    ];
 
     anglePrep = function(d) {
       return (d / 180) * Math.PI;
@@ -83,15 +112,19 @@ d3.csv(
     var pointData = d3
       .nest()
       .key(function(d) {
-        return d[""];
+        return d[""] + "|" + d["instrument"];
       })
       .rollup(function(leaves) {
         return {
           x: d3.sum(leaves, function(d) {
-            return Math.sin(anglePrep(d["angle"])) * (1 / d["octave"]);
+            return (
+              Math.sin(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+            );
           }), // x coordinate for note
           y: d3.sum(leaves, function(d) {
-            return Math.cos(anglePrep(d["angle"])) * (1 / d["octave"]);
+            return (
+              Math.cos(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+            );
           }), // y coordinate for note
           channel: d3.max(leaves, function(d) {
             return Number(d["channel"]);
@@ -114,10 +147,14 @@ d3.csv(
       .rollup(function(leaves) {
         return {
           x: d3.sum(leaves, function(d) {
-            return Math.sin(anglePrep(d["angle"])) * (1 / d["octave"]);
+            return (
+              Math.sin(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+            );
           }), // x coordinate for note
           y: d3.sum(leaves, function(d) {
-            return Math.cos(anglePrep(d["angle"])) * (1 / d["octave"]);
+            return (
+              Math.cos(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+            );
           }), // y coordinate for note
           channel: d3.max(leaves, function(d) {
             return Number(d["channel"]);
@@ -128,23 +165,6 @@ d3.csv(
         };
       })
       .entries(data);
-
-    console.log(lineData);
-
-    var noteData = [
-      { note_name: "C", angle: 0 },
-      { note_name: "G", angle: 30 },
-      { note_name: "D", angle: 60 },
-      { note_name: "A", angle: 90 },
-      { note_name: "E", angle: 120 },
-      { note_name: "B", angle: 150 },
-      { note_name: "F#", angle: 180 },
-      { note_name: "C#", angle: 210 },
-      { note_name: "G#", angle: 240 },
-      { note_name: "D#", angle: 270 },
-      { note_name: "A#", angle: 300 },
-      { note_name: "F", angle: 330 }
-    ];
 
     lastRecord = data.length - 1;
 
@@ -174,7 +194,7 @@ d3.csv(
       .attr("cx", x(0))
       .attr("cy", y(0))
       .attr("r", function(d) {
-        return xRange * (1 / Number(d["octave"]));
+        return (xRange / 2) * (1 - 0.1 * Number(d["octave"]));
       })
       .attr("fill", "none")
       .attr("text", function(d) {
@@ -197,24 +217,26 @@ d3.csv(
         return songPath(d.values);
       })
       .attr("fill", function(d) {
-        return color(Number(d["key"].substring(0, 2)));
+        return color(d["key"].split("|")[1]);
       })
-      .attr("fill-opacity", 0.0)
+      .attr("fill-opacity", 0)
       .attr("stroke", function(d) {
-        return color(Number(d["key"].substring(0, 2)));
+        return color(d["key"].split("|")[1]);
       })
-      .attr("stroke-opacity", 0.25)
-      .attr("stroke-width", ".05vw")
+      .attr("stroke-opacity", function(d) {
+        return opacity(d["key"].split("|")[1]);
+      })
+      .attr("stroke-width", ".25vw")
       .on("mouseover", function(d) {
         d3.select(this)
           .attr("stroke-opacity", 0.8)
-          .attr("stroke-width", ".5vw");
+          .attr("stroke-width", "1vw");
         div
           .transition()
           .duration(400)
           .style("opacity", 0.9);
         div
-          .html(d["key"].substring(9))
+          .html(d["key"].split("|")[1])
           .style("left", d3.event.pageX - margin.left + "px")
           .style("top", d3.event.pageY - margin.bottom + "px");
       })
@@ -243,22 +265,22 @@ d3.csv(
       })
       .attr("r", ".3vw")
       .attr("fill", function(d) {
-        return color(d.value["channel"]);
+        return color(d["key"].split("|")[1]);
       })
-      .attr("fill-opacity", "0")
-      .attr("stroke", "none")
-      .transition()
-      .delay(function(d) {
-        return d.value["time"] * 1000;
-      })
-      .attr("fill-opacity", 0.6)
-      .attr("stroke", "white")
-      .attr("stroke-width", ".04vw")
-      .attr("r", ".6vw")
-      .transition()
-      .attr("fill-opacity", "0")
-      .attr("stroke", "none")
-      .attr("r", ".2vw");
+      .attr("fill-opacity", 0.2)
+      .attr("stroke", "none");
+    // .transition()
+    // .delay(function(d) {
+    //   return d.value["time"] * 1000;
+    // })
+    // .attr("fill-opacity", 1)
+    // .attr("stroke", "white")
+    // .attr("stroke-width", ".04vw")
+    // .attr("r", ".6vw")
+    // .transition()
+    // .attr("fill-opacity", "0")
+    // .attr("stroke", "none")
+    // .attr("r", ".2vw");
   }
 );
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
