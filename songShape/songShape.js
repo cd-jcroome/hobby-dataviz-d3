@@ -26,15 +26,10 @@ function handleResize() {
 
   minDim = Math.min(bodyWidth, bodyHeight);
 
-  yRange = minDim;
-  xRange = minDim;
+  yRange = minDim / 1.25;
+  xRange = minDim / 1.25;
 
-  var chartMargin = 0;
-  chartWidth = xRange - chartMargin;
-
-  chartGroup
-    .style("width", chartWidth + "px")
-    .style("height", bodyHeight + "px");
+  chartGroup.style("width", xRange + "px").style("height", yRange + 40 + "px");
 
   div = d3
     .select("#staticBody")
@@ -185,6 +180,7 @@ d3.csv(
         return d["note_name"];
       });
     // add circles
+
     chartGroup
       .selectAll(".circleFifths")
       .data(data)
@@ -281,6 +277,32 @@ d3.csv(
     // .attr("fill-opacity", "0")
     // .attr("stroke", "none")
     // .attr("r", ".2vw");
+
+    chartGroup
+      .append("text")
+      .style("font-size", "24px")
+      .attr("x", 0)
+      .attr("y", yRange - 50)
+      .style("fill", "black")
+      .text("Legend");
+    chartGroup
+      .append("text")
+      .attr("x", 0)
+      .attr("y", yRange - 35)
+      .style("fill", "black")
+      .text("Bass");
+    chartGroup
+      .append("text")
+      .attr("x", 0)
+      .attr("y", yRange - 20)
+      .style("fill", "red")
+      .text("Lead Guitar");
+    chartGroup
+      .append("text")
+      .attr("x", 0)
+      .attr("y", yRange - 5)
+      .style("fill", "grey")
+      .text("Drums");
   }
 );
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
