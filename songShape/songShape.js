@@ -73,12 +73,12 @@ d3.csv(
       "Distortion Guitar",
       "Lead 2 (sawtooth)",
       "Electric Bass (pick)",
-      "Acoustic Grand Piano"
+      "Drums"
     ];
     var color = d3
       .scaleOrdinal()
       .domain(instruments)
-      .range(["#FF0000", "#FF0000", "#CC0066", "#000", "#CCC"]);
+      .range(["#FF0000", "#FF0000", "#CC0066", "#000", "#FFF"]);
 
     var opacity = d3
       .scaleOrdinal()
@@ -264,44 +264,51 @@ d3.csv(
         return color(d["key"].split("|")[1]);
       })
       .attr("fill-opacity", 0.2)
-      .attr("stroke", "none");
-    // .transition()
-    // .delay(function(d) {
-    //   return d.value["time"] * 1000;
-    // })
-    // .attr("fill-opacity", 1)
-    // .attr("stroke", "white")
-    // .attr("stroke-width", ".04vw")
-    // .attr("r", ".6vw")
-    // .transition()
-    // .attr("fill-opacity", "0")
-    // .attr("stroke", "none")
-    // .attr("r", ".2vw");
+      .attr("stroke", "none")
+      .transition()
+      .delay(function(d) {
+        return d.value["time"] * 1000;
+      })
+      .attr("fill-opacity", 1)
+      .attr("stroke", "white")
+      .attr("stroke-width", ".04vw")
+      .attr("r", ".6vw")
+      .transition()
+      .attr("fill-opacity", "0")
+      .attr("stroke", "none")
+      .attr("r", ".2vw");
 
+    chartGroup
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", yRange - 74)
+      .attr("height", 74)
+      .attr("width", 90)
+      .attr("fill", "grey");
     chartGroup
       .append("text")
       .style("font-size", "24px")
-      .attr("x", 0)
+      .attr("x", 1)
       .attr("y", yRange - 50)
-      .style("fill", "black")
+      .style("fill", "lightgrey")
       .text("Legend");
     chartGroup
       .append("text")
-      .attr("x", 0)
+      .attr("x", 2)
       .attr("y", yRange - 35)
       .style("fill", "black")
       .text("Bass");
     chartGroup
       .append("text")
-      .attr("x", 0)
+      .attr("x", 2)
       .attr("y", yRange - 20)
       .style("fill", "red")
       .text("Lead Guitar");
     chartGroup
       .append("text")
-      .attr("x", 0)
+      .attr("x", 2)
       .attr("y", yRange - 5)
-      .style("fill", "grey")
+      .style("fill", "white")
       .text("Drums");
   }
 );
