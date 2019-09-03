@@ -1,8 +1,8 @@
 ,channel,clocks_per_click,control,denominator,name,notated_32nd_notes_per_beat,note,numerator,pitch,program,tempo,time,type,value,velocity,note_midi_value,note_velocity,note_time,note_seconds,tpb,channel_chunk,instrument
 0,,,,,,,,,,,500000.0,0,set_tempo,,,,,0,0.0,480,nan_0.0,
-1,,,,,Seven Nation Army,,,,,,,0,track_name,,,,,-249,-0.259375,480,nan_-1.0,
+1,,,,,Seven Nation Army,,,,,,,0,track_name,,,,,-250,-0.2604166666666667,480,nan_-1.0,
 2,,7.0,,4.0,,161.0,,4.0,,,,0,time_signature,,,,,0,0.0,480,nan_0.0,
-3,,,,,,,,,,,,0,end_of_track,,,,,-249,-0.259375,480,nan_-1.0,
+3,,,,,,,,,,,,0,end_of_track,,,,,-250,-0.2604166666666667,480,nan_-1.0,
 4,,,,,Guitar 1 (Jack White) Open A Tuning,,,,,,,0,track_name,,,,,-1,-0.0010416666666666667,480,nan_-1.0,
 5,0.0,,100.0,,,,,,,,,0,control_change,0.0,,,,0,0.0,480,0.0_0.0,Overdriven Guitar
 6,0.0,,101.0,,,,,,,,,0,control_change,0.0,,,,0,0.0,480,0.0_0.0,Overdriven Guitar

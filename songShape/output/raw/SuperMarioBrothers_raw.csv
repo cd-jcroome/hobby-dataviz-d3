@@ -1,8 +1,8 @@
 ,channel,clocks_per_click,control,denominator,name,notated_32nd_notes_per_beat,note,numerator,program,tempo,time,type,value,velocity,note_midi_value,note_velocity,note_time,note_seconds,tpb,channel_chunk,instrument
 0,,96.0,,4.0,,8.0,,4.0,,,0,time_signature,,,,,0,0.0,96,nan_0.0,
-1,,,,,,,,,,571428.0,0,set_tempo,,,,,-249,-1.296875,96,nan_-1.0,
+1,,,,,,,,,,571428.0,0,set_tempo,,,,,-250,-1.3020833333333333,96,nan_-1.0,
 2,,,,,,,,,,,0,end_of_track,,,,,0,0.0,96,nan_0.0,
-3,,,,,Sequenced by P.J. Barnes,,,,,,0,track_name,,,,,-249,-1.296875,96,nan_-1.0,
+3,,,,,Sequenced by P.J. Barnes,,,,,,0,track_name,,,,,-250,-1.3020833333333333,96,nan_-1.0,
 4,0.0,,0.0,,,,,,,,0,control_change,0.0,,,,0,0.0,96,0.0_0.0,Electric Guitar (jazz)
 5,0.0,,,,,,,,26.0,,0,program_change,,,,,0,0.0,96,0.0_0.0,Electric Guitar (jazz)
 6,,96.0,,4.0,,8.0,,4.0,,,0,time_signature,,,,,-1,-0.005208333333333333,96,nan_-1.0,
