@@ -42,7 +42,7 @@ for f in files:
         mcdf_raw['tpb'] = tpb
         mcdf_raw['channel_chunk'] = mcdf_raw['channel'].map(str)+'_'+(mcdf_raw['note_time']//bp).map(str)
 
-        print("...converting {} to raw CSV...".format(f))
+        # print("...converting {} to raw CSV...".format(f))
         m_raw_csv = join('./output/raw/',splitext(f)[0],'_raw.csv').replace("/_raw.csv","_raw.csv")
         mcdf_raw.to_csv(m_raw_csv)
     # get note metadata
@@ -54,7 +54,7 @@ for f in files:
         mcdf_meta = mcdf_meta.join(instruments,on='program',rsuffix='_ins').filter(items=['channel','instrument']).set_index('channel')
         mcdf_raw = mcdf_raw.join(mcdf_meta, on='channel',how='left',rsuffix='_meta')
         
-    # re-write raw csv
+    # # re-write raw csv
         mcdf_raw.to_csv(m_raw_csv)
         
     # filter to just note_on events
@@ -73,15 +73,15 @@ for f in files:
         # mcdf_h = mcdf_h.groupby(['channel','angle','note_midi_value','octave','note_name','prior_midi_note','prior_octave','prior_note_name']).size().reset_index(name='edge_count')
         # output_location = input('what do you want to call the output folder?\n')
     # convert to JSON
-        mcdf_j = mcdfx.groupby('channel')
-        print('...converting {} to JSON...'.format(f))
-        for key, gb in mcdf_j:
-            gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).sort_values('note_seconds').to_dict('records')
-            mjr[str(key)] = gb1
-        # m_json = join('./output/json/'+output_location,splitext(f)[0],'.json').replace("/.json",".json")
-        m_json = join('./output/json/',splitext(f)[0],'.json').replace("/.json",".json")
-        with open(m_json,'w') as m_json:
-            json.dump(mjr,m_json,indent=2)
+        # mcdf_j = mcdfx.groupby('channel')
+        # print('...converting {} to JSON...'.format(f))
+        # for key, gb in mcdf_j:
+        #     gb1 = gb.apply(lambda x: pd.Series(x.dropna()),axis=1).sort_values('note_seconds').to_dict('records')
+        #     mjr[str(key)] = gb1
+        # # m_json = join('./output/json/'+output_location,splitext(f)[0],'.json').replace("/.json",".json")
+        # m_json = join('./output/json/',splitext(f)[0],'.json').replace("/.json",".json")
+        # with open(m_json,'w') as m_json:
+        #     json.dump(mjr,m_json,indent=2)
     # convert to csv
         print('...converting {} to CSV...'.format(f))
         # m_csv = join('./output/'+output_location,splitext(f)[0],'.csv').replace("/csv",".csv")
