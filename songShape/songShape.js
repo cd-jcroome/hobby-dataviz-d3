@@ -61,22 +61,17 @@ d3.csv(
       .y(function(d) {
         return y(d.value["y"]);
       });
-    var instruments = d3.json('
-      https://raw
-    ');
+    var instruments = d3.json(
+      "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/dev/songShape/noteData.json"
+    );
+    console.log(instruments);
+    console.log(d3.schemeYlGnBu);
     var color = d3
       .scaleOrdinal()
       .domain(instruments)
-      .range([
-        "pink",
-        "limegreen",
-        "beige",
-        "purple",
-        "white",
-        "salmon",
-        "electicblue"
-      ]);
+      .range(d3.schemeYlGnBu[128]);
 
+    console.log(color);
     var opacity = d3
       .scaleOrdinal()
       .domain(instruments)
