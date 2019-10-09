@@ -12,6 +12,7 @@ pandas = "*"
 mido = "*"
 beautifulsoup4 = "*"
 requests = "*"
+librosa = "*"
 
 [requires]
 python_version = "3.7"

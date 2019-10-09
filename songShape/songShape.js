@@ -2,18 +2,6 @@ var container = d3.select("#staticBody");
 
 var margin = { top: window.innerWidth * 0.14, right: 80, bottom: 60, left: 80 };
 
-container
-  .append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0)
-  .style("position", "absolute")
-  .style("text-align", "center")
-  .style("background", "whitesmoke")
-  .style("padding", "8px")
-  .style("border-radius", "8px")
-  .style("pointer-events", "none")
-  .style("z-index", "9999");
-
 container.append("svg").attr("class", "chart");
 
 var tooltip = d3.select(".tooltip");
@@ -44,7 +32,8 @@ function handleResize() {
     .style("pointer-events", "none");
 }
 d3.csv(
-  "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/output/SevenNationArmy.csv",
+  "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/master/songShape/" +
+    "output/SevenNationArmy.csv",
   function(data) {
     console.log(data);
     handleResize();
@@ -59,6 +48,10 @@ d3.csv(
       .domain([-1, 1])
       .range([yRange, 0]);
 
+    var timeLength = data[data.length - 1]["note_seconds"];
+
+    console.log(timeLength);
+
     var songPath = d3
       .line()
       .curve(d3.curveNatural)
@@ -68,22 +61,26 @@ d3.csv(
       .y(function(d) {
         return y(d.value["y"]);
       });
-    var instruments = [
-      "Overdriven Guitar",
-      "Distortion Guitar",
-      "Lead 2 (sawtooth)",
-      "Electric Bass (pick)",
-      "Drums"
-    ];
+    var instruments = d3.json('
+      https://raw
+    ');
     var color = d3
       .scaleOrdinal()
       .domain(instruments)
-      .range(["#FF0000", "#FF0000", "#CC0066", "#000", "#FFF"]);
+      .range([
+        "pink",
+        "limegreen",
+        "beige",
+        "purple",
+        "white",
+        "salmon",
+        "electicblue"
+      ]);
 
     var opacity = d3
       .scaleOrdinal()
       .domain(instruments)
-      .range([".1", ".1", ".1", ".1", "0"]);
+      .range([".3", ".3", ".3", ".3", "0"]);
 
     var noteData = [
       { note_name: "C", angle: 0 },
@@ -113,12 +110,16 @@ d3.csv(
         return {
           x: d3.sum(leaves, function(d) {
             return (
-              Math.sin(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              // Math.sin(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              Math.sin(anglePrep((d["note_seconds"] / timeLength) * 360)) *
+              (d["note_midi_value"] / 84)
             );
           }), // x coordinate for note
           y: d3.sum(leaves, function(d) {
             return (
-              Math.cos(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              // Math.cos(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              Math.cos(anglePrep((d["note_seconds"] / timeLength) * 360)) *
+              (d["note_midi_value"] / 84)
             );
           }), // y coordinate for note
           channel: d3.max(leaves, function(d) {
@@ -134,7 +135,7 @@ d3.csv(
     var lineData = d3
       .nest()
       .key(function(d) {
-        return d["channel_chunk"] + "|" + d["instrument"];
+        return d["instrument"];
       })
       .key(function(d) {
         return d[""];
@@ -143,12 +144,16 @@ d3.csv(
         return {
           x: d3.sum(leaves, function(d) {
             return (
-              Math.sin(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              // Math.sin(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              Math.sin(anglePrep((d["note_seconds"] / timeLength) * 360)) *
+              (d["note_midi_value"] / 84)
             );
           }), // x coordinate for note
           y: d3.sum(leaves, function(d) {
             return (
-              Math.cos(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              // Math.cos(anglePrep(d["angle"])) * (1 - 0.1 * Number(d["octave"]))
+              Math.cos(anglePrep((d["note_seconds"] / timeLength) * 360)) *
+              (d["note_midi_value"] / 84)
             );
           }), // y coordinate for note
           channel: d3.max(leaves, function(d) {
@@ -163,42 +168,42 @@ d3.csv(
 
     lastRecord = data.length - 1;
 
-    chartGroup
-      .selectAll(".notePoint")
-      .data(noteData)
-      .enter()
-      .append("text")
-      .attr("class", "notePoint")
-      .attr("dy", ".31em")
-      .attr("x", function(d) {
-        return x(Math.sin(anglePrep(d["angle"])) * 0.95);
-      })
-      .attr("y", function(d) {
-        return y(Math.cos(anglePrep(d["angle"])) * 0.95);
-      })
-      .text(function(d) {
-        return d["note_name"];
-      });
-    // add circles
+    // chartGroup
+    //   .selectAll(".notePoint")
+    //   .data(noteData)
+    //   .enter()
+    //   .append("text")
+    //   .attr("class", "notePoint")
+    //   .attr("dy", ".31em")
+    //   .attr("x", function(d) {
+    //     return x(Math.sin(anglePrep(d["angle"])) * 0.95);
+    //   })
+    //   .attr("y", function(d) {
+    //     return y(Math.cos(anglePrep(d["angle"])) * 0.95);
+    //   })
+    //   .text(function(d) {
+    //     return d["note_name"];
+    //   });
+    // // add circles
 
-    chartGroup
-      .selectAll(".circleFifths")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("class", "circleFifths")
-      .attr("cx", x(0))
-      .attr("cy", y(0))
-      .attr("r", function(d) {
-        return (xRange / 2) * (1 - 0.1 * Number(d["octave"]));
-      })
-      .attr("fill", "none")
-      .attr("text", function(d) {
-        return d["octave"];
-      })
-      .attr("stroke", "lightgrey")
-      .attr("opacity", 1)
-      .attr("stroke-width", ".02vw");
+    // chartGroup
+    //   .selectAll(".circleFifths")
+    //   .data(data)
+    //   .enter()
+    //   .append("circle")
+    //   .attr("class", "circleFifths")
+    //   .attr("cx", x(0))
+    //   .attr("cy", y(0))
+    //   .attr("r", function(d) {
+    //     return (xRange / 2) * (1 - 0.1 * Number(d["octave"]));
+    //   })
+    //   .attr("fill", "none")
+    //   .attr("text", function(d) {
+    //     return d["octave"];
+    //   })
+    //   .attr("stroke", "lightgrey")
+    //   .attr("opacity", 1)
+    //   .attr("stroke-width", ".02vw");
 
     //   shapes
     chartGroup
@@ -213,103 +218,72 @@ d3.csv(
         return songPath(d.values);
       })
       .attr("fill", function(d) {
-        return color(d["key"].split("|")[1]);
+        return color(d["key"]);
       })
       .attr("fill-opacity", 0)
       .attr("stroke", function(d) {
-        return color(d["key"].split("|")[1]);
+        return color(d["key"]);
       })
       .attr("stroke-opacity", function(d) {
-        return opacity(d["key"].split("|")[1]);
+        return opacity(d["key"]);
       })
-      .attr("stroke-width", ".25vw")
-      .on("mouseover", function(d) {
-        d3.select(this)
-          .attr("stroke-opacity", 0.8)
-          .attr("stroke-width", "1vw");
-        div
-          .transition()
-          .duration(400)
-          .style("opacity", 0.9);
-        div
-          .html(d["key"].split("|")[1])
-          .style("left", d3.event.pageX - margin.left + "px")
-          .style("top", d3.event.pageY - margin.bottom + "px");
-      })
-      .on("mouseout", function(d) {
-        d3.select(this)
-          .attr("stroke-opacity", 0.25)
-          .attr("stroke-width", ".05vw");
-        div
-          .transition()
-          .duration(400)
-          .style("opacity", 0);
-      });
+      .attr("stroke-width", ".25vw");
+    // .on("mouseover", function(d) {
+    //   d3.select(this)
+    //     .attr("stroke-opacity", 0.8)
+    //     .attr("stroke-width", "1vw");
+    //   div
+    //     .transition()
+    //     .duration(400)
+    //     .style("opacity", 0.9);
+    //   div
+    //     .html(d["key"])
+    //     .style("left", d3.event.pageX - margin.left + "px")
+    //     .style("top", d3.event.pageY - margin.bottom + "px");
+    // })
+    // .on("mouseout", function(d) {
+    //   d3.select(this)
+    //     .attr("stroke-opacity", function(d) {
+    //       return opacity(d["key"]);
+    //     })
+    //     .attr("stroke-width", ".25vw");
+    //   div
+    //     .transition()
+    //     .duration(400)
+    //     .style("opacity", 0);
+    // });
 
-    //   dots
-    chartGroup
-      .selectAll(".noteCircle")
-      .data(pointData)
-      .enter()
-      .append("circle")
-      .attr("class", "noteCircle")
-      .attr("cx", function(d) {
-        return x(d.value["x"]);
-      })
-      .attr("cy", function(d) {
-        return y(d.value["y"]);
-      })
-      .attr("r", ".3vw")
-      .attr("fill", function(d) {
-        return color(d["key"].split("|")[1]);
-      })
-      .attr("fill-opacity", 0.2)
-      .attr("stroke", "none")
-      .transition()
-      .delay(function(d) {
-        return d.value["time"] * 1000;
-      })
-      .attr("fill-opacity", 1)
-      .attr("stroke", "white")
-      .attr("stroke-width", ".04vw")
-      .attr("r", ".6vw")
-      .transition()
-      .attr("fill-opacity", "0")
-      .attr("stroke", "none")
-      .attr("r", ".2vw");
-
-    chartGroup
-      .append("rect")
-      .attr("x", 0)
-      .attr("y", yRange - 74)
-      .attr("height", 74)
-      .attr("width", 90)
-      .attr("fill", "grey");
-    chartGroup
-      .append("text")
-      .style("font-size", "24px")
-      .attr("x", 1)
-      .attr("y", yRange - 50)
-      .style("fill", "lightgrey")
-      .text("Legend");
-    chartGroup
-      .append("text")
-      .attr("x", 2)
-      .attr("y", yRange - 35)
-      .style("fill", "black")
-      .text("Bass");
-    chartGroup
-      .append("text")
-      .attr("x", 2)
-      .attr("y", yRange - 20)
-      .style("fill", "red")
-      .text("Lead Guitar");
-    chartGroup
-      .append("text")
-      .attr("x", 2)
-      .attr("y", yRange - 5)
-      .style("fill", "white")
-      .text("Drums");
+    // dots
+    //   chartGroup
+    //     .selectAll(".noteCircle")
+    //     .data(pointData)
+    //     .enter()
+    //     .append("circle")
+    //     .attr("class", "noteCircle")
+    //     .attr("cx", function(d) {
+    //       return x(d.value["x"]);
+    //     })
+    //     .attr("cy", function(d) {
+    //       return y(d.value["y"]);
+    //     })
+    //     .attr("r", ".3vw")
+    //     .attr("fill", function(d) {
+    //       return color(d["key"]);
+    //     })
+    //     .attr("fill-opacity", 0.2)
+    //     .attr("stroke", "none")
+    //     .transition()
+    //     .delay(function(d) {
+    //       return d.value["time"] * 1000;
+    //     })
+    //     .attr("fill-opacity", 1)
+    //     .attr("stroke", "white")
+    //     .attr("stroke-width", ".04vw")
+    //     .attr("r", ".4vw")
+    //     .transition()
+    //     .attr("fill-opacity", "0")
+    //     .attr("stroke", "none")
+    //     .attr("r", ".2vw");
   }
 );
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
