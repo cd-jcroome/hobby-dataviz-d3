@@ -50,8 +50,6 @@ d3.csv(
 
     var timeLength = data[data.length - 1]["note_seconds"];
 
-    console.log(timeLength);
-
     var songPath = d3
       .line()
       .curve(d3.curveNatural)
@@ -62,16 +60,15 @@ d3.csv(
         return y(d.value["y"]);
       });
     var instruments = d3.json(
-      "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/dev/songShape/noteData.json"
-    );
-    console.log(instruments);
-    console.log(d3.schemeYlGnBu);
+      "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/dev/songShape/noteData.json", function(metaData)
+    {
+      instruments = metaData["instrument names"]
+      colors = metaData["colors"]
     var color = d3
       .scaleOrdinal()
       .domain(instruments)
-      .range(d3.schemeYlGnBu[128]);
+      .range(colors)
 
-    console.log(color);
     var opacity = d3
       .scaleOrdinal()
       .domain(instruments)
@@ -279,6 +276,7 @@ d3.csv(
     //     .attr("fill-opacity", "0")
     //     .attr("stroke", "none")
     //     .attr("r", ".2vw");
+  });
   }
 );
 // https://math.stackexchange.com/questions/260096/find-the-coordinates-of-a-point-on-a-circle
