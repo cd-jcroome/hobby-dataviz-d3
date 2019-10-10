@@ -1,0 +1,129 @@
+key,instrument,color
+1,Acoustic Grand Piano,#aec934
+2,Bright Acoustic Piano,#9159de
+3,Electric Grand Piano,#77bf3a
+4,Honky-tonk Piano,#4667e6
+5,Electric Piano 1,#51cb5e
+6,Electric Piano 2,#9b40b5
+7,Harpsichord,#359f34
+8,Clavi,#cb6ae3
+9,Celesta,#82a51c
+10,Glockenspiel,#8475ef
+11,Music Box,#b8b733
+12,Vibraphone,#3c4dbb
+13,Marimba,#e6a01e
+14,Xylophone,#4c7ff1
+15,Tubular Bells,#d9b637
+16,Dulcimer,#6243b2
+17,Drawbar Organ,#75b150
+18,Percussive Organ,#bd31a2
+19,Rock Organ,#4bb871
+20,Church Organ,#ea59ba
+21,Reed Organ,#5e8d26
+22,Accordion,#7a55c3
+23,Harmonica,#a3bf60
+24,Tango Accordion,#385fcb
+25,Acoustic Guitar (nylon),#e38421
+26,Acoustic Guitar (steel),#4691eb
+27,Electric Guitar (jazz),#ea6e2e
+28,Electric Guitar (clean),#554baa
+29,Electric Guitar (muted),#de9b36
+30,Overdriven Guitar,#9e7ee9
+31,Distortion Guitar,#767c16
+32,Guitar harmonics,#da68c9
+33,Acoustic Bass,#357226
+34,Electric Bass (finger),#c12d8d
+35,Electric Bass (pick),#53cd98
+36,Fretless Bass,#e83889
+37,Slap Bass 1,#479046
+38,Slap Bass 2,#d584e5
+39,Synth Bass 1,#445a06
+40,Synth Bass 2,#76409a
+41,Violin,#a88f25
+42,Viola,#6168c5
+43,Cello,#b77f1e
+44,Contrabass,#3e6cba
+45,Tremolo Strings,#c73e16
+46,Pizzicato Strings,#3ccde4
+47,Orchestral Harp,#dc3f30
+48,Timpani,#4cd2c3
+49,String Ensemble 1,#e73667
+50,String Ensemble 2,#3c9e81
+51,SynthStrings 1,#d5334a
+52,SynthStrings 2,#36b1da
+53,Choir Aahs,#b45618
+54,Voice Oohs,#5caee2
+55,Synth Voice,#ad3b26
+56,Orchestra Hit,#3aadb2
+57,Trumpet,#ef6456
+58,Trombone,#2b5a9b
+59,Tuba,#e5ad53
+60,Muted Trumpet,#644999
+61,French Horn,#9c9f44
+62,Brass Section,#8f63bb
+63,SynthBrass 1,#576c1c
+64,SynthBrass 2,#9d91e8
+65,Soprano Sax,#8d6c12
+66,Alto Sax,#505099
+67,Tenor Sax,#ceb863
+68,Baritone Sax,#9e4793
+69,Oboe,#8db773
+70,English Horn,#af3274
+71,Bassoon,#428f5c
+72,Clarinet,#ca436c
+73,Piccolo,#7ec095
+74,Flute,#e072af
+75,Recorder,#235e31
+76,Pan Flute,#ec6c93
+77,Blown Bottle,#115e41
+78,Shakuhachi,#cc85ce
+79,Whistle,#788c3b
+80,Ocarina,#7a488d
+81,Lead 1 (square),#b9b676
+82,Lead 2 (sawtooth),#6f64a6
+83,Lead 3 (calliope),#df8e50
+84,Lead 4 (chiff),#377cb1
+85,Lead 5 (charang),#a86828
+86,Lead 6 (voice),#829fdd
+87,Lead 7 (fifths),#9a4f20
+88,Lead 8 (bass + lead),#6a77b1
+89,Pad 1 (new age),#5b5b10
+90,Pad 2 (warm),#987dc0
+91,Pad 3 (polysynth),#7b7a30
+92,Pad 4 (choir),#d5a0d8
+93,Pad 5 (bowed),#415a1f
+94,Pad 6 (metallic),#ab699a
+95,Pad 7 (halo),#367042
+96,Pad 8 (sweep),#9d3757
+97,FX 1 (rain),#226a4d
+98,FX 2 (soundtrack),#bd4b4d
+99,FX 3 (crystal),#2f7b63
+100,FX 4 (atmosphere),#d77452
+101,FX 5 (brightness),#4a5589
+102,FX 6 (goblins),#ae8c49
+103,FX 7 (echoes),#8b4772
+104,FX 8 (sci-fi),#536c31
+105,Sitar,#e58d9e
+106,Banjo,#525620
+107,Shamisen,#ea8a7b
+108,Koto,#646831
+109,Kalimba,#bb6272
+110,Bag pipe,#7c8a4f
+111,Fiddle,#8d4a57
+112,Shanai,#695711
+113,Tinkle Bell,#dfa777
+114,Agogo,#704b0c
+115,Steel Drums,#a95b4b
+116,Woodblock,#847037
+117,Taiko Drum,#874327
+118,Melodic Tom,#ab7950
+119,Synth Drum,#8b6325
+120,Reverse Cymbal,#895a33
+121,Guitar Fret Noise,
+122,Breath Noise,
+123,Seashore,
+124,Bird Tweet,
+125,Telephone Ring,
+126,Helicopter,
+127,Applause,
+128,Gunshot,
