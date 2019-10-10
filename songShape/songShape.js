@@ -61,19 +61,29 @@ d3.csv(
       });
     var instruments = d3.csv(
       "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/dev/songShape/instrument_metadata.csv",
-      function(d) {
-        var instruments = "instrument";
-        var colors = ;
-        console.log(d);
+      function(md) {
+        console.log(md);
         var color = d3
           .scaleOrdinal()
-          .domain(instruments)
-          .range(colors);
+          .domain(
+            md.map(function(d) {
+              return d.instrument;
+            })
+          )
+          .range(
+            md.map(function(d) {
+              return d.color;
+            })
+          );
 
         var opacity = d3
           .scaleOrdinal()
-          .domain(instruments)
-          .range([".3", ".3", ".3", ".3", "0"]);
+          .domain(
+            md.map(function(d) {
+              return d.instrument;
+            })
+          )
+          .range([".7"]);
 
         var noteData = [
           { note_name: "C", angle: 0 },
