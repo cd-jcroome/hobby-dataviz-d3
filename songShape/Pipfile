@@ -13,6 +13,8 @@ mido = "*"
 beautifulsoup4 = "*"
 requests = "*"
 librosa = "*"
+jupyter = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"

@@ -59,7 +59,7 @@ d3.csv(
       .y(function(d) {
         return y(d.value["y"]);
       });
-    var instruments = d3.csv(
+    d3.csv(
       "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/dev/songShape/instrument_metadata.csv",
       function(md) {
         console.log(md);
@@ -83,7 +83,7 @@ d3.csv(
               return d.instrument;
             })
           )
-          .range([".7"]);
+          .range([".5"]);
 
         var noteData = [
           { note_name: "C", angle: 0 },
