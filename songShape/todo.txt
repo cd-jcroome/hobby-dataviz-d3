@@ -22,4 +22,4 @@
 2019.10.16
     https://en.wikipedia.org/wiki/Music_information_retrieval
     I can use librosa for m4a!
-    https://www.lunaverus.com/ - possible resource for mp3 to midi? only stores instruments as piano
+    https://www.lunaverus.com/ - possible resource for mp3 to midi? only stores instruments as piano, so no.
