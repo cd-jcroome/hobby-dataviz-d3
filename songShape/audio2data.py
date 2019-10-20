@@ -19,12 +19,16 @@ def audio2data(path):
     y_harmonic = librosa.effects.hpss(y)[0]
     C = librosa.feature.chroma_cqt(y=y_harmonic, sr=sr, bins_per_octave=36)
     # make the dataframes
-    c_df = pd.DataFrame(notes).join(pd.DataFrame(C),lsuffix='n').melt(id_vars='0n').rename(columns={'0n': "Note", "variable": "Time"})
-    c_df_summary = c_df.groupby(['Note']).mean()
+    c_df = pd.DataFrame(notes).join(pd.DataFrame(C),lsuffix='n').melt(id_vars='0n').rename(columns={'0n': "Note", "variable": "Time","index":"key"})
+    c_df_summary_1 = c_df.groupby(['Note']).mean()
+    c_df_summary_2 = c_df.groupby(['Note']).median()
+    c_df_summary = c_df_summary_1.join(c_df_summary_2,on=['Note'],lsuffix='_mean').rename(columns={'value_mean':'Mean','value':'Median'})
     # convert to csv
     print('...converting {} to CSV...'.format(f))
     m_csv = join('./output/librosa/',splitext(f)[0],'.csv').replace("/.csv",".csv")
+    m_summ_csv = join('./output/librosa/',splitext(f)[0],'.csv').replace("/.csv","_summ.csv")
     c_df.to_csv(m_csv)
+    c_df_summary.to_csv(m_summ_csv)
     print('{} completed!'.format(f))
 ## convert midifile to pandas df
 for f in files:
