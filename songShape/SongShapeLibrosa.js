@@ -33,7 +33,7 @@ function handleResize() {
 }
 d3.csv(
   "https://raw.githubusercontent.com/Jasparr77/hobby-dataviz-d3/dev/" +
-    "songShape/output/librosa/AaronCopland_FanfareForTheCommonMan.csv",
+    "songShape/output/librosa/BrettDennen_DesertSunrise.csv",
   function(data) {
     console.log(data);
     handleResize();
@@ -153,7 +153,7 @@ d3.csv(
         return y(d.value["y"]);
       })
       .attr("r", ".3vw")
-      .attr("fill", "black")
+      .attr("fill", "purple")
       .attr("fill-opacity", "0")
       .transition()
       .delay(function(d) {
